@@ -135,7 +135,7 @@
 				BF3F43BB20FF27B300DF3E69 /* Chat */,
 				BF3F43BC20FF27C500DF3E69 /* Activity */,
 				BF3F43BD20FF284200DF3E69 /* Profile */,
-				BF0F1B432111875C0050F172 /* Network */,
+				BF54523521131226003594CB /* Network */,
 				BF51F9C020F8CD56001A9C3E /* Utilities */,
 				84F1596620F39633006B3892 /* AppDelegate.swift */,
 				84F1596820F39633006B3892 /* ViewController.swift */,
@@ -176,13 +176,6 @@
 				007A57F2CC69D44DF676C17F /* Pods_Locco.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BF0F1B432111875C0050F172 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		BF12C20020F7445600D74500 /* Home */ = {
@@ -267,6 +260,13 @@
 				BFB51A85210B2A17000A5F2C /* GradientView.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BF54523521131226003594CB /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -37,6 +37,18 @@ class AuthRegisterController: UIViewController {
         viewModel!.mailRegister(email: emailTextField.text!, password: passwordTextField.text!)
     }
     
-    // MARK: - Keyboard actions
-
+    @IBAction func handleMailLogin(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToLogin", sender: self)
+    }
+    
+    @IBAction func resendVerificationLink(_ sender: UIButton) {
+        viewModel!.resendVerificationLink()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToLogin" {
+            let AuthLoginController = segue.destination as! AuthLoginController
+            AuthLoginController.viewModel = viewModel
+        }
+    }
 }

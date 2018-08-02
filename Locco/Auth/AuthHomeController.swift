@@ -52,21 +52,10 @@ class AuthHomeController: UIViewController, GIDSignInUIDelegate {
         performSegue(withIdentifier: "goToRegister", sender: self)
     }
     
-    @IBAction func handleMailLogin(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToLogin", sender: self)
-    }
-    
-    @IBAction func resendVerificationLink(_ sender: UIButton) {
-        viewModel!.resendVerificationLink()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToRegister" {
             let AuthRegisterController = segue.destination as! AuthRegisterController
             AuthRegisterController.viewModel = viewModel
-        } else if segue.identifier == "goToLogin" {
-            let AuthLoginController = segue.destination as! AuthLoginController
-            AuthLoginController.viewModel = viewModel
         } else if segue.identifier == "goToPhoneReg" {
             let AuthPhoneRegController = segue.destination as! AuthPhoneRegController
             AuthPhoneRegController.viewModel = viewModel
