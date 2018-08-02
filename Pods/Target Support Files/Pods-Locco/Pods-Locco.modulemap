@@ -1,0 +1,6 @@
+framework module Pods_Locco {
+  umbrella header "Pods-Locco-umbrella.h"
+
+  export *
+  module * { export * }
+}

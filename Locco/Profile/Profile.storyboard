@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gpm-GP-jOP">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Profile Controller-->
+        <scene sceneID="85y-9S-LLw">
+            <objects>
+                <viewController storyboardIdentifier="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gpm-GP-jOP" customClass="ProfileController" customModule="Location_Tracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oVg-Qe-dqY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9G-Ht-wee">
+                                <rect key="frame" x="163.66666666666666" y="391" width="48" height="30"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="gpm-GP-jOP" eventType="touchUpInside" id="iES-Ph-aw5"/>
+                                    <segue destination="dvr-9L-tli" kind="showDetail" id="0aX-IX-MLV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ek-ou-ln3">
+                                <rect key="frame" x="135" y="429" width="105" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Delete Account">
+                                    <color key="titleColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteAlertWithSender:" destination="gpm-GP-jOP" eventType="touchUpInside" id="kux-ec-FzS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="O9G-Ht-wee" firstAttribute="centerX" secondItem="oVg-Qe-dqY" secondAttribute="centerX" id="cjb-8Z-uGn"/>
+                            <constraint firstItem="O9G-Ht-wee" firstAttribute="centerY" secondItem="oVg-Qe-dqY" secondAttribute="centerY" id="qju-WB-zZM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zfq-82-kQM"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="profile" id="k3V-lv-sOn"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QFY-Wr-9Xk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="58" y="63"/>
+        </scene>
+        <!--Auth-->
+        <scene sceneID="TC3-ml-NP4">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Auth" id="dvr-9L-tli" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xTp-iZ-OZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="682" y="63"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="profile" width="18.333333969116211" height="24.666666030883789"/>
+    </resources>
+</document>
