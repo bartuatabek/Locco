@@ -759,7 +759,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleMailRegister:" destination="lvd-cK-uqu" eventType="touchUpInside" id="mgE-5B-RAJ"/>
-                                    <segue destination="AR6-rb-a6f" kind="show" id="SdI-fR-wTW"/>
+                                    <segue destination="AR6-rb-a6f" kind="show" identifier="goToVerify" id="SdI-fR-wTW"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFy-As-Svw">

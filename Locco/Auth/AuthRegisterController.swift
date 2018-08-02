@@ -25,7 +25,9 @@ class AuthRegisterController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel!.controller = self
-        bindUi()
+        if self.restorationIdentifier! == "Register" {
+            bindUi()
+        }
     }
     
     private func bindUi() {
@@ -49,6 +51,9 @@ class AuthRegisterController: UIViewController {
         if segue.identifier == "goToLogin" {
             let AuthLoginController = segue.destination as! AuthLoginController
             AuthLoginController.viewModel = viewModel
+        } else if (segue.identifier == "goToVerify") {
+            let AuthRegisterController = segue.destination as! AuthRegisterController
+            AuthRegisterController.viewModel = viewModel
         }
     }
 }
