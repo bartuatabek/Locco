@@ -246,7 +246,7 @@ class AuthViewModel: AuthViewModeling {
                 self.controller?.present(rootViewController, animated: true, completion: nil)
             } else {
                 print("Account is not verified")
-                let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthHomeController
+                let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthRegisterController
                 self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
                 self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
             }
