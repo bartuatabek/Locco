@@ -10,15 +10,11 @@ import UIKit
 
 class ActivityController: UIViewController {
     
-    var viewModel: ActivityViewModeling
+    var viewModel: ActivityViewModeling?
     
-    init(viewModel: ActivityViewModeling) {
-        self.viewModel = viewModel
-        super.init(nibName: "Activity", bundle: nil) // nibName => storyboard name
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.viewModel = ActivityViewModel()
-        super.init(coder: aDecoder)
+        self.viewModel!.controller = self
     }
 }

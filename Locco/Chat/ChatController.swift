@@ -10,15 +10,11 @@ import UIKit
 
 class ChatController: UIViewController {
     
-    var viewModel: ChatViewModeling
+    var viewModel: ChatViewModeling?
     
-    init(viewModel: ChatViewModeling) {
-        self.viewModel = viewModel
-        super.init(nibName: "Chat", bundle: nil) // nibName => storyboard name
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.viewModel = ChatViewModel()
-        super.init(coder: aDecoder)
+        self.viewModel!.controller = self
     }
 }

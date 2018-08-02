@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NBe-q0-ofD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NBe-q0-ofD">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,14 +13,14 @@
         <!--Chat Controller-->
         <scene sceneID="fmi-no-LcD">
             <objects>
-                <viewController storyboardIdentifier="Chat" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NBe-q0-ofD" customClass="ChatController" customModule="Location_Tracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Chat" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NBe-q0-ofD" customClass="ChatController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rmq-sG-M7e">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="INH-Cg-ych"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="chat" id="i1U-9C-vUQ"/>
+                    <tabBarItem key="tabBarItem" title="" image="chat" selectedImage="messagesPressed" id="i1U-9C-vUQ"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yiB-nu-BLh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -29,5 +30,6 @@
     </scenes>
     <resources>
         <image name="chat" width="25" height="25"/>
+        <image name="messagesPressed" width="25" height="25"/>
     </resources>
 </document>

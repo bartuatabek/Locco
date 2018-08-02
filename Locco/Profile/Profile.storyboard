@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14306.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gpm-GP-jOP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gpm-GP-jOP">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14278.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--Profile Controller-->
         <scene sceneID="85y-9S-LLw">
             <objects>
-                <viewController storyboardIdentifier="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gpm-GP-jOP" customClass="ProfileController" customModule="Location_Tracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gpm-GP-jOP" customClass="ProfileController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oVg-Qe-dqY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -23,12 +23,14 @@
                                 <state key="normal" title="Logout"/>
                                 <connections>
                                     <action selector="logout:" destination="gpm-GP-jOP" eventType="touchUpInside" id="iES-Ph-aw5"/>
-                                    <segue destination="dvr-9L-tli" kind="showDetail" id="0aX-IX-MLV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ek-ou-ln3">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ek-ou-ln3">
                                 <rect key="frame" x="135" y="429" width="105" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="aQr-c6-B4p"/>
+                                    <constraint firstAttribute="height" constant="30" id="mFv-tQ-Mov"/>
+                                </constraints>
                                 <state key="normal" title="Delete Account">
                                     <color key="titleColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 </state>
@@ -39,6 +41,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="0Ek-ou-ln3" firstAttribute="top" secondItem="O9G-Ht-wee" secondAttribute="bottom" constant="8" id="8Fr-Rw-tZ6"/>
+                            <constraint firstAttribute="bottom" secondItem="0Ek-ou-ln3" secondAttribute="bottom" constant="353" id="OcL-zD-FnX"/>
+                            <constraint firstItem="0Ek-ou-ln3" firstAttribute="centerX" secondItem="oVg-Qe-dqY" secondAttribute="centerX" id="VN2-Ci-IeA"/>
                             <constraint firstItem="O9G-Ht-wee" firstAttribute="centerX" secondItem="oVg-Qe-dqY" secondAttribute="centerX" id="cjb-8Z-uGn"/>
                             <constraint firstItem="O9G-Ht-wee" firstAttribute="centerY" secondItem="oVg-Qe-dqY" secondAttribute="centerY" id="qju-WB-zZM"/>
                         </constraints>
@@ -46,6 +51,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="profile" id="k3V-lv-sOn"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="dvr-9L-tli" kind="showDetail" identifier="goToHome" id="YhZ-dp-dj7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QFY-Wr-9Xk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -11,23 +11,20 @@ import Firebase
 
 class ProfileController: UIViewController {
     
-    var viewModel: ProfileViewModeling
+    var viewModel: ProfileViewModeling?
     
-    init(viewModel: ProfileViewModeling) {
-        self.viewModel = viewModel
-        super.init(nibName: "Profile", bundle: nil) // nibName => storyboard name
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.viewModel = ProfileViewModel()
-        super.init(coder: aDecoder)
+        self.viewModel!.controller = self
     }
-    
+        
     @IBAction func logout(_ sender: UIButton) {
         do {
             try Firebase.Auth.auth().signOut()
             print("Sign out successful")
-            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            performSegue(withIdentifier: "goToHome", sender: nil)
+            navigationController?.popToRootViewController(animated: false)
         } catch {
             print("Sign out failed: ", error)
         }

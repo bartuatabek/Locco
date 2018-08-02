@@ -75,7 +75,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KmX-3w-7Ws"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="circles" id="sSc-Ii-LfW"/>
                     <navigationItem key="navigationItem" title="My Circle Name" id="cSP-xR-Wwk">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="iRV-m4-UAz"/>
                     </navigationItem>
@@ -89,6 +88,8 @@
         <scene sceneID="3wQ-yi-4xT">
             <objects>
                 <navigationController id="ntZ-L7-vLT" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="circles" selectedImage="circlesPressed" id="sSc-Ii-LfW"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="ePz-f6-Kk2">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -104,5 +105,6 @@
     </scenes>
     <resources>
         <image name="circles" width="24" height="24"/>
+        <image name="circlesPressed" width="24" height="24"/>
     </resources>
 </document>

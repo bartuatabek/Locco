@@ -24,7 +24,6 @@
 		8D1C4CB321012E1E00455D89 /* AddGeoPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */; };
 		8D205F032103892B000A0781 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D205F022103892B000A0781 /* FormTextField.swift */; };
 		8DBB41332103CB5F00D52877 /* AuthRegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */; };
-		BF0F1B472111C4530050F172 /* Bushmaster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF0F1B462111C4530050F172 /* Bushmaster.mp3 */; };
 		BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF271DC42110964000ED09FB /* GoogleService-Info.plist */; };
 		BF2D3F7B2107192B00241D00 /* PlaceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D3F7A2107192B00241D00 /* PlaceDetailController.swift */; };
 		BF3F43BF20FF295600DF3E69 /* Circles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43BE20FF295500DF3E69 /* Circles.storyboard */; };
@@ -42,6 +41,7 @@
 		BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */; };
 		BF3F43D920FF2AD700DF3E69 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */; };
 		BF3F43DB20FF2AE200DF3E69 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */; };
+		BF64943621134D0600FD4F07 /* Bushmaster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF64943521134D0600FD4F07 /* Bushmaster.mp3 */; };
 		BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A85210B2A17000A5F2C /* GradientView.swift */; };
 		BFB51A8A210B39F2000A5F2C /* AuthPhoneRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */; };
 		BFF7063121061E3000245438 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF7063021061E3000245438 /* RoundedButton.swift */; };
@@ -69,7 +69,6 @@
 		8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeoPlaceController.swift; sourceTree = "<group>"; };
 		8D205F022103892B000A0781 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegisterController.swift; sourceTree = "<group>"; };
-		BF0F1B462111C4530050F172 /* Bushmaster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Bushmaster.mp3; sourceTree = "<group>"; };
 		BF271DC42110964000ED09FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF2D3F7A2107192B00241D00 /* PlaceDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailController.swift; sourceTree = "<group>"; };
 		BF3F43BE20FF295500DF3E69 /* Circles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Circles.storyboard; sourceTree = "<group>"; };
@@ -87,6 +86,7 @@
 		BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		BF64943521134D0600FD4F07 /* Bushmaster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Bushmaster.mp3; sourceTree = "<group>"; };
 		BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Location Tracker.entitlements"; path = "../../Location Tracker.entitlements"; sourceTree = "<group>"; };
 		BFB51A85210B2A17000A5F2C /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPhoneRegController.swift; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 		BF3F43DC20FF345000DF3E69 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				BF0F1B462111C4530050F172 /* Bushmaster.mp3 */,
+				BF64943521134D0600FD4F07 /* Bushmaster.mp3 */,
 				84F1597220F39635006B3892 /* Info.plist */,
 				BF271DC42110964000ED09FB /* GoogleService-Info.plist */,
 				BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */,
@@ -344,7 +344,7 @@
 			files = (
 				BF3F43CB20FF2A5B00DF3E69 /* Chat.storyboard in Resources */,
 				BF3F43DB20FF2AE200DF3E69 /* Profile.storyboard in Resources */,
-				BF0F1B472111C4530050F172 /* Bushmaster.mp3 in Resources */,
+				BF64943621134D0600FD4F07 /* Bushmaster.mp3 in Resources */,
 				BF3F43C920FF29DA00DF3E69 /* Places.storyboard in Resources */,
 				84F1598020F3A173006B3892 /* Auth.storyboard in Resources */,
 				84F1597120F39635006B3892 /* LaunchScreen.storyboard in Resources */,

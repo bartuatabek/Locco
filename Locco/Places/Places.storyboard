@@ -14,7 +14,7 @@
         <scene sceneID="Wub-2s-F8P">
             <objects>
                 <navigationController storyboardIdentifier="Places" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="ycE-O9-4iK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="places" id="LvS-6E-g6c"/>
+                    <tabBarItem key="tabBarItem" title="" image="places" selectedImage="placesPressed" id="LvS-6E-g6c"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="0ng-IA-wEB">
@@ -793,5 +793,6 @@
         <image name="Share" width="51.200000762939453" height="51.200000762939453"/>
         <image name="cancel" width="51.200000762939453" height="51.200000762939453"/>
         <image name="places" width="24" height="24"/>
+        <image name="placesPressed" width="24" height="24"/>
     </resources>
 </document>
