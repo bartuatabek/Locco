@@ -15,22 +15,20 @@
             <objects>
                 <viewController storyboardIdentifier="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gpm-GP-jOP" customClass="ProfileController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oVg-Qe-dqY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9G-Ht-wee">
-                                <rect key="frame" x="163.66666666666666" y="391" width="48" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9G-Ht-wee">
+                                <rect key="frame" x="163.66666666666666" y="308" width="48" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Logout"/>
                                 <connections>
                                     <action selector="logout:" destination="gpm-GP-jOP" eventType="touchUpInside" id="iES-Ph-aw5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ek-ou-ln3">
-                                <rect key="frame" x="135" y="429" width="105" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="105" id="aQr-c6-B4p"/>
-                                    <constraint firstAttribute="height" constant="30" id="mFv-tQ-Mov"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ek-ou-ln3">
+                                <rect key="frame" x="135" y="346" width="105" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Delete Account">
                                     <color key="titleColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 </state>
@@ -40,17 +38,10 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="0Ek-ou-ln3" firstAttribute="top" secondItem="O9G-Ht-wee" secondAttribute="bottom" constant="8" id="8Fr-Rw-tZ6"/>
-                            <constraint firstAttribute="bottom" secondItem="0Ek-ou-ln3" secondAttribute="bottom" constant="353" id="OcL-zD-FnX"/>
-                            <constraint firstItem="0Ek-ou-ln3" firstAttribute="centerX" secondItem="oVg-Qe-dqY" secondAttribute="centerX" id="VN2-Ci-IeA"/>
-                            <constraint firstItem="O9G-Ht-wee" firstAttribute="centerX" secondItem="oVg-Qe-dqY" secondAttribute="centerX" id="cjb-8Z-uGn"/>
-                            <constraint firstItem="O9G-Ht-wee" firstAttribute="centerY" secondItem="oVg-Qe-dqY" secondAttribute="centerY" id="qju-WB-zZM"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="zfq-82-kQM"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="profile" id="k3V-lv-sOn"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <segue destination="dvr-9L-tli" kind="showDetail" identifier="goToHome" id="YhZ-dp-dj7"/>
                     </connections>

@@ -1,180 +1,149 @@
 //
-//  PlacesDrawerController.swift
-//  Location Tracker
+//  SearchViewController.swift
+//  PullUpControllerDemo
 //
-//  Created by Bartu Atabek on 7/22/18.
-//  Copyright © 2018 Bartu Atabek. All rights reserved.
+//  Created by Mario on 03/11/2017.
+//  Copyright © 2017 Mario. All rights reserved.
 //
 
 import UIKit
-import CoreLocation
-import Pulley
+import MapKit
+import PullUpController
 
-class PlacesDrawerController: UIViewController {
+class PlacesDrawerController: PullUpController {
     
-    var viewModel: GeoPlacesViewModeling?
-    
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var searchBar: UISearchBar!
-    @IBOutlet var gripperView: UIView!
-    @IBOutlet var topSeparatorView: UIView!
-    @IBOutlet var bottomSeperatorView: UIView!
-    
-    @IBOutlet var gripperTopConstraint: NSLayoutConstraint!
-    
-    // We adjust our 'header' based on the bottom safe area using this constraint
-    @IBOutlet var headerSectionHeightConstraint: NSLayoutConstraint!
-    
-    fileprivate var drawerBottomSafeArea: CGFloat = 0.0 {
+    // MARK: - IBOutlets
+    @IBOutlet private weak var visualEffectView: UIVisualEffectView!
+    @IBOutlet private weak var searchBoxContainerView: UIView!
+    @IBOutlet private weak var searchSeparatorView: UIView! {
         didSet {
-            self.loadViewIfNeeded()
-            
-            // We'll configure our UI to respect the safe area. In our small demo app, we just want to adjust the contentInset for the tableview.
-            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: drawerBottomSafeArea, right: 0.0)
+            searchSeparatorView.layer.cornerRadius = searchSeparatorView.frame.height/2
         }
     }
+    @IBOutlet private weak var firstPreviewView: UIView!
+    @IBOutlet private weak var secondPreviewView: UIView!
+    @IBOutlet private weak var tableView: UITableView!
     
+    private var locations = [(title: String, location: CLLocationCoordinate2D)]()
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = GeoPlacesViewModel()
-        self.viewModel!.controller = self
-        // Do any additional setup after loading the view.
-        gripperView.layer.cornerRadius = 2.5
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        tableView.attach(to: self)
+        setupDataSource()
+//        willMoveToStickyPoint = { point in
+//            print("willMoveToStickyPoint \(point)")
+//        }
         
-        // You must wait until viewWillAppear -or- later in the view controller lifecycle in order to get a reference to Pulley via self.parent for customization.
-        
-        // UIFeedbackGenerator is only available iOS 10+. Since Pulley works back to iOS 9, the .feedbackGenerator property is "Any" and managed internally as a feedback generator.
-        if #available(iOS 10.0, *) {
-            let feedbackGenerator = UISelectionFeedbackGenerator()
-            self.pulleyViewController?.feedbackGenerator = feedbackGenerator
+        didMoveToStickyPoint = { point in
+            print("didMoveToStickyPoint \(point)")
         }
+        
+//        onDrag = { point in
+//            print("onDrag: \(point)")
+//        }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // The bounce here is optional, but it's done automatically after appearance as a demonstration.
-//        Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(bounceDrawer), userInfo: nil, repeats: false)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.layer.cornerRadius = 16
     }
     
-    @objc fileprivate func bounceDrawer() {
-        
-        // We can 'bounce' the drawer to show users that the drawer needs their attention. There are optional parameters you can pass this method to control the bounce height and speed.
-        self.pulleyViewController?.bounceDrawer()
+    private func setupDataSource() {
+        locations.append(("Rome", CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921)))
+        locations.append(("Milan", CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741)))
+        locations.append(("Turin", CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106)))
+        locations.append(("London", CLLocationCoordinate2D(latitude: 51.5287718, longitude: -0.2416817)))
+        locations.append(("Paris", CLLocationCoordinate2D(latitude: 48.8589507, longitude: 2.2770201)))
+        locations.append(("Amsterdam", CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401)))
+        locations.append(("Dublin", CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869)))
+        locations.append(("Reykjavik", CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815)))
+    }
+    
+    // MARK: - PullUpController
+    override var pullUpControllerPreferredSize: CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: secondPreviewView.frame.maxY)
+    }
+    
+    override var pullUpControllerPreviewOffset: CGFloat {
+        return searchBoxContainerView.frame.height + 175
+    }
+    
+    override var pullUpControllerMiddleStickyPoints: [CGFloat] {
+        return [firstPreviewView.frame.maxY]
+    }
+    
+    override var pullUpControllerIsBouncingEnabled: Bool {
+        return true
     }
 }
 
-extension PlacesDrawerController: PulleyDrawerViewControllerDelegate {
-    
-    func collapsedDrawerHeight(bottomSafeArea: CGFloat) -> CGFloat
-    {
-        // For devices with a bottom safe area, we want to make our drawer taller. Your implementation may not want to do that. In that case, disregard the bottomSafeArea value.
-        return 68.0 + bottomSafeArea
-    }
-    
-    func partialRevealDrawerHeight(bottomSafeArea: CGFloat) -> CGFloat
-    {
-        // For devices with a bottom safe area, we want to make our drawer taller. Your implementation may not want to do that. In that case, disregard the bottomSafeArea value.
-        return 264.0 + bottomSafeArea
-    }
-    
-    func supportedDrawerPositions() -> [PulleyPosition] {
-        return PulleyPosition.all // You can specify the drawer positions you support. This is the same as: [.open, .partiallyRevealed, .collapsed, .closed]
-    }
-    
-    // This function is called by Pulley anytime the size, drawer position, etc. changes. It's best to customize your VC UI based on the bottomSafeArea here (if needed). Note: You might also find the `pulleySafeAreaInsets` property on Pulley useful to get Pulley's current safe area insets in a backwards compatible (with iOS < 11) way. If you need this information for use in your layout, you can also access it directly by using `drawerDistanceFromBottom` at any time.
-    func drawerPositionDidChange(drawer: PulleyViewController, bottomSafeArea: CGFloat)
-    {
-        // We want to know about the safe area to customize our UI. Our UI customization logic is in the didSet for this variable.
-        drawerBottomSafeArea = bottomSafeArea
-        
-        /*
-         Some explanation for what is happening here:
-         1. Our drawer UI needs some customization to look 'correct' on devices like the iPhone X, with a bottom safe area inset.
-         2. We only need this when it's in the 'collapsed' position, so we'll add some safe area when it's collapsed and remove it when it's not.
-         3. These changes are captured in an animation block (when necessary) by Pulley, so these changes will be animated along-side the drawer automatically.
-         */
-        if drawer.drawerPosition == .collapsed
-        {
-            headerSectionHeightConstraint.constant = 68.0 + drawerBottomSafeArea
-        }
-        else
-        {
-            headerSectionHeightConstraint.constant = 68.0
-        }
-        
-        // Handle tableview scrolling / searchbar editing
-        
-        tableView.isScrollEnabled = drawer.drawerPosition == .open || drawer.currentDisplayMode == .leftSide
-        
-        if drawer.drawerPosition != .open
-        {
-            searchBar.resignFirstResponder()
-        }
-        
-        if drawer.currentDisplayMode == .leftSide
-        {
-            topSeparatorView.isHidden = drawer.drawerPosition == .collapsed
-            bottomSeperatorView.isHidden = drawer.drawerPosition == .collapsed
-        }
-        else
-        {
-            topSeparatorView.isHidden = false
-            bottomSeperatorView.isHidden = true
-        }
-    }
-    
-    /// This function is called when the current drawer display mode changes. Make UI customizations here.
-    func drawerDisplayModeDidChange(drawer: PulleyViewController) {
-        
-        print("Drawer: \(drawer.currentDisplayMode)")
-        gripperTopConstraint.isActive = drawer.currentDisplayMode == .bottomDrawer
-    }
-}
-
+// MARK: - UISearchBarDelegate
 extension PlacesDrawerController: UISearchBarDelegate {
-    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        pulleyViewController?.setDrawerPosition(position: .open, animated: true)
+        if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
+            pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
 }
 
-extension PlacesDrawerController: UITableViewDataSource {
-    
+extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel!.geoPlaces.count
+        return locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SampleCell", for: indexPath)
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as? PlaceCell
+            else {return UITableViewCell()}
         
-        let place = viewModel!.geoPlaces[indexPath.row]
-        cell.textLabel?.text = place.name
-        cell.detailTextLabel?.text = place.eventType.rawValue
- 
+        cell.configure(pinColor: "Blue", title: locations[indexPath.row].title, subtitle: "About my places..")
         return cell
     }
-}
-
-extension PlacesDrawerController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 81.0
-    }
-    
+    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        view.endEditing(true)
+        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], animated: true, completion: nil)
         
-        let primaryContent = UIStoryboard(name: "Places", bundle: nil).instantiateViewController(withIdentifier: "PlaceDetail")
-        
-        pulleyViewController?.setDrawerPosition(position: .partiallyRevealed, animated: true)
-        pulleyViewController?.setDrawerContentViewController(controller: primaryContent, animated: false)
+        (parent as? GeoPlacesController)?.zoom(to: locations[indexPath.row].location)
     }
 }
 
+// MARK: - PlaceCell
+class PlaceCell: UITableViewCell {
+    @IBOutlet weak var pinImage: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    func configure(pinColor: String, title: String, subtitle: String) {
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+    }
+}
 
+extension PlaceCell: UICollectionViewDataSource {
+    // TODO: Get photos from firebase
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        cell.imageView.layer.cornerRadius = 8.0
+        cell.imageView.clipsToBounds = true
+        return cell
+    }
+    
+}
 
+class PhotoCell: UICollectionViewCell {
+    @IBOutlet weak var imageView: UIImageView!
+}

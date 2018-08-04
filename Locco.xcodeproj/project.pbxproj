@@ -25,7 +25,6 @@
 		8D205F032103892B000A0781 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D205F022103892B000A0781 /* FormTextField.swift */; };
 		8DBB41332103CB5F00D52877 /* AuthRegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */; };
 		BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF271DC42110964000ED09FB /* GoogleService-Info.plist */; };
-		BF2D3F7B2107192B00241D00 /* PlaceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D3F7A2107192B00241D00 /* PlaceDetailController.swift */; };
 		BF3F43BF20FF295600DF3E69 /* Circles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43BE20FF295500DF3E69 /* Circles.storyboard */; };
 		BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */; };
 		BF3F43C320FF29A800DF3E69 /* CirclesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43C220FF29A800DF3E69 /* CirclesController.swift */; };
@@ -44,6 +43,7 @@
 		BF64943621134D0600FD4F07 /* Bushmaster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF64943521134D0600FD4F07 /* Bushmaster.mp3 */; };
 		BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A85210B2A17000A5F2C /* GradientView.swift */; };
 		BFB51A8A210B39F2000A5F2C /* AuthPhoneRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */; };
+		BFCF7E8E21142DFB00355196 /* overlay.json in Resources */ = {isa = PBXBuildFile; fileRef = BFCF7E8D21142DFB00355196 /* overlay.json */; };
 		BFF7063121061E3000245438 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF7063021061E3000245438 /* RoundedButton.swift */; };
 		BFFF084320F74CF700F6F50A /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFF084220F74CF700F6F50A /* Home.storyboard */; };
 /* End PBXBuildFile section */
@@ -70,7 +70,6 @@
 		8D205F022103892B000A0781 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegisterController.swift; sourceTree = "<group>"; };
 		BF271DC42110964000ED09FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		BF2D3F7A2107192B00241D00 /* PlaceDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailController.swift; sourceTree = "<group>"; };
 		BF3F43BE20FF295500DF3E69 /* Circles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Circles.storyboard; sourceTree = "<group>"; };
 		BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesViewModel.swift; sourceTree = "<group>"; };
 		BF3F43C220FF29A800DF3E69 /* CirclesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesController.swift; sourceTree = "<group>"; };
@@ -90,6 +89,7 @@
 		BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Location Tracker.entitlements"; path = "../../Location Tracker.entitlements"; sourceTree = "<group>"; };
 		BFB51A85210B2A17000A5F2C /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPhoneRegController.swift; sourceTree = "<group>"; };
+		BFCF7E8D21142DFB00355196 /* overlay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = overlay.json; sourceTree = "<group>"; };
 		BFF7063021061E3000245438 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		BFFF084220F74CF700F6F50A /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		FC5340857AD8D55CF1F0E341 /* Pods-Locco.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Locco.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Locco/Pods-Locco.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,7 +211,6 @@
 				BF3F43C620FF29D000DF3E69 /* GeoPlacesController.swift */,
 				8D1B01242104C94600A78DE0 /* PlacesDrawerController.swift */,
 				8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */,
-				BF2D3F7A2107192B00241D00 /* PlaceDetailController.swift */,
 				BF3F43C820FF29DA00DF3E69 /* Places.storyboard */,
 			);
 			path = Places;
@@ -250,6 +249,7 @@
 		BF3F43DC20FF345000DF3E69 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				BFCF7E8D21142DFB00355196 /* overlay.json */,
 				BF64943521134D0600FD4F07 /* Bushmaster.mp3 */,
 				84F1597220F39635006B3892 /* Info.plist */,
 				BF271DC42110964000ED09FB /* GoogleService-Info.plist */,
@@ -351,6 +351,7 @@
 				BFFF084320F74CF700F6F50A /* Home.storyboard in Resources */,
 				84F1596E20F39635006B3892 /* Assets.xcassets in Resources */,
 				84F1596C20F39633006B3892 /* Main.storyboard in Resources */,
+				BFCF7E8E21142DFB00355196 /* overlay.json in Resources */,
 				BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */,
 				BF3F43D520FF2AB700DF3E69 /* Activity.storyboard in Resources */,
 				BF3F43BF20FF295600DF3E69 /* Circles.storyboard in Resources */,
@@ -375,9 +376,11 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/Pulley/Pulley.framework",
+				"${BUILT_PRODUCTS_DIR}/MapKitGoogleStyler/MapKitGoogleStyler.framework",
+				"${BUILT_PRODUCTS_DIR}/PullUpController/PullUpController.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
@@ -394,9 +397,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pulley.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapKitGoogleStyler.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PullUpController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
@@ -471,7 +476,6 @@
 				8D1B01252104C94600A78DE0 /* PlacesDrawerController.swift in Sources */,
 				84F1597E20F3A0D5006B3892 /* AuthHomeController.swift in Sources */,
 				8D1C4CB321012E1E00455D89 /* AddGeoPlaceController.swift in Sources */,
-				BF2D3F7B2107192B00241D00 /* PlaceDetailController.swift in Sources */,
 				BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */,
 				BF3F43C320FF29A800DF3E69 /* CirclesController.swift in Sources */,
 				84F1597A20F3A081006B3892 /* Auth.swift in Sources */,

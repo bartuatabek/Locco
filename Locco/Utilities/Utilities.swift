@@ -67,3 +67,57 @@ extension GeoPlacesViewModel {
         controller?.present(alert, animated: true, completion: nil)
     }
 }
+
+// MARK: - Random Generator
+extension CGFloat {
+    static func random() -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
+    }
+}
+
+// MARK: UIImage Extensions
+extension UIImage {
+    func colorized(color : UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setBlendMode(.multiply)
+            context.translateBy(x: 0, y: self.size.height)
+            context.scaleBy(x: 1.0, y: -1.0)
+            context.draw(self.cgImage!, in: rect)
+            context.clip(to: rect, mask: self.cgImage!)
+            context.setFillColor(color.cgColor)
+            context.fill(rect)
+        }
+        
+        let colorizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        return colorizedImage!
+    }
+    
+    func tintedWithLinearGradientColors(colorsArr: [CGColor]) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return UIImage()
+        }
+        context.translateBy(x: 0, y: self.size.height)
+        context.scaleBy(x: 1, y: -1)
+        
+        context.setBlendMode(.normal)
+        let rect = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
+        
+        // Create gradient
+        let colors = colorsArr as CFArray
+        let space = CGColorSpaceCreateDeviceRGB()
+        let gradient = CGGradient(colorsSpace: space, colors: colors, locations: nil)
+        
+        // Apply gradient
+        context.clip(to: rect, mask: self.cgImage!)
+        context.drawLinearGradient(gradient!, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 0, y: self.size.height), options: .drawsAfterEndLocation)
+        let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return gradientImage!
+    }
+}

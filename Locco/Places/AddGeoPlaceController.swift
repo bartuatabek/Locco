@@ -39,10 +39,6 @@ class AddGeoPlaceController: UITableViewController, UIGestureRecognizerDelegate 
         self.mapView.addGestureRecognizer(mapDragRecognizer)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-//         self.viewModel!.controller = self
-    }
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -75,7 +71,7 @@ class AddGeoPlaceController: UITableViewController, UIGestureRecognizerDelegate 
     
     @IBAction func onCancel(sender: UIBarButtonItem) {
         delegate?.passViewModel(viewModel: self.viewModel!)
-        dismiss(animated: true, completion: nil)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction private func onAdd(sender: AnyObject) {
@@ -90,7 +86,7 @@ class AddGeoPlaceController: UITableViewController, UIGestureRecognizerDelegate 
         viewModel!.add(geotification: geotification)
         viewModel!.startMonitoring(geotification: geotification)
         viewModel!.saveAllGeotifications()
-        dismiss(animated: true, completion: nil)
+        navigationController?.popToRootViewController(animated: true)
         
         // server request
         let currentUser = Firebase.Auth.auth().currentUser

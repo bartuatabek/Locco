@@ -15,13 +15,13 @@
             <objects>
                 <viewController storyboardIdentifier="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DQ3-Kb-xnc" customClass="ActivityController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VCc-AY-EWx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="dDS-le-NPO"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="activity" selectedImage="notifPressed" id="xmp-Gm-6jE"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffm-J0-8qK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

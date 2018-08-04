@@ -24,7 +24,7 @@ class ProfileController: UIViewController {
             try Firebase.Auth.auth().signOut()
             print("Sign out successful")
             performSegue(withIdentifier: "goToHome", sender: nil)
-            navigationController?.popToRootViewController(animated: false)
+            navigationController?.popToRootViewController(animated: true)
         } catch {
             print("Sign out failed: ", error)
         }
