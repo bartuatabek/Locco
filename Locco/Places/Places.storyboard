@@ -261,7 +261,7 @@
             </objects>
             <point key="canvasLocation" x="2169" y="123"/>
         </scene>
-        <!--Place Name-->
+        <!--My Places-->
         <scene sceneID="2Ka-Sq-n40">
             <objects>
                 <viewController id="TeX-K2-ygL" customClass="GeoPlacesController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
@@ -306,7 +306,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6xF-8w-VPc"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Place Name" id="d2f-Y3-Jgq">
+                    <navigationItem key="navigationItem" title="My Places" id="d2f-Y3-Jgq">
                         <barButtonItem key="rightBarButtonItem" image="createNewPlace" id="3GW-ug-lT9">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -328,7 +328,7 @@
         <scene sceneID="2sx-M7-mOa">
             <objects>
                 <viewController storyboardIdentifier="PlacesDrawerController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EAY-Ky-R4B" customClass="PlacesDrawerController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="Q7B-w9-Wpn" customClass="ShadowView" customModule="Locco" customModuleProvider="target">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="Q7B-w9-Wpn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -526,7 +526,7 @@
         <scene sceneID="Au9-zW-W13">
             <objects>
                 <viewController storyboardIdentifier="AddPlace" useStoryboardIdentifierAsRestorationIdentifier="YES" id="q7h-j2-nkh" customClass="AddGeoPlaceController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="59W-ta-kzN" customClass="ShadowView" customModule="Locco" customModuleProvider="target">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="59W-ta-kzN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="264"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>

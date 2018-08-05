@@ -53,7 +53,6 @@ class GeoPlacesController: UIViewController {
             let pullUpController = UIStoryboard(name: "Places", bundle: nil)
                 .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
             else { return }
-        print("1")
         addPullUpController(pullUpController, animated: true)
     }
     
@@ -148,8 +147,7 @@ extension GeoPlacesController: MKMapViewDelegate {
             if annotationView == nil {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.image = UIImage(named: "Pin")!
-                    .withRenderingMode(.alwaysTemplate)
-                    .colorized(color: UIColor(red: .random(), green: .random(), blue: .random(), alpha: 1.0))
+                    .tintedWithLinearGradientColors(colorsArr: PinColors.color3)
                 annotationView?.canShowCallout = true
                 let removeButton = UIButton(type: .custom)
                 removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)

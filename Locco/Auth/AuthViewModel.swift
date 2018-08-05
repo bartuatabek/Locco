@@ -212,7 +212,7 @@ class AuthViewModel: AuthViewModeling {
         else {
             Firebase.Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
                 if error != nil {
-                    self.errorMessage.swap("Operation failed. Please try again.")
+                    self.errorMessage.swap("User already exists. Try logging in.")
                     print("Registration failed: ", error ?? "")
                 }
             }
@@ -221,11 +221,12 @@ class AuthViewModel: AuthViewModeling {
             Firebase.Auth.auth().addStateDidChangeListener { (auth, user) in
                 Firebase.Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                     if error != nil {
-                        self.errorMessage.swap("Operation failed. Please try again.")
+                        self.errorMessage.swap("Could not send verification mail. Please try again.")
                         print("Verification link send failed: ", error ?? "")
                     }
                     else {
                         print("Verification link sent")
+                        self.controller?.performSegue(withIdentifier: "goToVerify", sender: nil)
                         self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
                     }
                 })

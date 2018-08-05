@@ -84,6 +84,11 @@ extension PlacesDrawerController: UISearchBarDelegate {
         if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
             pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
         }
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

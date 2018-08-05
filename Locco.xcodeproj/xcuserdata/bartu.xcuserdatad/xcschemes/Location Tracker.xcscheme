@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84F1596220F39632006B3892"
-               BuildableName = "Location Tracker.app"
-               BlueprintName = "Location Tracker"
-               ReferencedContainer = "container:Location Tracker.xcodeproj">
+               BuildableName = "Locco.app"
+               BlueprintName = "Locco"
+               ReferencedContainer = "container:Locco.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84F1596220F39632006B3892"
-            BuildableName = "Location Tracker.app"
-            BlueprintName = "Location Tracker"
-            ReferencedContainer = "container:Location Tracker.xcodeproj">
+            BuildableName = "Locco.app"
+            BlueprintName = "Locco"
+            ReferencedContainer = "container:Locco.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84F1596220F39632006B3892"
-            BuildableName = "Location Tracker.app"
-            BlueprintName = "Location Tracker"
-            ReferencedContainer = "container:Location Tracker.xcodeproj">
+            BuildableName = "Locco.app"
+            BlueprintName = "Locco"
+            ReferencedContainer = "container:Locco.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -77,16 +77,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84F1596220F39632006B3892"
-            BuildableName = "Location Tracker.app"
-            BlueprintName = "Location Tracker"
-            ReferencedContainer = "container:Location Tracker.xcodeproj">
+            BuildableName = "Locco.app"
+            BlueprintName = "Locco"
+            ReferencedContainer = "container:Locco.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
