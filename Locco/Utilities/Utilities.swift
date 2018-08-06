@@ -26,9 +26,9 @@ extension UIView {
         // add the shadow to the base view
         self.backgroundColor = UIColor.clear
         self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOffset = CGSize(width: 3, height: 3)
-        self.layer.shadowOpacity = 0.7
-        self.layer.shadowRadius = 4.0
+        self.layer.shadowOffset = CGSize(width: 0, height: 1)
+        self.layer.shadowOpacity = 0.35
+        self.layer.shadowRadius = 1.0
         
         self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: 10).cgPath
         self.layer.shouldRasterize = true
@@ -37,17 +37,39 @@ extension UIView {
         // add the border to subview
         let borderView = UIView()
         borderView.frame = self.bounds
-        borderView.layer.cornerRadius = 10
+        borderView.layer.cornerRadius = 4
         borderView.layer.borderColor = UIColor.white.cgColor
         borderView.layer.borderWidth = 1.0
         borderView.layer.masksToBounds = true
         self.addSubview(borderView)
-//
-//        // add any other subcontent that you want clipped
-//        let otherSubContent = UIImageView()
-//        otherSubContent.image = UIImage(named: "lion")
-//        otherSubContent.frame = borderView.bounds
-//        borderView.addSubview(otherSubContent)
+    }
+    
+    func addTopBorderWithColor(color: UIColor, width: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: width)
+        self.layer.addSublayer(border)
+    }
+    
+    func addRightBorderWithColor(color: UIColor, width: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: self.frame.size.width - width, y: 0, width: width, height: self.frame.size.height)
+        self.layer.addSublayer(border)
+    }
+    
+    func addBottomBorderWithColor(color: UIColor, width: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: 0, y: self.frame.size.height - width, width: self.frame.size.width, height: width)
+        self.layer.addSublayer(border)
+    }
+    
+    func addLeftBorderWithColor(color: UIColor, width: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.size.height)
+        self.layer.addSublayer(border)
     }
 }
 

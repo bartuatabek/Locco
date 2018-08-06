@@ -13,6 +13,9 @@ import MapKitGoogleStyler
 class GeoPlacesController: UIViewController {
     
     var viewModel: GeoPlacesViewModeling?
+    var pullUpController: PlacesDrawerController?
+    var addGeoPlacePullUpController: AddGeoPlaceController?
+    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .default
     }
@@ -30,14 +33,12 @@ class GeoPlacesController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadPlaces()
     }
     
     func setup() {
         loadPlaces()
-        addPullUpController()
-        customizeStatusBar()
         configureTileOverlay()
+        addDrawerPullUpController()
         mapView.layer.cornerRadius = 16.0
         controlsContainer.layer.cornerRadius = 10.0
         controlsContainer.clipsToBounds = true
@@ -46,14 +47,59 @@ class GeoPlacesController: UIViewController {
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        
+        let rightBarButton = UIBarButtonItem(image: UIImage(named: "createNewPlace"), style: .done, target: self, action: #selector(addPlaceDrawerPullUpController))
+        rightBarButton.tintColor = UIColor.black
+        self.navigationItem.rightBarButtonItem = rightBarButton
+        
+        let addPinGesture = UILongPressGestureRecognizer(target: self, action: #selector(addPlace))
+        addPinGesture.minimumPressDuration = 2.0
+        mapView.addGestureRecognizer(addPinGesture)
     }
     
-    private func addPullUpController() {
-        guard
-            let pullUpController = UIStoryboard(name: "Places", bundle: nil)
-                .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
-            else { return }
-        addPullUpController(pullUpController, animated: true)
+    @objc func addPlace(gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            let touchPoint = gestureRecognizer.location(in: mapView)
+            let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+            let clampedRadius = 250.0
+            let identifier = NSUUID().uuidString
+            let name = "My Place"
+            let eventType: EventType = .onEntry
+            let geotification = GeoPlace(coordinate: coordinate, radius: clampedRadius, identifier: identifier, name: name, eventType: eventType)
+            
+            viewModel!.add(geotification: geotification)
+            viewModel!.startMonitoring(geotification: geotification)
+            viewModel!.saveAllGeotifications()
+            mapView.addAnnotation(geotification)
+            addPlaceDrawerPullUpController()
+        }
+    }
+    
+    @objc private func addDrawerPullUpController() {
+        pullUpController = UIStoryboard(name: "Places", bundle: nil)
+            .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
+        
+        self.navigationItem.rightBarButtonItem?.title = ""
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
+        self.navigationItem.rightBarButtonItem?.image = UIImage(named: "createNewPlace")
+        self.navigationItem.rightBarButtonItem?.action = #selector(addPlaceDrawerPullUpController)
+        
+        if let addPlaceDrawerController = addGeoPlacePullUpController {
+            removePullUpController(addPlaceDrawerController, animated: true)
+        }
+        addPullUpController(pullUpController!, animated: true)
+    }
+    
+    @objc private func addPlaceDrawerPullUpController() {
+        addGeoPlacePullUpController = UIStoryboard(name: "Places", bundle: nil)
+            .instantiateViewController(withIdentifier: "AddPlace") as? AddGeoPlaceController
+        
+        self.navigationItem.rightBarButtonItem?.title = "Done"
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)
+        self.navigationItem.rightBarButtonItem?.image = nil
+        self.navigationItem.rightBarButtonItem?.action = #selector(addDrawerPullUpController)
+        removePullUpController(pullUpController!, animated: true)
+        addPullUpController(addGeoPlacePullUpController!, animated: true)
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
@@ -147,7 +193,7 @@ extension GeoPlacesController: MKMapViewDelegate {
             if annotationView == nil {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.image = UIImage(named: "Pin")!
-                    .tintedWithLinearGradientColors(colorsArr: PinColors.color3)
+                    .tintedWithLinearGradientColors(colorsArr: PinColors.color2)
                 annotationView?.canShowCallout = true
                 let removeButton = UIButton(type: .custom)
                 removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)

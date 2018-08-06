@@ -107,6 +107,8 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as? PlaceCell
             else {return UITableViewCell()}
         
+        cell.setNeedsLayout() //invalidate current layout
+        cell.layoutIfNeeded()
         cell.configure(pinColor: "Blue", title: locations[indexPath.row].title, subtitle: "About my places..")
         return cell
     }
