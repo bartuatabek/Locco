@@ -92,7 +92,7 @@ class AuthViewModel: AuthViewModeling {
         }
         
         print("before \(result)")
-        dispatchGroup.wait(timeout: .now() + 2x)
+        dispatchGroup.wait(timeout: .now() + 2)
         print("fin \(result)")
         return result
     }
