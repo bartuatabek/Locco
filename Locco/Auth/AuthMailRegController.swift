@@ -10,13 +10,13 @@ import UIKit
 import ReactiveSwift
 import ReactiveCocoa
 
-class AuthRegisterController: UIViewController {
+class AuthMailRegController: UIViewController {
     
     var viewModel: AuthViewModeling?
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var registerErrorLabel: UILabel!
+    @IBOutlet weak var emailTextField: FormTextField!
+    @IBOutlet weak var passwordTextField: FormTextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,7 @@ class AuthRegisterController: UIViewController {
     }
     
     private func bindUi() {
-        registerErrorLabel.reactive.text <~ viewModel!.errorMessage
+//        registerErrorLabel.reactive.text <~ viewModel!.errorMessage
     }
     
     // MARK: - Button actions
@@ -52,7 +52,7 @@ class AuthRegisterController: UIViewController {
             let AuthLoginController = segue.destination as! AuthLoginController
             AuthLoginController.viewModel = viewModel
         } else if (segue.identifier == "goToVerify") {
-            let AuthRegisterController = segue.destination as! AuthRegisterController
+            let AuthRegisterController = segue.destination as! AuthMailRegController
             AuthRegisterController.viewModel = viewModel
         }
     }

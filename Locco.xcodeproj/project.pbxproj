@@ -23,7 +23,7 @@
 		8D1C4CAF21012C8600455D89 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CAE21012C8600455D89 /* Utilities.swift */; };
 		8D1C4CB321012E1E00455D89 /* AddGeoPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */; };
 		8D205F032103892B000A0781 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D205F022103892B000A0781 /* FormTextField.swift */; };
-		8DBB41332103CB5F00D52877 /* AuthRegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */; };
+		8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */; };
 		BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF271DC42110964000ED09FB /* GoogleService-Info.plist */; };
 		BF3F43BF20FF295600DF3E69 /* Circles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43BE20FF295500DF3E69 /* Circles.storyboard */; };
 		BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */; };
@@ -68,7 +68,7 @@
 		8D1C4CAE21012C8600455D89 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeoPlaceController.swift; sourceTree = "<group>"; };
 		8D205F022103892B000A0781 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
-		8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegisterController.swift; sourceTree = "<group>"; };
+		8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMailRegController.swift; sourceTree = "<group>"; };
 		BF271DC42110964000ED09FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF3F43BE20FF295500DF3E69 /* Circles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Circles.storyboard; sourceTree = "<group>"; };
 		BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesViewModel.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 				84F1597920F3A081006B3892 /* Auth.swift */,
 				84F1597B20F3A0B5006B3892 /* AuthViewModel.swift */,
 				84F1597D20F3A0D5006B3892 /* AuthHomeController.swift */,
-				8DBB41322103CB5F00D52877 /* AuthRegisterController.swift */,
+				8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */,
 				8D05E0CB2103B324004D2433 /* AuthLoginController.swift */,
 				BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */,
 				84F1597F20F3A173006B3892 /* Auth.storyboard */,
@@ -465,7 +465,7 @@
 				BFF7063121061E3000245438 /* RoundedButton.swift in Sources */,
 				BF3F43D120FF2A9C00DF3E69 /* ActivityViewModel.swift in Sources */,
 				8D05E0CC2103B324004D2433 /* AuthLoginController.swift in Sources */,
-				8DBB41332103CB5F00D52877 /* AuthRegisterController.swift in Sources */,
+				8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */,
 				BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */,
 				BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */,
 				8D1C4CAD21012AAF00455D89 /* GeoPlace.swift in Sources */,

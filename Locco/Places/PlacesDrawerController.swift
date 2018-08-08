@@ -103,13 +103,9 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as? PlaceCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath) as? PlaceCell
             else {return UITableViewCell()}
-        
-        cell.setNeedsLayout() //invalidate current layout
-        cell.layoutIfNeeded()
-        cell.configure(pinColor: "Blue", title: locations[indexPath.row].title, subtitle: "About my places..")
+        cell.configure(pinColors: PinColors.color2, title: locations[indexPath.row].title, subtitle: "About my places..")
         return cell
     }
     
@@ -130,7 +126,8 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    func configure(pinColor: String, title: String, subtitle: String) {
+    func configure(pinColors: [CGColor], title: String, subtitle: String) {
+        pinImage.image = pinImage.image?.tintedWithLinearGradientColors(colorsArr: pinColors)
         titleLabel.text = title
         subtitleLabel.text = subtitle
     }
@@ -144,6 +141,7 @@ extension PlaceCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        cell.imageView.image = UIImage(named: "Fox")
         cell.imageView.layer.cornerRadius = 8.0
         cell.imageView.clipsToBounds = true
         return cell

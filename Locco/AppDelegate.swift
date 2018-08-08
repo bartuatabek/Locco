@@ -26,36 +26,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         
+        // MARK: - Notifications
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             // Enable or disable features based on authorization.
             if granted {
-//                center.removeAllPendingNotificationRequests()
+                center.removeAllPendingNotificationRequests()
                 center.removeAllDeliveredNotifications()
             }
         }
         
+        // MARK: - Firebase Auth Config
         FirebaseApp.configure()
         GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance()?.delegate = self
         FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        if let providerData = Firebase.Auth.auth().currentUser?.providerData {
-            for userInfo in providerData {
-                switch userInfo.providerID {
-                case "facebook.com", "google.com":
-                    let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
-                    let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
-                    let navigationController = UINavigationController(rootViewController: rootViewController)
-                    navigationController.isNavigationBarHidden = true // or not, your choice.
-                    
-                    self.window = UIWindow(frame: UIScreen.main.bounds)
-                    self.window!.rootViewController = navigationController
-                    self.window!.makeKeyAndVisible()
-                default:
-                    if (Firebase.Auth.auth().currentUser?.isEmailVerified)! {
+        
+        // MARK: - User Defaults
+        let userDefaults = UserDefaults.standard
+        if userDefaults.value(forKey: "appFirstTimeOpend") == nil {
+            //if app is first time opened then it will be nil
+            userDefaults.setValue(true, forKey: "appFirstTimeOpend")
+            // signOut from FIRAuth
+            do {
+                try Firebase.Auth.auth().signOut()
+                let domain = Bundle.main.bundleIdentifier!
+                UserDefaults.standard.removePersistentDomain(forName: domain)
+                UserDefaults.standard.synchronize()
+            } catch {
+                print("Sign out failed: ", error)
+            }
+            // go to beginning of app
+        } else {
+            if let providerData = Firebase.Auth.auth().currentUser?.providerData {
+                for userInfo in providerData {
+                    switch userInfo.providerID {
+                    case "facebook.com", "google.com", "phone":
                         let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
                         let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
                         let navigationController = UINavigationController(rootViewController: rootViewController)
@@ -64,6 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                         self.window = UIWindow(frame: UIScreen.main.bounds)
                         self.window!.rootViewController = navigationController
                         self.window!.makeKeyAndVisible()
+                    default:
+                        if (Firebase.Auth.auth().currentUser?.isEmailVerified)! {
+                            let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
+                            let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
+                            let navigationController = UINavigationController(rootViewController: rootViewController)
+                            navigationController.isNavigationBarHidden = true // or not, your choice.
+                            
+                            self.window = UIWindow(frame: UIScreen.main.bounds)
+                            self.window!.rootViewController = navigationController
+                            self.window!.makeKeyAndVisible()
+                        }
                     }
                 }
             }
@@ -80,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         } else {
             // Otherwise present a local notification
             let content = UNMutableNotificationContent()
-//            content.title = NSString.localizedUserNotificationString(forKey: "Elon said:", arguments: nil)
+            //            content.title = NSString.localizedUserNotificationString(forKey: "Elon said:", arguments: nil)
             content.body = NSString.localizedUserNotificationString(forKey: "Arrived at \(note(fromRegionIdentifier: region.identifier) ?? "")", arguments: nil)
             content.sound = UNNotificationSound.default
             content.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber;

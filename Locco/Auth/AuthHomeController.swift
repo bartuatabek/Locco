@@ -49,16 +49,27 @@ class AuthHomeController: UIViewController, GIDSignInUIDelegate {
     }
     
     @IBAction func handleMailRegister(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToRegister", sender: self)
+        performSegue(withIdentifier: "goToMailReg", sender: self)
+    }
+    
+    @IBAction func handlePhoneReg(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToPhoneReg", sender: self)
+    }
+    
+    @IBAction func handleLogin(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToLogin", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToRegister" {
-            let AuthRegisterController = segue.destination as! AuthRegisterController
-            AuthRegisterController.viewModel = viewModel
+        if segue.identifier == "goToMailReg" {
+            let AuthMailRegController = segue.destination as! AuthMailRegController
+            AuthMailRegController.viewModel = viewModel
         } else if segue.identifier == "goToPhoneReg" {
             let AuthPhoneRegController = segue.destination as! AuthPhoneRegController
             AuthPhoneRegController.viewModel = viewModel
+        } else if segue.identifier == "goToLogin" {
+            let AuthLoginController = segue.destination as! AuthLoginController
+            AuthLoginController.viewModel = viewModel
         }
     }
 }

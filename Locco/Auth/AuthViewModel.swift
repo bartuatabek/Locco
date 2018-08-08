@@ -18,12 +18,13 @@ import GoogleSignIn
 protocol AuthViewModeling {
     var controller: UIViewController? { get set }
     var errorMessage: MutableProperty<String> { get }
+    var errorLabelTint: MutableProperty<UIColor> { get }
     var verificationTimer : Timer { get set }
     
     func fbLogin()
     func googleLogin()
-    func phoneLogin(phoneNumber: String)
-    func verifySMS(verificationCode: String)
+    func phoneLogin(phoneNumber: String) -> Bool
+    func verifySMS(verificationCode: String) -> Bool
     func addUserMail(email: String)
     func showUserData()
     
@@ -32,6 +33,7 @@ protocol AuthViewModeling {
     
     func mailLogin(email: String, password: String)
     func mailRegister(email: String, password: String)
+    func sendPasswordResetMail(email: String)
     func resendVerificationLink()
     func checkIfTheEmailIsVerified()
 }
@@ -40,12 +42,15 @@ class AuthViewModel: AuthViewModeling {
     
     // MARK: - Properties
     let errorMessage: MutableProperty<String>
+    let errorLabelTint: MutableProperty<UIColor>
+    
     weak var controller: UIViewController?
     var verificationTimer : Timer = Timer()
     
     // MARK: - Initialization
     init() {
         self.errorMessage = MutableProperty("")
+        self.errorLabelTint = MutableProperty(UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0))
     }
     
     // MARK: - FBLogin
@@ -65,21 +70,35 @@ class AuthViewModel: AuthViewModeling {
     }
     
     // MARK: - PhoneLogin
-    func phoneLogin(phoneNumber: String) {
-        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
-            if let error = error {
-                print("Phone auth failed: ", error)
-                self.errorMessage.swap("Phone number is not valid")
-                self.controller?.showAlert(withTitle: "Error", message: "Phone number is not valid")
-                return
+    func phoneLogin(phoneNumber: String) -> Bool {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var result = false
+        
+        DispatchQueue.global(qos: .default).async {
+            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
+                if let error = error {
+                    print("Phone auth failed: ", error)
+                    self.controller?.showAlert(withTitle: "Error", message: "Phone number is not valid")
+                    dispatchGroup.leave()
+                    return
+                }
+                // Sign in using the verificationID and the code sent to the user
+                result = true
+                print(result)
+                UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+                dispatchGroup.leave()
             }
-            // Sign in using the verificationID and the code sent to the user
-            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
-            self.controller?.performSegue(withIdentifier: "goToPhoneVerify", sender: nil)
         }
+        
+        print("before \(result)")
+        dispatchGroup.wait(timeout: .now() + 2x)
+        print("fin \(result)")
+        return result
     }
     
-    func verifySMS(verificationCode: String) {
+    func verifySMS(verificationCode: String) -> Bool {
+        var result = false
         let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID ?? "",
@@ -89,7 +108,6 @@ class AuthViewModel: AuthViewModeling {
             if let error = error {
                 print("Verification failed: ", error)
                 self.errorMessage.swap("Verification code is not valid")
-                self.controller?.showAlert(withTitle: "Error", message: "Verification code is not valid")
                 return
             }
             // User is signed in
@@ -106,6 +124,7 @@ class AuthViewModel: AuthViewModeling {
                 
                 Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/emailExist", method: .post, headers: headers)
                     .responseJSON { response in
+                        debugPrint(response)
                         switch response.result {
                         case .success(let value):
                             let json = JSON(value)
@@ -124,7 +143,9 @@ class AuthViewModel: AuthViewModeling {
                         }
                 }
             }
+            result = true
         }
+        return result
     }
     
     func addUserMail(email: String) {
@@ -247,10 +268,28 @@ class AuthViewModel: AuthViewModeling {
                 self.controller?.present(rootViewController, animated: true, completion: nil)
             } else {
                 print("Account is not verified")
-                let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthRegisterController
+                let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthMailRegController
                 self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
                 self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
             }
+        }
+    }
+    
+    func sendPasswordResetMail(email: String) {
+        if !email.isEmpty {
+            Firebase.Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+                if let error = error  {
+                    self.errorMessage.swap("Operation failed. Please try again.")
+                    self.errorLabelTint.swap(UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0))
+                    print("Cannot send password reset mail: ", error )
+                    return;
+                }
+                self.errorLabelTint.swap(UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0))
+                self.errorMessage.swap("Reset link sent. Please check your mail.")
+            }
+        } else {
+            self.errorMessage.swap("Mail cannot be empty.")
+            self.errorLabelTint.swap(UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0))
         }
     }
     

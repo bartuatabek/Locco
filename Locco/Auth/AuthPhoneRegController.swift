@@ -56,7 +56,6 @@ class AuthPhoneRegController: UIViewController {
     
     @IBAction func VerifyCode(_ sender: Any) {
         let verificationCode = otpField[0].text! + otpField[1].text! + otpField[2].text! + otpField[3].text! + otpField[4].text! + otpField[5].text!
-        print(verificationCode)
         viewModel!.verifySMS(verificationCode: verificationCode)
     }
     

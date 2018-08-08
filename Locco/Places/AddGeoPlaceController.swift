@@ -38,7 +38,14 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+       
+        view.clipsToBounds = true
         view.layer.cornerRadius = 16
+        if #available(iOS 11.0, *) {
+            view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
@@ -56,14 +63,10 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
     
     // MARK: - PullUpController
     override var pullUpControllerPreferredSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 300)
+        return CGSize(width: UIScreen.main.bounds.width, height: 400)
     }
     
     override var pullUpControllerPreviewOffset: CGFloat {
-        return 264
-    }
-    
-    override var pullUpControllerIsBouncingEnabled: Bool {
-        return false
+        return 363
     }
 }
