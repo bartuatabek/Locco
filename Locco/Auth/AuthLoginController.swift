@@ -37,6 +37,11 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
         bindUIElements()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToVerifyNumber" {
             let AuthLoginController = segue.destination as! AuthLoginController
@@ -84,9 +89,11 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
             viewModel!.mailLogin(email: emailLoginTextField.text!, password: passwordLoginTextField.text!)
         } else if !countryCodeTextField.text!.isEmpty && !phoneNoTextField.text!.isEmpty {
             let phoneNumber = countryCodeTextField.text! + phoneNoTextField.text!
-            if viewModel!.phoneLogin(phoneNumber: phoneNumber) {
-                performSegue(withIdentifier: "goToVerifyNumber", sender: nil)
-            }
+            viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
+                if result {
+                    self.performSegue(withIdentifier: "goToVerifyNumber", sender: nil)
+                }
+            })
         } else {
             showAlert(withTitle: "Login failed", message: "Please try again")
         }
@@ -110,7 +117,11 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
     
     @IBAction func sendSMS(_ sender: UIButton) {
         let phoneNumber = countryCodeTextField.text! + phoneNoTextField.text!
-        viewModel!.phoneLogin(phoneNumber: phoneNumber)
+        viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
+            if result {
+               self.showAlert(withTitle: "", message: "Verification code sent.")
+            }
+        })
     }
     
     @IBAction func VerifyCode(_ sender: Any) {

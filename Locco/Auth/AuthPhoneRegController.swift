@@ -19,8 +19,6 @@ class AuthPhoneRegController: UIViewController {
     
     @IBOutlet var otpField: [FormTextField]!
     
-    @IBOutlet weak var emailField: FormTextField!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -51,7 +49,7 @@ class AuthPhoneRegController: UIViewController {
     
     @IBAction func sendSMS(_ sender: UIButton) {
         let phoneNumber = countryCode.text! + phoneNo.text!
-        viewModel!.phoneLogin(phoneNumber: phoneNumber)
+//        viewModel!.phoneLogin(phoneNumber: phoneNumber)
     }
     
     @IBAction func VerifyCode(_ sender: Any) {
@@ -60,7 +58,7 @@ class AuthPhoneRegController: UIViewController {
     }
     
     @IBAction func CompleteRegister(_ sender: Any) {
-        viewModel!.addUserMail(email: emailField.text!)
+//        viewModel!.addUserMail(email: emailField.text!)
     }
     
     @IBAction func showOTPKeyboard(_ sender: UITapGestureRecognizer) {

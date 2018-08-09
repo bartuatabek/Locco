@@ -23,13 +23,13 @@ protocol AuthViewModeling {
     
     func fbLogin()
     func googleLogin()
-    func phoneLogin(phoneNumber: String) -> Bool
-    func verifySMS(verificationCode: String) -> Bool
-    func addUserMail(email: String)
+    func phoneLogin(phoneNumber: String, completion: @escaping (_ result: Bool)->())
+    func verifySMS(verificationCode: String)
     func showUserData()
     
     func isValidEmail(email: String?) -> Bool
-    func isValidPassword(password: String) -> Bool
+    func mailAvailable(email: String?, completion: @escaping (_ result: Bool)->())
+    func isValidPassword(password: String?, completion: @escaping (_ result: Bool)->())
     
     func mailLogin(email: String, password: String)
     func mailRegister(email: String, password: String)
@@ -69,36 +69,21 @@ class AuthViewModel: AuthViewModeling {
         GIDSignIn.sharedInstance()?.signIn()
     }
     
-    // MARK: - PhoneLogin
-    func phoneLogin(phoneNumber: String) -> Bool {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        var result = false
-        
-        DispatchQueue.global(qos: .default).async {
-            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
-                if let error = error {
-                    print("Phone auth failed: ", error)
-                    self.controller?.showAlert(withTitle: "Error", message: "Phone number is not valid")
-                    dispatchGroup.leave()
-                    return
-                }
-                // Sign in using the verificationID and the code sent to the user
-                result = true
-                print(result)
-                UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
-                dispatchGroup.leave()
+    func phoneLogin(phoneNumber: String, completion: @escaping (_ result: Bool)->()) {
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
+            if let error = error {
+                print("Phone auth failed: ", error)
+                self.controller?.showAlert(withTitle: "Error", message: "Phone number is not valid")
+                completion(false)
+                return
             }
+            // Sign in using the verificationID and the code sent to the user
+            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+            completion(true)
         }
-        
-        print("before \(result)")
-        dispatchGroup.wait(timeout: .now() + 2)
-        print("fin \(result)")
-        return result
     }
     
-    func verifySMS(verificationCode: String) -> Bool {
-        var result = false
+    func verifySMS(verificationCode: String) {
         let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID ?? "",
@@ -117,68 +102,10 @@ class AuthViewModel: AuthViewModeling {
                     print("Cannot get token: ", error )
                     return;
                 }
-                
-                let headers: HTTPHeaders = [
-                    "Authorization": "Bearer \(idToken ?? "")",
-                ]
-                
-                Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/emailExist", method: .post, headers: headers)
-                    .responseJSON { response in
-                        debugPrint(response)
-                        switch response.result {
-                        case .success(let value):
-                            let json = JSON(value)
-                            let status = json["status"].rawString()
-                            
-                            if status == "true" {
-                                let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
-                                let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
-                                self.controller?.present(rootViewController, animated: true, completion: nil)
-                            }
-                            else {
-                                self.controller?.performSegue(withIdentifier: "goToPhoneMail", sender: nil)
-                            }
-                        case .failure(let error):
-                            print(error)
-                        }
-                }
-            }
-            result = true
-        }
-        return result
-    }
-    
-    func addUserMail(email: String) {
-        // TODO: - Add email to the user & post to firebase
-        if isValidEmail(email: email) {
-            let currentUser = Firebase.Auth.auth().currentUser
-            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-                if let error = error  {
-                    print("Cannot get token: ", error )
-                    return;
-                }
-                
-                let headers: HTTPHeaders = [
-                    "Authorization": "Bearer \(idToken ?? "")",
-                ]
-                
-                let parameters: Parameters = [
-                    "email": email,
-                    ]
-                
-                Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updateEmail", method: .post, parameters: parameters, headers: headers)
-                    .responseJSON { response in
-                        debugPrint(response)
-                }
-                
                 let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
                 let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
                 self.controller?.present(rootViewController, animated: true, completion: nil)
             }
-        }
-        else {
-            errorMessage.swap("Email is not valid")
-            self.controller?.showAlert(withTitle: "Error", message: "Email is not valid")
         }
     }
     
@@ -216,42 +143,54 @@ class AuthViewModel: AuthViewModeling {
         return pred.evaluate(with: email)
     }
     
-    func isValidPassword(password: String) -> Bool {
-        if password.count > 5 { return true }
-        else { return false }
+    func mailAvailable(email: String?, completion: @escaping (_ result: Bool)->()) {
+        if isValidEmail(email: email) {
+            Firebase.Auth.auth().fetchProviders(forEmail: email!, completion: {
+                (providers, error) in
+                if error != nil {
+                    print("Operation failed: ", error ?? "")
+                    return
+                } else if providers != nil {
+                    self.controller?.showAlert(withTitle: "Error", message: "Mail address is already in use for another account.")
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            })
+        } else {
+            self.controller?.showAlert(withTitle: "Error", message: "Mail address is not valid.")
+            completion(false)
+        }
     }
     
-    func mailRegister(email: String, password: String) -> Void {
-        if !isValidEmail(email: email) {
-            errorMessage.swap("Email is not valid")
-        }
-            
-        else if !isValidPassword(password: password) {
-            errorMessage.swap("Password must be at least 6 charachters")
-        }
-            
+    func isValidPassword(password: String?, completion: @escaping (_ result: Bool)->()) {
+        if password!.count > 5 { completion(true) }
         else {
-            Firebase.Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            self.controller?.showAlert(withTitle: "Error", message: "Password must be at least 6 characters.")
+            completion(false)
+        }
+    }
+    
+    func mailRegister(email: String, password: String) {
+        Firebase.Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            if error != nil {
+                self.errorMessage.swap("User already exists. Try logging in.")
+                print("Registration failed: ", error ?? "")
+            }
+        }
+        
+        print("Register Successful")
+        Firebase.Auth.auth().addStateDidChangeListener { (auth, user) in
+            Firebase.Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 if error != nil {
-                    self.errorMessage.swap("User already exists. Try logging in.")
-                    print("Registration failed: ", error ?? "")
+                    self.errorMessage.swap("Could not send verification mail. Please try again.")
+                    print("Verification link send failed: ", error ?? "")
                 }
-            }
-            
-            print("Register Successful")
-            Firebase.Auth.auth().addStateDidChangeListener { (auth, user) in
-                Firebase.Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-                    if error != nil {
-                        self.errorMessage.swap("Could not send verification mail. Please try again.")
-                        print("Verification link send failed: ", error ?? "")
-                    }
-                    else {
-                        print("Verification link sent")
-                        self.controller?.performSegue(withIdentifier: "goToVerify", sender: nil)
-                        self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
-                    }
-                })
-            }
+                else {
+                    print("Verification link sent")
+                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                }
+            })
         }
     }
     
@@ -259,7 +198,7 @@ class AuthViewModel: AuthViewModeling {
         Firebase.Auth.auth().signIn(withEmail: email, password: password) {
             (user,error) in
             if error != nil {
-                self.errorMessage.swap("Login failed. Please try again.")
+                self.controller?.showAlert(withTitle: "Error", message: "Mail is not valid")
                 print("Login failed: ", error ?? "")
             } else if (Firebase.Auth.auth().currentUser?.isEmailVerified)! {
                 print("Login Successful")
@@ -269,6 +208,7 @@ class AuthViewModel: AuthViewModeling {
             } else {
                 print("Account is not verified")
                 let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthMailRegController
+                rootViewController.viewModel = self
                 self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
                 self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
             }
@@ -296,11 +236,12 @@ class AuthViewModel: AuthViewModeling {
     func resendVerificationLink() {
         Firebase.Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
             if error != nil {
-                self.errorMessage.swap("Operation failed. Please try again.")
+                self.controller?.showAlert(withTitle: "Error", message: "Operation failed. Please try again.")
                 print("Verification link send failed: ", error ?? "")
             }
             else {
                 print("Verification link sent")
+                self.controller?.showAlert(withTitle: "", message: "Verification link sent. Please check your mail.")
             }
         })
     }
@@ -311,9 +252,11 @@ class AuthViewModel: AuthViewModeling {
                 if  Firebase.Auth.auth().currentUser!.isEmailVerified {
                     self.verificationTimer.invalidate()
                     
-                    let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
-                    let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
-                    self.controller?.present(rootViewController, animated: true, completion: nil)
+                    let mainStoryboard = UIStoryboard(name: "Auth", bundle: nil)
+                    let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "PhoneName") as! AuthPhoneRegController
+                    rootViewController.viewModel = self
+                    self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
+//                    self.controller?.performSegue(withIdentifier: "goToMailName", sender: nil)
                     
                     // http request for email validation
                     let currentUser = Firebase.Auth.auth().currentUser

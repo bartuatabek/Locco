@@ -13,34 +13,38 @@ import ReactiveCocoa
 class AuthMailRegController: UIViewController {
     
     var viewModel: AuthViewModeling?
+    var credientials: String?
     
     @IBOutlet weak var emailTextField: FormTextField!
     @IBOutlet weak var passwordTextField: FormTextField!
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel!.controller = self
-        if self.restorationIdentifier! == "Register" {
-            bindUi()
-        }
     }
     
-    private func bindUi() {
-//        registerErrorLabel.reactive.text <~ viewModel!.errorMessage
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     // MARK: - Button actions
-    @IBAction func handleMailRegister(_ sender: Any) {
-        viewModel!.mailRegister(email: emailTextField.text!, password: passwordTextField.text!)
+    @IBAction func checkMailAvailability(_ sender: Any) {
+        viewModel?.mailAvailable(email: emailTextField.text, completion: { (result) in
+            if result {
+                self.credientials = self.emailTextField.text
+                self.performSegue(withIdentifier: "goToMailPassword", sender: nil)
+            }
+        })
     }
     
-    @IBAction func handleMailLogin(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToLogin", sender: self)
+    @IBAction func checkPassword(_ sender: Any) {
+        viewModel?.isValidPassword(password: passwordTextField.text, completion: { (result) in
+            if result {
+                self.viewModel?.mailRegister(email: self.credientials!, password: self.passwordTextField.text!)
+                self.performSegue(withIdentifier: "goToVerify", sender: nil)
+            }
+        })
     }
     
     @IBAction func resendVerificationLink(_ sender: UIButton) {
@@ -48,12 +52,14 @@ class AuthMailRegController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToLogin" {
-            let AuthLoginController = segue.destination as! AuthLoginController
-            AuthLoginController.viewModel = viewModel
-        } else if (segue.identifier == "goToVerify") {
-            let AuthRegisterController = segue.destination as! AuthMailRegController
-            AuthRegisterController.viewModel = viewModel
+        if segue.identifier == "goToMailPassword" {
+            let AuthMailRegController = segue.destination as! AuthMailRegController
+            AuthMailRegController.viewModel = viewModel
+            AuthMailRegController.credientials = credientials
+        }
+        else if segue.identifier == "goToVerify" {
+            let AuthMailRegController = segue.destination as! AuthMailRegController
+            AuthMailRegController.viewModel = viewModel
         }
     }
 }
