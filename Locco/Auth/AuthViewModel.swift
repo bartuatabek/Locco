@@ -24,7 +24,7 @@ protocol AuthViewModeling {
     func fbLogin()
     func googleLogin()
     func phoneLogin(phoneNumber: String, completion: @escaping (_ result: Bool)->())
-    func verifySMS(verificationCode: String)
+    func verifySMS(verificationCode: String, completion: @escaping (_ result: Bool)->())
     func showUserData()
     
     func isValidEmail(email: String?) -> Bool
@@ -36,6 +36,9 @@ protocol AuthViewModeling {
     func sendPasswordResetMail(email: String)
     func resendVerificationLink()
     func checkIfTheEmailIsVerified()
+    
+    func setDisplayName(name: String)
+    func setUserPicture(profilePhoto: UIImage)
 }
 
 class AuthViewModel: AuthViewModeling {
@@ -83,7 +86,7 @@ class AuthViewModel: AuthViewModeling {
         }
     }
     
-    func verifySMS(verificationCode: String) {
+    func verifySMS(verificationCode: String, completion: @escaping (_ result: Bool)->()) {
         let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID ?? "",
@@ -93,6 +96,7 @@ class AuthViewModel: AuthViewModeling {
             if let error = error {
                 print("Verification failed: ", error)
                 self.errorMessage.swap("Verification code is not valid")
+                completion(false)
                 return
             }
             // User is signed in
@@ -100,11 +104,10 @@ class AuthViewModel: AuthViewModeling {
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
                 if let error = error  {
                     print("Cannot get token: ", error )
+                    completion(false)
                     return;
                 }
-                let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
-                let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
-                self.controller?.present(rootViewController, animated: true, completion: nil)
+                completion(true)
             }
         }
     }
@@ -256,7 +259,6 @@ class AuthViewModel: AuthViewModeling {
                     let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "PhoneName") as! AuthPhoneRegController
                     rootViewController.viewModel = self
                     self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
-//                    self.controller?.performSegue(withIdentifier: "goToMailName", sender: nil)
                     
                     // http request for email validation
                     let currentUser = Firebase.Auth.auth().currentUser
@@ -278,5 +280,26 @@ class AuthViewModel: AuthViewModeling {
                 }
             } else { print("Timer error: ", error ?? "") }
         })
+    }
+    
+    // MARK: - Update user data
+    func setDisplayName(name: String) {
+        let user = Firebase.Auth.auth().currentUser
+        if let user = user {
+            let changeRequest = user.createProfileChangeRequest()
+            
+            changeRequest.displayName = name
+            changeRequest.commitChanges { error in
+                if let error = error {
+                    print("Commit changes failed: ", error )
+                } else {
+                     print("Successfully updated display name")
+                }
+            }
+        }
+    }
+    
+    func setUserPicture(profilePhoto: UIImage) {
+        
     }
 }

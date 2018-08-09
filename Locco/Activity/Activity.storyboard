@@ -20,7 +20,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="dDS-le-NPO"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="activity" selectedImage="notifPressed" id="xmp-Gm-6jE"/>
+                    <tabBarItem key="tabBarItem" title="" image="notif" selectedImage="notifPressed" id="xmp-Gm-6jE"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffm-J0-8qK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -29,7 +29,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="activity" width="19" height="24"/>
-        <image name="notifPressed" width="19" height="24"/>
+        <image name="notif" width="19" height="27"/>
+        <image name="notifPressed" width="19" height="27"/>
     </resources>
 </document>

@@ -43,6 +43,7 @@
 		BF64943621134D0600FD4F07 /* Bushmaster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF64943521134D0600FD4F07 /* Bushmaster.mp3 */; };
 		BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A85210B2A17000A5F2C /* GradientView.swift */; };
 		BFB51A8A210B39F2000A5F2C /* AuthPhoneRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */; };
+		BFC0A3D4211C84FF00032435 /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0A3D3211C84FF00032435 /* RoundedImage.swift */; };
 		BFCF7E8E21142DFB00355196 /* overlay.json in Resources */ = {isa = PBXBuildFile; fileRef = BFCF7E8D21142DFB00355196 /* overlay.json */; };
 		BFF7063121061E3000245438 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF7063021061E3000245438 /* RoundedButton.swift */; };
 		BFFF084320F74CF700F6F50A /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFF084220F74CF700F6F50A /* Home.storyboard */; };
@@ -89,6 +90,7 @@
 		BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Location Tracker.entitlements"; path = "../../Location Tracker.entitlements"; sourceTree = "<group>"; };
 		BFB51A85210B2A17000A5F2C /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPhoneRegController.swift; sourceTree = "<group>"; };
+		BFC0A3D3211C84FF00032435 /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		BFCF7E8D21142DFB00355196 /* overlay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = overlay.json; sourceTree = "<group>"; };
 		BFF7063021061E3000245438 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		BFFF084220F74CF700F6F50A /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
@@ -154,8 +156,8 @@
 				84F1597B20F3A0B5006B3892 /* AuthViewModel.swift */,
 				84F1597D20F3A0D5006B3892 /* AuthHomeController.swift */,
 				8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */,
-				8D05E0CB2103B324004D2433 /* AuthLoginController.swift */,
 				BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */,
+				8D05E0CB2103B324004D2433 /* AuthLoginController.swift */,
 				84F1597F20F3A173006B3892 /* Auth.storyboard */,
 			);
 			path = Auth;
@@ -264,6 +266,7 @@
 				8D1C4CAE21012C8600455D89 /* Utilities.swift */,
 				8D205F022103892B000A0781 /* FormTextField.swift */,
 				BFF7063021061E3000245438 /* RoundedButton.swift */,
+				BFC0A3D3211C84FF00032435 /* RoundedImage.swift */,
 				BFB51A85210B2A17000A5F2C /* GradientView.swift */,
 			);
 			path = Utilities;
@@ -463,6 +466,7 @@
 				BF3F43D320FF2AA800DF3E69 /* ActivityController.swift in Sources */,
 				BF3F43D920FF2AD700DF3E69 /* ProfileController.swift in Sources */,
 				BFF7063121061E3000245438 /* RoundedButton.swift in Sources */,
+				BFC0A3D4211C84FF00032435 /* RoundedImage.swift in Sources */,
 				BF3F43D120FF2A9C00DF3E69 /* ActivityViewModel.swift in Sources */,
 				8D05E0CC2103B324004D2433 /* AuthLoginController.swift in Sources */,
 				8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */,

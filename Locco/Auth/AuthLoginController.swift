@@ -126,7 +126,13 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
     
     @IBAction func VerifyCode(_ sender: Any) {
         let verificationCode = otpField[0].text! + otpField[1].text! + otpField[2].text! + otpField[3].text! + otpField[4].text! + otpField[5].text!
-        viewModel!.verifySMS(verificationCode: verificationCode)
+        viewModel!.verifySMS(verificationCode: verificationCode, completion: { (result) in
+            if result {
+                let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
+                let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
+                self.present(rootViewController, animated: true, completion: nil)
+            }
+        })
     }
 }
 

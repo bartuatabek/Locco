@@ -19,9 +19,8 @@ class AuthPhoneRegController: UIViewController {
     
     @IBOutlet var otpField: [FormTextField]!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    @IBOutlet weak var usernameTextField: FormTextField!
+    @IBOutlet weak var userPicture: RoundedImage!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,24 +48,42 @@ class AuthPhoneRegController: UIViewController {
     
     @IBAction func sendSMS(_ sender: UIButton) {
         let phoneNumber = countryCode.text! + phoneNo.text!
-//        viewModel!.phoneLogin(phoneNumber: phoneNumber)
+        viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
+            if result {
+                self.performSegue(withIdentifier: "goToPhoneVerify", sender: nil)
+            }
+        })
+    }
+    
+    @IBAction func resendSMS(_ sender: Any) {
+        let phoneNumber = countryCode.text! + phoneNo.text!
+        viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
+            if result {
+                self.showAlert(withTitle: "", message: "Verification code sent.")
+            }
+        })
     }
     
     @IBAction func VerifyCode(_ sender: Any) {
         let verificationCode = otpField[0].text! + otpField[1].text! + otpField[2].text! + otpField[3].text! + otpField[4].text! + otpField[5].text!
-        viewModel!.verifySMS(verificationCode: verificationCode)
+        viewModel!.verifySMS(verificationCode: verificationCode, completion: { (result) in
+            if result {
+                self.performSegue(withIdentifier: "goToPhoneName", sender: nil)
+            }
+        })
     }
-    
-    @IBAction func CompleteRegister(_ sender: Any) {
-//        viewModel!.addUserMail(email: emailField.text!)
-    }
-    
+        
     @IBAction func showOTPKeyboard(_ sender: UITapGestureRecognizer) {
         for textfield in otpField {
             textfield.text = ""
         }
         otpField[0].isUserInteractionEnabled = true;
         otpField[0].becomeFirstResponder()
+    }
+    
+    @IBAction func setUsername(_ sender: Any) {
+        viewModel?.setDisplayName(name: usernameTextField.text!)
+        performSegue(withIdentifier: "goToPic", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
