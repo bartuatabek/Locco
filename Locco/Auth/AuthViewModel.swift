@@ -28,6 +28,7 @@ protocol AuthViewModeling {
     func showUserData()
     
     func isValidEmail(email: String?) -> Bool
+    func phoneAvailable(phone: String?, completion: @escaping (_ result: Bool)->())
     func mailAvailable(email: String?, completion: @escaping (_ result: Bool)->())
     func isValidPassword(password: String?, completion: @escaping (_ result: Bool)->())
     
@@ -166,6 +167,32 @@ class AuthViewModel: AuthViewModeling {
         }
     }
     
+    func phoneAvailable(phone: String?, completion: @escaping (_ result: Bool)->()) {
+        let parameters: Parameters = [
+            "phoneNumber": phone!,
+            ]
+        
+        Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api2/phoneExist", method: .get, parameters: parameters)
+            .responseJSON { response in
+                debugPrint(response)
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    let status = json["status"].rawString()
+                    
+                    if status == "true" {
+                        self.controller?.showAlert(withTitle: "Error", message: "Phone number is already in use for another account.")
+                        completion(false)
+                    }
+                    else {
+                        completion(true)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+        }
+    }
+    
     func isValidPassword(password: String?, completion: @escaping (_ result: Bool)->()) {
         if password!.count > 5 { completion(true) }
         else {
@@ -284,17 +311,24 @@ class AuthViewModel: AuthViewModeling {
     
     // MARK: - Update user data
     func setDisplayName(name: String) {
-        let user = Firebase.Auth.auth().currentUser
-        if let user = user {
-            let changeRequest = user.createProfileChangeRequest()
+        let currentUser = Firebase.Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+            if let error = error  {
+                print("Cannot get token: ", error )
+                return;
+            }
             
-            changeRequest.displayName = name
-            changeRequest.commitChanges { error in
-                if let error = error {
-                    print("Commit changes failed: ", error )
-                } else {
-                     print("Successfully updated display name")
-                }
+            let parameters: Parameters = [
+                "displayName": name
+            ]
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(idToken ?? "")"
+            ]
+            
+            Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updateDisplayName", method: .post, parameters: parameters, headers: headers)
+                .responseJSON { response in
+                    debugPrint(response)
             }
         }
     }
