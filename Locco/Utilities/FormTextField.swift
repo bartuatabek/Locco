@@ -1,6 +1,6 @@
 //
 //  FormTextField.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 7/21/18.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -92,6 +92,26 @@ class FormTextField: UITextField {
         border.borderWidth = width
         self.layer.addSublayer(border)
         self.layer.masksToBounds = true
+    }
+    
+    func formattedNumber(number: String) -> String {
+        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let mask = "(XXX) XXX XX XX"
+        
+        var result = ""
+        var index = cleanPhoneNumber.startIndex
+        for ch in mask {
+            if index == cleanPhoneNumber.endIndex {
+                break
+            }
+            if ch == "X" {
+                result.append(cleanPhoneNumber[index])
+                index = cleanPhoneNumber.index(after: index)
+            } else {
+                result.append(ch)
+            }
+        }
+        return result
     }
 
 }

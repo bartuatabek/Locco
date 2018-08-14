@@ -1,19 +1,20 @@
 //
 //  AuthViewModel.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 
-import Foundation
 import Firebase
 import Alamofire
+import Foundation
 import SwiftyJSON
+import GoogleSignIn
 import ReactiveSwift
 import ReactiveCocoa
 import FBSDKLoginKit
-import GoogleSignIn
+import FirebaseStorage
 
 protocol AuthViewModeling {
     var controller: UIViewController? { get set }
@@ -40,6 +41,8 @@ protocol AuthViewModeling {
     
     func setDisplayName(name: String)
     func setUserPicture(profilePhoto: UIImage)
+    
+    func sendRegistrationToken()
 }
 
 class AuthViewModel: AuthViewModeling {
@@ -71,8 +74,10 @@ class AuthViewModel: AuthViewModeling {
     // MARK: - GoogleLogin
     func googleLogin() {
         GIDSignIn.sharedInstance()?.signIn()
+        self.sendRegistrationToken()
     }
     
+    // MARK: - PhoneLogin
     func phoneLogin(phoneNumber: String, completion: @escaping (_ result: Bool)->()) {
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
             if let error = error {
@@ -108,6 +113,7 @@ class AuthViewModel: AuthViewModeling {
                     completion(false)
                     return;
                 }
+                self.sendRegistrationToken()
                 completion(true)
             }
         }
@@ -121,9 +127,11 @@ class AuthViewModel: AuthViewModeling {
         Firebase.Auth.auth().signInAndRetrieveData(with: credentials, completion: { (user, error) in
             if error != nil {
                 print("Something wrong with our FB user: ",  error ?? "")
+                self.controller?.showAlert(withTitle: "Error", message: "Something went wrong. Please try again.")
                 return
             }
             print("Successfully logged in with our user: ", user ?? "")
+            self.sendRegistrationToken()
             let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
             let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
             self.controller?.present(rootViewController, animated: true, completion: nil)
@@ -168,8 +176,14 @@ class AuthViewModel: AuthViewModeling {
     }
     
     func phoneAvailable(phone: String?, completion: @escaping (_ result: Bool)->()) {
+        let allowedCharset = CharacterSet
+            .decimalDigits
+            .union(CharacterSet(charactersIn: "+"))
+        
+        let filteredText = String(phone!.unicodeScalars.filter(allowedCharset.contains))
+        
         let parameters: Parameters = [
-            "phoneNumber": phone!,
+            "phoneNumber": filteredText,
             ]
         
         Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api2/phoneExist", method: .get, parameters: parameters)
@@ -181,7 +195,6 @@ class AuthViewModel: AuthViewModeling {
                     let status = json["status"].rawString()
                     
                     if status == "true" {
-                        self.controller?.showAlert(withTitle: "Error", message: "Phone number is already in use for another account.")
                         completion(false)
                     }
                     else {
@@ -282,6 +295,7 @@ class AuthViewModel: AuthViewModeling {
                 if  Firebase.Auth.auth().currentUser!.isEmailVerified {
                     self.verificationTimer.invalidate()
                     
+                    self.sendRegistrationToken()
                     let mainStoryboard = UIStoryboard(name: "Auth", bundle: nil)
                     let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "PhoneName") as! AuthPhoneRegController
                     rootViewController.viewModel = self
@@ -299,7 +313,7 @@ class AuthViewModel: AuthViewModeling {
                             "Authorization": "Bearer \(idToken ?? "")",
                         ]
                         
-                        Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/verifyEmail", method: .post, headers: headers)
+                        Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/verifyEmail", method: .get, headers: headers)
                             .responseJSON { response in
                                 debugPrint(response)
                         }
@@ -334,6 +348,46 @@ class AuthViewModel: AuthViewModeling {
     }
     
     func setUserPicture(profilePhoto: UIImage) {
+        let storage = Storage.storage()
+        var data = Data()
+        data = profilePhoto.pngData()!
         
+        // Create a storage reference from our storage service
+        let storageRef = storage.reference()
+        let imageRef = storageRef.child("/profilePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "").jpeg")
+        // Create file metadata including the content type
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        imageRef.putData(data, metadata: metadata)
+    }
+    
+    func sendRegistrationToken() {
+        print("ghoooo")
+        InstanceID.instanceID().instanceID { (result, error) in
+            if let error = error {
+                print("Error fetching remote instange ID: \(error)")
+            } else if let result = result {
+                let currentUser = Firebase.Auth.auth().currentUser
+                currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+                    if let error = error  {
+                        print("Cannot get token: ", error )
+                        return;
+                    }
+                    
+                    let parameters: Parameters = [
+                        "token": result.token
+                    ]
+                    
+                    let headers: HTTPHeaders = [
+                        "Authorization": "Bearer \(idToken ?? "")"
+                    ]
+                    
+                    Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updateRegistrationToken", method: .post, parameters: parameters, headers: headers)
+                        .responseJSON { response in
+                            debugPrint(response)
+                    }
+                }
+            }
+        }
     }
 }

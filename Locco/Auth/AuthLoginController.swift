@@ -1,6 +1,6 @@
 //
 //  AuthController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -86,16 +86,22 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
     
     @IBAction func login(_ sender: Any) {
         if !emailLoginTextField.text!.isEmpty && !passwordLoginTextField.text!.isEmpty {
-            viewModel!.mailLogin(email: emailLoginTextField.text!, password: passwordLoginTextField.text!)
+            viewModel!.mailLogin(email: emailLoginTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines), password: passwordLoginTextField.text!)
         } else if !countryCodeTextField.text!.isEmpty && !phoneNoTextField.text!.isEmpty {
             let phoneNumber = countryCodeTextField.text! + phoneNoTextField.text!
-            viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
-                if result {
-                    self.performSegue(withIdentifier: "goToVerifyNumber", sender: nil)
+            viewModel?.phoneAvailable(phone: phoneNumber, completion: { (result) in
+                if !result {
+                    self.viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
+                        if result {
+                            self.performSegue(withIdentifier: "goToVerifyNumber", sender: nil)
+                        }
+                    })
+                } else {
+                    self.showAlert(withTitle: "Login Failed", message: "Account does not exist.")
                 }
             })
         } else {
-            showAlert(withTitle: "Login failed", message: "Please try again")
+            showAlert(withTitle: "Login Failed", message: "Please try again.")
         }
     }
     
@@ -119,7 +125,7 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
         let phoneNumber = countryCodeTextField.text! + phoneNoTextField.text!
         viewModel!.phoneLogin(phoneNumber: phoneNumber, completion: { (result) in
             if result {
-               self.showAlert(withTitle: "", message: "Verification code sent.")
+                self.showAlert(withTitle: "", message: "Verification code sent.")
             }
         })
     }
@@ -138,36 +144,63 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
 
 extension AuthLoginController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (textField.text?.count)! < 2  && string.count > 0 {
-            if textField == otpField[0] {otpField[0].isUserInteractionEnabled = false; otpField[1].isUserInteractionEnabled = true; otpField[1].becomeFirstResponder()}
-            if textField == otpField[1] {otpField[1].isUserInteractionEnabled = false; otpField[2].isUserInteractionEnabled = true; otpField[2].becomeFirstResponder()}
-            if textField == otpField[2] {otpField[2].isUserInteractionEnabled = false; otpField[3].isUserInteractionEnabled = true; otpField[3].becomeFirstResponder()}
-            if textField == otpField[3] {otpField[3].isUserInteractionEnabled = false; otpField[4].isUserInteractionEnabled = true; otpField[4].becomeFirstResponder()}
-            if textField == otpField[4] {otpField[4].isUserInteractionEnabled = false; otpField[5].isUserInteractionEnabled = true; otpField[5].becomeFirstResponder()}
-            if textField == otpField[5] {otpField[5].isUserInteractionEnabled = false; otpField[5].resignFirstResponder()}
-            
-            textField.text = string
-            return false
-            
-        } else if (textField.text?.count)! >= 1 && string.count == 0 {
-            if textField == otpField[0] {otpField[0].isUserInteractionEnabled = true; otpField[0].becomeFirstResponder()}
-            if textField == otpField[1] {otpField[0].isUserInteractionEnabled = true; otpField[1].isUserInteractionEnabled = false; otpField[0].becomeFirstResponder()}
-            if textField == otpField[2] {otpField[1].isUserInteractionEnabled = true; otpField[2].isUserInteractionEnabled = false; otpField[1].becomeFirstResponder()}
-            if textField == otpField[3] {otpField[2].isUserInteractionEnabled = true; otpField[3].isUserInteractionEnabled = false; otpField[2].becomeFirstResponder()}
-            if textField == otpField[4] {otpField[3].isUserInteractionEnabled = true; otpField[4].isUserInteractionEnabled = false; otpField[3].becomeFirstResponder()}
-            if textField == otpField[5] {otpField[4].isUserInteractionEnabled = true; otpField[5].isUserInteractionEnabled = false; otpField[4].becomeFirstResponder()}
-            
-            textField.text = ""
-            return false
-            
-        } else if (textField.text?.count)! >= 2 {
-            textField.text = string
-            return false
+        if textField == phoneNoTextField {
+            phoneNoTextField.text = phoneNoTextField.formattedNumber(number: phoneNoTextField.text!)
+            return true
+        } else if textField == countryCodeTextField {
+            return true
+        } else if textField == emailLoginTextField {
+            return true
+        } else if textField == passwordLoginTextField {
+            return true
+        } else if textField == otpField[0] || textField == otpField[1] || textField == otpField[2] || textField == otpField[3] || textField == otpField[4] || textField == otpField[5] {
+            if (textField.text?.count)! < 2  && string.count > 0 {
+                if textField == otpField[0] {otpField[0].isUserInteractionEnabled = false; otpField[1].isUserInteractionEnabled = true; otpField[1].becomeFirstResponder()}
+                if textField == otpField[1] {otpField[1].isUserInteractionEnabled = false; otpField[2].isUserInteractionEnabled = true; otpField[2].becomeFirstResponder()}
+                if textField == otpField[2] {otpField[2].isUserInteractionEnabled = false; otpField[3].isUserInteractionEnabled = true; otpField[3].becomeFirstResponder()}
+                if textField == otpField[3] {otpField[3].isUserInteractionEnabled = false; otpField[4].isUserInteractionEnabled = true; otpField[4].becomeFirstResponder()}
+                if textField == otpField[4] {otpField[4].isUserInteractionEnabled = false; otpField[5].isUserInteractionEnabled = true; otpField[5].becomeFirstResponder()}
+                if textField == otpField[5] {otpField[5].isUserInteractionEnabled = false; otpField[5].resignFirstResponder()}
+                
+                textField.text = string
+                return false
+                
+            } else if (textField.text?.count)! >= 1 && string.count == 0 {
+                if textField == otpField[0] {otpField[0].isUserInteractionEnabled = true; otpField[0].becomeFirstResponder()}
+                if textField == otpField[1] {otpField[0].isUserInteractionEnabled = true; otpField[1].isUserInteractionEnabled = false; otpField[0].becomeFirstResponder()}
+                if textField == otpField[2] {otpField[1].isUserInteractionEnabled = true; otpField[2].isUserInteractionEnabled = false; otpField[1].becomeFirstResponder()}
+                if textField == otpField[3] {otpField[2].isUserInteractionEnabled = true; otpField[3].isUserInteractionEnabled = false; otpField[2].becomeFirstResponder()}
+                if textField == otpField[4] {otpField[3].isUserInteractionEnabled = true; otpField[4].isUserInteractionEnabled = false; otpField[3].becomeFirstResponder()}
+                if textField == otpField[5] {otpField[4].isUserInteractionEnabled = true; otpField[5].isUserInteractionEnabled = false; otpField[4].becomeFirstResponder()}
+                
+                textField.text = ""
+                return false
+                
+            } else if (textField.text?.count)! >= 2 {
+                textField.text = string
+                return false
+            }
         }
-        return true
+         return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = "\u{200B}"
+        if textField == phoneNoTextField || textField == countryCodeTextField || textField == emailLoginTextField || textField == passwordLoginTextField {
+            return
+        } else {
+            textField.text = "\u{200B}"
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            // Not found, so remove keyboard.
+            textField.resignFirstResponder()
+        }
+        // Do not add a line break
+        return false
     }
 }

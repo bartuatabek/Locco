@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aoT-Ee-X8F">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aoT-Ee-X8F">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,80 +19,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loccoAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="hlz-kl-Vku">
-                                <rect key="frame" x="127.66666666666669" y="84" width="120" height="180"/>
+                                <rect key="frame" x="127.66666666666669" y="178" width="120" height="180"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hlz-kl-Vku" secondAttribute="height" multiplier="2:3" id="Emd-JL-1dE"/>
-                                    <constraint firstAttribute="width" constant="120" id="ghH-dx-2tw"/>
-                                    <constraint firstAttribute="height" constant="180" id="wB3-oy-cco"/>
+                                    <constraint firstAttribute="width" secondItem="hlz-kl-Vku" secondAttribute="height" multiplier="2:3" id="3OA-RS-FZ8"/>
+                                    <constraint firstAttribute="width" constant="120" id="CYN-jO-sfm"/>
+                                    <constraint firstAttribute="height" constant="180" id="hMP-Aj-QXw"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3Q-9r-OnM">
-                                <rect key="frame" x="64.666666666666686" y="379.66666666666669" width="246" height="53"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3Q-9r-OnM">
+                                <rect key="frame" x="64.666666666666686" y="430" width="246" height="53"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="246.00000000000023" id="9Mz-Gw-Vit"/>
-                                    <constraint firstAttribute="height" constant="53.000000000000028" id="GrB-9v-aqM"/>
-                                    <constraint firstAttribute="width" secondItem="D3Q-9r-OnM" secondAttribute="height" multiplier="246:53" id="s7R-Kl-SLK"/>
+                                    <constraint firstAttribute="width" constant="246" id="YR1-2K-JIB"/>
+                                    <constraint firstAttribute="width" secondItem="D3Q-9r-OnM" secondAttribute="height" multiplier="246:53" id="jsK-gq-yMy"/>
+                                    <constraint firstAttribute="height" constant="53" id="kwB-vT-a1r"/>
                                 </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh">
-                                        <attributes>
-                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="14"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="16" maximumLineHeight="16" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                                <fontDescription key="fontDescription" name=".SFNSText" family=".SF NS Text" pointSize="13"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wQg-oc-ciD" userLabel="Bottom Container">
-                                <rect key="frame" x="67.666666666666686" y="442.66666666666674" width="240" height="240"/>
+                                <rect key="frame" x="67.666666666666686" y="597" width="240" height="145"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1H-uf-rHB" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="-0.66666666666668561" y="10" width="240" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Facebook">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
-                                                <real key="value" value="22"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                                <color key="value" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                                <color key="value" red="0.3529411764705882" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleFBLogin:" destination="iko-f5-2p9" eventType="touchUpInside" id="wsX-1p-A5R"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8p-gF-PfP" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="240" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Google">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
-                                                <real key="value" value="22"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                                <color key="value" red="0.7803921568627451" green="0.0" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                                <color key="value" red="1" green="0.1764705882352941" blue="0.33333333333333331" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleGoogleLogin:" destination="iko-f5-2p9" eventType="touchUpInside" id="GVB-LY-eam"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBD-lc-j6A" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="118" width="240" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -109,7 +58,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0nc-Eg-QZY" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="172" width="240" height="44"/>
+                                        <rect key="frame" x="0.0" y="54" width="240" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -126,7 +75,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="soe-G7-RQb" userLabel="Login Container">
-                                        <rect key="frame" x="30.289163790804054" y="222" width="179" height="20.000000000000057"/>
+                                        <rect key="frame" x="30.289163790804082" y="125" width="179" height="20.000000000000057"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Already registered?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VjB-e9-dAe">
@@ -149,21 +98,32 @@
                                             </button>
                                         </subviews>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Facebook lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK3-zm-1lc">
+                                        <rect key="frame" x="65.470367941541099" y="102" width="109" height="12"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="240" id="SbH-Na-HVv"/>
-                                    <constraint firstAttribute="width" secondItem="wQg-oc-ciD" secondAttribute="height" multiplier="240:216" constant="-26.666666666666686" id="Y5d-PL-o3b"/>
-                                    <constraint firstAttribute="width" constant="240.00000000000023" id="ydZ-QR-FaS"/>
+                                    <constraint firstAttribute="width" secondItem="wQg-oc-ciD" secondAttribute="height" multiplier="48:29" id="1l4-SD-0w8"/>
+                                    <constraint firstAttribute="width" constant="240" id="2xr-EZ-88P"/>
+                                    <constraint firstAttribute="height" constant="145" id="yI9-74-mjQ"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="centerY" secondItem="YAa-dc-Sxv" secondAttribute="centerY" id="5IZ-4u-0SS"/>
-                            <constraint firstItem="hlz-kl-Vku" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="LpT-md-Yh5"/>
-                            <constraint firstItem="wQg-oc-ciD" firstAttribute="top" secondItem="D3Q-9r-OnM" secondAttribute="bottom" constant="10" id="jSW-70-6TJ"/>
-                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" secondItem="apU-AL-HcS" secondAttribute="top" constant="40" id="lli-xZ-V3r"/>
-                            <constraint firstItem="wQg-oc-ciD" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="nCS-AO-3js"/>
-                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="zH8-7F-k3p"/>
+                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="7pV-r5-bFM"/>
+                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" secondItem="hlz-kl-Vku" secondAttribute="bottom" priority="750" constant="72" id="Crx-DQ-BhY"/>
+                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" secondItem="apU-AL-HcS" secondAttribute="top" priority="750" constant="134" id="DFU-nj-WGq"/>
+                            <constraint firstItem="apU-AL-HcS" firstAttribute="bottom" secondItem="wQg-oc-ciD" secondAttribute="bottom" constant="36" id="HXd-DB-H4r"/>
+                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" relation="lessThanOrEqual" secondItem="hlz-kl-Vku" secondAttribute="bottom" constant="72" id="JIN-WY-anc"/>
+                            <constraint firstItem="wQg-oc-ciD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="D3Q-9r-OnM" secondAttribute="bottom" constant="49" id="JK5-Qu-Z7E"/>
+                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hlz-kl-Vku" secondAttribute="bottom" constant="5" id="Ox7-Fc-0Rt"/>
+                            <constraint firstItem="hlz-kl-Vku" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="aFG-7c-kCj"/>
+                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" relation="greaterThanOrEqual" secondItem="apU-AL-HcS" secondAttribute="top" priority="250" constant="134" id="blP-Dj-MdB"/>
+                            <constraint firstItem="wQg-oc-ciD" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="mip-Z6-KYM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="apU-AL-HcS"/>
                         <userDefinedRuntimeAttributes>
@@ -185,7 +145,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QWX-gz-VjN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="-18.472906403940886"/>
+            <point key="canvasLocation" x="1756" y="-19.340329835082461"/>
         </scene>
         <!--Locco Register-->
         <scene sceneID="DUY-4o-h7u">
@@ -231,6 +191,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="sendSMS:" destination="spk-u9-zyX" eventType="primaryActionTriggered" id="q2P-z2-YbB"/>
+                                            <outlet property="delegate" destination="spk-u9-zyX" id="cpI-HN-Wsg"/>
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="+55" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kIi-8t-8oi" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
@@ -300,6 +261,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="sendSMS:" destination="spk-u9-zyX" eventType="touchUpInside" id="ton-7I-Tgo"/>
@@ -532,6 +494,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="VerifyCode:" destination="9u1-ed-anj" eventType="touchUpInside" id="12G-fF-9Ja"/>
@@ -619,6 +582,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="checkMailAvailability:" destination="lfd-kM-C7q" eventType="touchUpInside" id="r5t-nt-tFB"/>
@@ -651,7 +615,7 @@
                                     <constraint firstAttribute="height" constant="44" id="b4n-h0-TLH"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="email"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="22"/>
@@ -789,8 +753,11 @@
                                         <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="s4Q-i3-qs2" id="xsj-Dd-VBH"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ixq-9p-ba6" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
+                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ixq-9p-ba6" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
                                 <rect key="frame" x="67.666666666666686" y="276" width="240" height="44"/>
                                 <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -875,6 +842,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="sendSMS:" destination="spk-u9-zyX" eventType="primaryActionTriggered" id="VdA-a6-bqE"/>
+                                            <outlet property="delegate" destination="s4Q-i3-qs2" id="lYb-NM-m8I"/>
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="+55" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xEb-cp-fqP" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
@@ -924,6 +892,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="login:" destination="s4Q-i3-qs2" eventType="touchUpInside" id="HNo-Q4-Qca"/>
@@ -1105,6 +1074,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="checkPassword:" destination="vRJ-pV-pub" eventType="touchUpInside" id="fGO-e0-lwX"/>
@@ -1137,7 +1107,7 @@
                                     <constraint firstAttribute="width" constant="240" id="xUU-2l-rtF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="new-password"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="22"/>
@@ -1163,6 +1133,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Locco Register" id="Ev0-Du-T4P"/>
                     <connections>
+                        <outlet property="mailRegButton" destination="5aN-jc-I75" id="eS9-4p-D2r"/>
                         <outlet property="passwordTextField" destination="s7v-Yj-DPP" id="o7J-wz-Scz"/>
                         <segue destination="AR6-rb-a6f" kind="show" identifier="goToVerify" id="ael-C6-10b"/>
                     </connections>
@@ -1217,6 +1188,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="setUsername:" destination="HI8-Jb-OJs" eventType="touchUpInside" id="lg2-aZ-1LT"/>
@@ -1249,7 +1221,7 @@
                                     <constraint firstAttribute="height" constant="44" id="dQZ-Lh-0FX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="name"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="name"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="22"/>
@@ -1388,6 +1360,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="FinishRegistration:" destination="3gk-UI-f7Q" eventType="touchUpInside" id="egg-eq-O4x"/>
@@ -1489,6 +1462,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="sendPasswordResetMail:" destination="6y0-Df-17X" eventType="touchUpInside" id="yGo-kQ-Whs"/>
@@ -1719,6 +1693,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
                                         <color key="value" red="0.16078431369999999" green="0.30196078430000001" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableTimeOutBuffer" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="VerifyCode:" destination="Cvc-rb-kKC" eventType="touchUpInside" id="gfX-aJ-w77"/>

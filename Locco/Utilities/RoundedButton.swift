@@ -1,6 +1,6 @@
 //
 //  RoundedButton.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 23.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -41,6 +41,15 @@ class RoundedButton: UIButton {
         }
     }
     
+    @IBInspectable
+    var enableTimeOutBuffer: Bool = false {
+        didSet {
+            if enableTimeOutBuffer {
+                self.addTarget(self, action: #selector(self.bufferAction), for:.touchUpInside)
+            }
+        }
+    }
+    
     private func setGradient(topGradientColor: UIColor?, bottomGradientColor: UIColor?) {
         if let topGradientColor = topGradientColor, let bottomGradientColor = bottomGradientColor {
             gradientLayer.frame = bounds
@@ -54,5 +63,14 @@ class RoundedButton: UIButton {
         } else {
             gradientLayer.removeFromSuperlayer()
         }
+    }
+    
+    @objc func bufferAction() {
+        self.isEnabled = false
+        Timer.scheduledTimer(timeInterval: 10, target: self, selector:  #selector(self.enableButton), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func enableButton() {
+        self.isEnabled = true
     }
 }

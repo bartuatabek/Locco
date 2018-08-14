@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -25,7 +25,7 @@ class ViewController: UIViewController , UIScrollViewDelegate {
         self.scrollView.delegate = self
         self.pageControl.currentPage = 0
         
-        textView.text = "With Location Tracker, you can easily locate your friends and family from your iPhone"
+        textView.text = "With Locco, you can easily locate your friends and family from your iPhone"
     }
     
     override func didReceiveMemoryWarning() {
@@ -49,7 +49,7 @@ extension ScrollView {
         if Int(currentPage) == 0 {
             self.textView.fadeOut(completion: {
                 (finished: Bool) -> Void in
-                self.textView.text = "With Location Tracker, you can easily locate your friends and family from your iPhone"
+                self.textView.text = "With Locco, you can easily locate your friends and family from your iPhone"
                 self.textView.fadeIn()
             })
         } else if Int(currentPage) == 1 {

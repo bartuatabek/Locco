@@ -1,6 +1,6 @@
 //
 //  AuthController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -12,7 +12,7 @@ import ReactiveCocoa
 import FBSDKLoginKit
 import GoogleSignIn
 
-class AuthHomeController: UIViewController, GIDSignInUIDelegate {
+class AuthHomeController: UIViewController {
     
     var viewModel: AuthViewModeling?
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -23,7 +23,6 @@ class AuthHomeController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         self.viewModel = AuthViewModel()
         self.viewModel!.controller = self
-        GIDSignIn.sharedInstance().uiDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,14 +39,6 @@ class AuthHomeController: UIViewController, GIDSignInUIDelegate {
     }
     
     // MARK: - Button actions
-    @IBAction func handleFBLogin(_ sender: UIButton) {
-        viewModel!.fbLogin()
-    }
-    
-    @IBAction func handleGoogleLogin(_ sender: UIButton) {
-        viewModel!.googleLogin()
-    }
-    
     @IBAction func handleMailRegister(_ sender: UIButton) {
         performSegue(withIdentifier: "goToMailReg", sender: self)
     }

@@ -87,7 +87,7 @@
 		BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		BF64943521134D0600FD4F07 /* Bushmaster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Bushmaster.mp3; sourceTree = "<group>"; };
-		BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Location Tracker.entitlements"; path = "../../Location Tracker.entitlements"; sourceTree = "<group>"; };
+		BFB51A80210B26E3000A5F2C /* Locco.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Locco.entitlements; path = ../../Locco.entitlements; sourceTree = "<group>"; };
 		BFB51A85210B2A17000A5F2C /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPhoneRegController.swift; sourceTree = "<group>"; };
 		BFC0A3D3211C84FF00032435 /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
@@ -255,7 +255,7 @@
 				BF64943521134D0600FD4F07 /* Bushmaster.mp3 */,
 				84F1597220F39635006B3892 /* Info.plist */,
 				BF271DC42110964000ED09FB /* GoogleService-Info.plist */,
-				BFB51A80210B26E3000A5F2C /* Location Tracker.entitlements */,
+				BFB51A80210B26E3000A5F2C /* Locco.entitlements */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -629,7 +629,7 @@
 			baseConfigurationReference = FC5340857AD8D55CF1F0E341 /* Pods-Locco.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Location Tracker.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Locco.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZDWYXAQF94;
 				INFOPLIST_FILE = "$(SRCROOT)/Locco/Other/Info.plist";
@@ -650,7 +650,7 @@
 			baseConfigurationReference = 8A6E0D61F53CB6DEA97FA852 /* Pods-Locco.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Location Tracker.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Locco.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZDWYXAQF94;
 				INFOPLIST_FILE = "$(SRCROOT)/Locco/Other/Info.plist";

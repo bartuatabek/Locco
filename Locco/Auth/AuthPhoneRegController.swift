@@ -2,7 +2,7 @@
 //  AuthPhoneRegController.swift
 //  Locco
 //
-//  Created by macmini-stajyer-2 on 27.07.2018.
+//  Created by Bartu Atabek on 27.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 
@@ -126,6 +126,8 @@ class AuthPhoneRegController: UIViewController {
                         self.performSegue(withIdentifier: "goToPhoneVerify", sender: nil)
                     }
                 })
+            } else {
+                self.showAlert(withTitle: "Error", message: "Phone number is already in use for another account.")
             }
         })
     }
@@ -147,7 +149,7 @@ class AuthPhoneRegController: UIViewController {
             }
         })
     }
-        
+    
     @IBAction func showOTPKeyboard(_ sender: UITapGestureRecognizer) {
         for textfield in otpField {
             textfield.text = ""
@@ -157,12 +159,18 @@ class AuthPhoneRegController: UIViewController {
     }
     
     @IBAction func setUsername(_ sender: Any) {
-        viewModel?.setDisplayName(name: usernameTextField.text!)
+        viewModel?.setDisplayName(name: usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
         performSegue(withIdentifier: "goToPic", sender: nil)
     }
     
     
     @IBAction func FinishRegistration(_ sender: Any) {
+        if let profilePic = userPicture.image {
+            viewModel?.setUserPicture(profilePhoto: profilePic)
+        } else {
+            viewModel?.setUserPicture(profilePhoto: UIImage(named: "userpic_placeholder")!)
+        }
+        
         let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
         let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
         present(rootViewController, animated: true, completion: nil)
@@ -177,33 +185,38 @@ class AuthPhoneRegController: UIViewController {
 // MARK: - UITextFieldDelegate
 extension AuthPhoneRegController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (textField.text?.count)! < 2  && string.count > 0 {
-            if textField == otpField[0] {otpField[0].isUserInteractionEnabled = false; otpField[1].isUserInteractionEnabled = true; otpField[1].becomeFirstResponder()}
-            if textField == otpField[1] {otpField[1].isUserInteractionEnabled = false; otpField[2].isUserInteractionEnabled = true; otpField[2].becomeFirstResponder()}
-            if textField == otpField[2] {otpField[2].isUserInteractionEnabled = false; otpField[3].isUserInteractionEnabled = true; otpField[3].becomeFirstResponder()}
-            if textField == otpField[3] {otpField[3].isUserInteractionEnabled = false; otpField[4].isUserInteractionEnabled = true; otpField[4].becomeFirstResponder()}
-            if textField == otpField[4] {otpField[4].isUserInteractionEnabled = false; otpField[5].isUserInteractionEnabled = true; otpField[5].becomeFirstResponder()}
-            if textField == otpField[5] {otpField[5].isUserInteractionEnabled = false; otpField[5].resignFirstResponder()}
-            
-            textField.text = string
-            return false
-            
-        } else if (textField.text?.count)! >= 1 && string.count == 0 {
-            if textField == otpField[0] {otpField[0].isUserInteractionEnabled = true; otpField[0].becomeFirstResponder()}
-            if textField == otpField[1] {otpField[0].isUserInteractionEnabled = true; otpField[1].isUserInteractionEnabled = false; otpField[0].becomeFirstResponder()}
-            if textField == otpField[2] {otpField[1].isUserInteractionEnabled = true; otpField[2].isUserInteractionEnabled = false; otpField[1].becomeFirstResponder()}
-            if textField == otpField[3] {otpField[2].isUserInteractionEnabled = true; otpField[3].isUserInteractionEnabled = false; otpField[2].becomeFirstResponder()}
-            if textField == otpField[4] {otpField[3].isUserInteractionEnabled = true; otpField[4].isUserInteractionEnabled = false; otpField[3].becomeFirstResponder()}
-            if textField == otpField[5] {otpField[4].isUserInteractionEnabled = true; otpField[5].isUserInteractionEnabled = false; otpField[4].becomeFirstResponder()}
-            
-            textField.text = ""
-            return false
-            
-        } else if (textField.text?.count)! >= 2 {
-            textField.text = string
-            return false
+        if textField == phoneNo {
+            phoneNo.text = phoneNo.formattedNumber(number: phoneNo.text!)
+            return true
+        } else {
+            if (textField.text?.count)! < 2  && string.count > 0 {
+                if textField == otpField[0] {otpField[0].isUserInteractionEnabled = false; otpField[1].isUserInteractionEnabled = true; otpField[1].becomeFirstResponder()}
+                if textField == otpField[1] {otpField[1].isUserInteractionEnabled = false; otpField[2].isUserInteractionEnabled = true; otpField[2].becomeFirstResponder()}
+                if textField == otpField[2] {otpField[2].isUserInteractionEnabled = false; otpField[3].isUserInteractionEnabled = true; otpField[3].becomeFirstResponder()}
+                if textField == otpField[3] {otpField[3].isUserInteractionEnabled = false; otpField[4].isUserInteractionEnabled = true; otpField[4].becomeFirstResponder()}
+                if textField == otpField[4] {otpField[4].isUserInteractionEnabled = false; otpField[5].isUserInteractionEnabled = true; otpField[5].becomeFirstResponder()}
+                if textField == otpField[5] {otpField[5].isUserInteractionEnabled = false; otpField[5].resignFirstResponder()}
+                
+                textField.text = string
+                return false
+                
+            } else if (textField.text?.count)! >= 1 && string.count == 0 {
+                if textField == otpField[0] {otpField[0].isUserInteractionEnabled = true; otpField[0].becomeFirstResponder()}
+                if textField == otpField[1] {otpField[0].isUserInteractionEnabled = true; otpField[1].isUserInteractionEnabled = false; otpField[0].becomeFirstResponder()}
+                if textField == otpField[2] {otpField[1].isUserInteractionEnabled = true; otpField[2].isUserInteractionEnabled = false; otpField[1].becomeFirstResponder()}
+                if textField == otpField[3] {otpField[2].isUserInteractionEnabled = true; otpField[3].isUserInteractionEnabled = false; otpField[2].becomeFirstResponder()}
+                if textField == otpField[4] {otpField[3].isUserInteractionEnabled = true; otpField[4].isUserInteractionEnabled = false; otpField[3].becomeFirstResponder()}
+                if textField == otpField[5] {otpField[4].isUserInteractionEnabled = true; otpField[5].isUserInteractionEnabled = false; otpField[4].becomeFirstResponder()}
+                
+                textField.text = ""
+                return false
+                
+            } else if (textField.text?.count)! >= 2 {
+                textField.text = string
+                return false
+            }
+            return true
         }
-        return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -217,7 +230,7 @@ extension AuthPhoneRegController:  UIImagePickerControllerDelegate, UINavigation
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.userPicture.image = editedImage
         }
-    
+        
         //Dismiss the UIImagePicker after selection
         picker.dismiss(animated: true, completion: nil)
     }

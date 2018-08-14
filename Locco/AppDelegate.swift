@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -46,21 +46,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         
         // MARK: - User Defaults
-        let userDefaults = UserDefaults.standard
-        if userDefaults.value(forKey: "appFirstTimeOpend") == nil {
-            //if app is first time opened then it will be nil
-            userDefaults.setValue(true, forKey: "appFirstTimeOpend")
-            // signOut from FIRAuth
-            do {
-                try Firebase.Auth.auth().signOut()
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-            } catch {
-                print("Sign out failed: ", error)
-            }
-            // go to beginning of app
-        } else {
+//        let userDefaults = UserDefaults.standard
+//        if userDefaults.value(forKey: "appFirstTimeOpend") == nil {
+//            //if app is first time opened then it will be nil
+//            userDefaults.setValue(true, forKey: "appFirstTimeOpend")
+//            // signOut from FIRAuth
+//            do {
+//                try Firebase.Auth.auth().signOut()
+//                let domain = Bundle.main.bundleIdentifier!
+//                UserDefaults.standard.removePersistentDomain(forName: domain)
+//                UserDefaults.standard.synchronize()
+//            } catch {
+//                print("Sign out failed: ", error)
+//            }
+//            // go to beginning of app
+//        } else {
             if let providerData = Firebase.Auth.auth().currentUser?.providerData {
                 for userInfo in providerData {
                     switch userInfo.providerID {
@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                     }
                 }
             }
-        }
+//        }
         
         return true
     }
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func note(fromRegionIdentifier identifier: String) -> String? {
-        let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedItems) as? [NSData]
+        let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedPlaces) as? [NSData]
         let geotifications = savedItems?.map { NSKeyedUnarchiver.unarchiveObject(with: $0 as Data) as? GeoPlace }
         let index = geotifications?.index { $0?.identifier == identifier }
         return index != nil ? geotifications?[index!]?.name : nil

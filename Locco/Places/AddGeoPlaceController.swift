@@ -1,20 +1,23 @@
 //
 //  AddGeoPlaceController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 19.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 
 import UIKit
+import Photos
 import MapKit
 import Firebase
 import Alamofire
+import AVFoundation
 import PullUpController
 
 class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
     
     var viewModel: GeoPlacesViewModeling?
+    var imagePicker = UIImagePickerController()
     
     // MARK: - IBOutlets
     @IBOutlet weak var separatorView: UIView! {
@@ -24,7 +27,9 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
     }
     @IBOutlet weak var titleLabel: UITextField!
     @IBOutlet weak var subtitleLabel: UIView!
+    @IBOutlet weak var radiusSlider: UISlider!
     @IBOutlet var pinColors: [GradientView]!
+    @IBOutlet weak var addressLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +53,71 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
         }
     }
     
+    @IBAction func addPhoto(_ sender: Any) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        var image = UIImage(named: "camera")
+        var action = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
+            self.openCamera()
+        })
+        
+        action.setValue(image, forKey: "image")
+        alert.addAction(action)
+        
+        image = UIImage(named: "picture")
+        action = UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
+            self.openGallery()
+        })
+        
+        action.setValue(image, forKey: "image")
+        alert.addAction(action)
+        
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Open the camera
+    func openCamera() {
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            if response {
+                if UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+                    self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
+                    self.imagePicker.allowsEditing = true
+                    self.imagePicker.delegate = self
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Choose image from camera roll
+    func openGallery() {
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                if status == .authorized {
+                    self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+                    self.imagePicker.allowsEditing = true
+                    self.imagePicker.delegate = self
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            })
+        } else if photos == .authorized {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+            self.imagePicker.allowsEditing = true
+            self.imagePicker.delegate = self
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func editLocation(_ sender: Any) {
+        
+    }
+    
+    @IBAction func sliderEditingChanged(_ sender: Any) {
+        
+    }
+    
     @objc func checkAction(sender : UITapGestureRecognizer) {
         for pinColor in pinColors {
             for view in pinColor.subviews {
@@ -61,6 +131,10 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
         sender.view?.addShadowWithBorders()
     }
     
+    @IBAction func deletePlace(_ sender: Any) {
+        
+    }
+    
     // MARK: - PullUpController
     override var pullUpControllerPreferredSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: 400)
@@ -68,5 +142,17 @@ class AddGeoPlaceController: PullUpController, UIGestureRecognizerDelegate {
     
     override var pullUpControllerPreviewOffset: CGFloat {
         return 363
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension AddGeoPlaceController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+//            self.userPicture.image = editedImage
+//        }
+        
+        //Dismiss the UIImagePicker after selection
+        picker.dismiss(animated: true, completion: nil)
     }
 }

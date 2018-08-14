@@ -1,6 +1,6 @@
 //
 //  PlacesController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import ReactiveCocoa
+import ReactiveSwift
 import MapKitGoogleStyler
 
 class GeoPlacesController: UIViewController {
@@ -15,10 +17,6 @@ class GeoPlacesController: UIViewController {
     var viewModel: GeoPlacesViewModeling?
     var pullUpController: PlacesDrawerController?
     var addGeoPlacePullUpController: AddGeoPlaceController?
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .default
-    }
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var controlsContainer: UIVisualEffectView!
@@ -33,24 +31,33 @@ class GeoPlacesController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    }
-    
-    func setup() {
-        loadPlaces()
-        configureTileOverlay()
         addDrawerPullUpController()
-        mapView.layer.cornerRadius = 16.0
-        controlsContainer.layer.cornerRadius = 10.0
-        controlsContainer.clipsToBounds = true
-        mapView.userTrackingMode = .follow
-        mapView.showsUserLocation = CLLocationManager.authorizationStatus() == .authorizedAlways
-        
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
         let rightBarButton = UIBarButtonItem(image: UIImage(named: "createNewPlace"), style: .done, target: self, action: #selector(addPlaceDrawerPullUpController))
         rightBarButton.tintColor = UIColor.black
         self.navigationItem.rightBarButtonItem = rightBarButton
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let mainDrawer = pullUpController {
+            removePullUpController(mainDrawer, animated: true)
+        }
+        if let editDrawer = addGeoPlacePullUpController {
+            removePullUpController(editDrawer, animated: true)
+        }
+    }
+    
+    func setup() {
+        loadPlaces()
+        configureTileOverlay()
+        mapView.layer.cornerRadius = 16.0
+        controlsContainer.layer.cornerRadius = 10.0
+        controlsContainer.clipsToBounds = true
+        mapView.userTrackingMode = .follow
+        mapView.showsUserLocation = CLLocationManager.authorizationStatus() == .authorizedAlways
         
         let addPinGesture = UILongPressGestureRecognizer(target: self, action: #selector(addPlace))
         addPinGesture.minimumPressDuration = 2.0
@@ -61,16 +68,10 @@ class GeoPlacesController: UIViewController {
         if gestureRecognizer.state == .began {
             let touchPoint = gestureRecognizer.location(in: mapView)
             let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-            let clampedRadius = 250.0
-            let identifier = NSUUID().uuidString
-            let name = "My Place"
-            let eventType: EventType = .onEntry
-            let geotification = GeoPlace(coordinate: coordinate, radius: clampedRadius, identifier: identifier, name: name, eventType: eventType)
-            
-            viewModel!.add(geotification: geotification)
-            viewModel!.startMonitoring(geotification: geotification)
-            viewModel!.saveAllGeotifications()
+            let geotification = GeoPlace(name: "My Place", placeDetail: "", identifier: "", pinColor: PinColors.color1, radius: 100.0, coordinate: coordinate, onEntry: true, onExit: false)
+
             mapView.addAnnotation(geotification)
+            addRadiusOverlay(forGeotification: geotification)
             addPlaceDrawerPullUpController()
         }
     }
@@ -78,6 +79,7 @@ class GeoPlacesController: UIViewController {
     @objc private func addDrawerPullUpController() {
         pullUpController = UIStoryboard(name: "Places", bundle: nil)
             .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
+        pullUpController?.viewModel = self.viewModel
         
         self.navigationItem.rightBarButtonItem?.title = ""
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
@@ -102,23 +104,21 @@ class GeoPlacesController: UIViewController {
         addPullUpController(addGeoPlacePullUpController!, animated: true)
     }
     
-    func zoom(to location: CLLocationCoordinate2D) {
-        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        let region = MKCoordinateRegion.init(center: location, span: span)
-        
-        mapView.setRegion(region, animated: true)
-    }
-    
     // MARK: Functions that update the associated views with geotification changes
     func loadPlaces() {
-        for place in viewModel!.geoPlaces {
-            mapView.addAnnotation(place)
-        }
+        viewModel!.updateAllGeotifications(completion: { (result) in
+            if result {
+                self.pullUpController?.refreshTableView()
+//                for place in self.viewModel!.geoPlaces {
+//                    self.mapView.addAnnotation(place)
+//                }
+            }
+        })
     }
     
-    func remove() {
-        //        mapView.removeAnnotation(geotification)
-        //        removeRadiusOverlay(forGeotification: geotification)
+    func remove(geotification: GeoPlace) {
+        mapView.removeAnnotation(geotification)
+        removeRadiusOverlay(forGeotification: geotification)
     }
     
     // MARK: Map overlay functions
@@ -160,18 +160,19 @@ class GeoPlacesController: UIViewController {
         mapView.zoomToUserLocation()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToPlaceDetail" {
-            let AddGeoPlaceController = segue.destination as! AddGeoPlaceController
-            AddGeoPlaceController.viewModel = viewModel
-        }
+    func zoom(to location: CLLocationCoordinate2D) {
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion.init(center: location, span: span)
+        
+        mapView.setRegion(region, animated: true)
     }
 }
 
+// MARK: - TableView Delegate
 extension GeoPlacesController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 119.0
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 119.0
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -192,8 +193,8 @@ extension GeoPlacesController: MKMapViewDelegate {
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             if annotationView == nil {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.image = UIImage(named: "Pin")!
-                    .tintedWithLinearGradientColors(colorsArr: PinColors.color2)
+                annotationView?.image = UIImage(named: "Fox")!
+                    .tintedWithLinearGradientColors(colorsArr: PinColors.color2.colors)
                 annotationView?.canShowCallout = true
                 let removeButton = UIButton(type: .custom)
                 removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
@@ -225,14 +226,11 @@ extension GeoPlacesController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let geotification = view.annotation as! GeoPlace
         addRadiusOverlay(forGeotification: geotification)
-        
-        
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         let geotification = view.annotation as! GeoPlace
         removeRadiusOverlay(forGeotification: geotification)
-        
     }
     
     // animate annotation views drop
@@ -252,8 +250,8 @@ extension GeoPlacesController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         // Delete geotification
-        //        let geotification = view.annotation as! GeoPlace
-        //        remove(geotification: geotification)
-        //        saveAllGeotifications()
+        let geotification = view.annotation as! GeoPlace
+        remove(geotification: geotification)
+        viewModel!.saveAllGeotifications()
     }
 }

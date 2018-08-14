@@ -2,7 +2,7 @@
 //  RoundedImage.swift
 //  Locco
 //
-//  Created by macmini-stajyer-2 on 9.08.2018.
+//  Created by Bartu Atabek on 9.08.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 

@@ -53,6 +53,11 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>FirebaseStorage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>20</integer>
+		</dict>
 		<key>GTMOAuth2.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,7 +82,7 @@
 		<key>GoogleUtilities.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>20</integer>
+			<integer>21</integer>
 		</dict>
 		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
@@ -96,7 +101,7 @@
 		<key>MapKitGoogleStyler.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>22</integer>
 		</dict>
 		<key>Pods-Locco.xcscheme</key>
 		<dict>
@@ -108,7 +113,7 @@
 		<key>PullUpController.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>22</integer>
+			<integer>23</integer>
 		</dict>
 		<key>Pulley.xcscheme</key>
 		<dict>

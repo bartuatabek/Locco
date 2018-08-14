@@ -1,6 +1,6 @@
 //
 //  Utilities.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 19.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -130,7 +130,7 @@ extension CGFloat {
     }
 }
 
-// MARK: UIImage Extensions
+// MARK: - UIImage Extensions
 extension UIImage {
     func colorized(color : UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
@@ -177,15 +177,68 @@ extension UIImage {
     }
 }
 
-struct PinColors {
-    static var color1: [CGColor]  { return [UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor] }
-    static var color2: [CGColor]  { return [UIColor(red: 45/255, green: 52/255, blue: 64/255, alpha: 1.0).cgColor, UIColor(red: 41/255, green: 77/255, blue: 121/255, alpha: 1.0).cgColor] }
-    static var color3: [CGColor]  { return [UIColor(red: 222/255, green: 71/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 203/255, blue: 131/255, alpha: 1.0).cgColor] }
-    static var color4: [CGColor]  { return [UIColor(red: 199/255, green: 0/255, blue: 38/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 45/255, blue: 85/255, alpha: 1.0).cgColor] }
-    static var color5: [CGColor]  { return [UIColor(red: 208/255, green: 162/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 165/255, blue: 165/255, alpha: 1.0).cgColor] }
-    static var color6: [CGColor]  { return [UIColor(red: 35/255, green: 31/255, blue: 244/255, alpha: 1.0).cgColor, UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0).cgColor] }
-    static var color7: [CGColor]  { return [UIColor(red: 0/255, green: 145/255, blue: 211/255, alpha: 1.0).cgColor, UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0).cgColor] }
-    static var color8: [CGColor]  { return [UIColor(red: 159/255, green: 37/255, blue: 30/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0).cgColor] }
-    static var color9: [CGColor]  { return [UIColor(red: 0/255, green: 195/255, blue: 33/255, alpha: 1.0).cgColor, UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1.0).cgColor] }
-    static var color10: [CGColor]  { return [UIColor(red: 0/255, green: 180/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 54/255, green: 216/255, blue: 207/255, alpha: 1.0).cgColor] }
+// MARK: - Gradient Pin Colors
+internal enum PinColors: String {
+    case color1, color2, color3, color4, color5, color6, color7, color8, color9, color10
+    
+    var colors: [CGColor] {
+        switch self {
+        case .color1:
+            return [UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor, UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor]
+        case .color2:
+            return [UIColor(red: 45/255, green: 52/255, blue: 64/255, alpha: 1.0).cgColor, UIColor(red: 41/255, green: 77/255, blue: 121/255, alpha: 1.0).cgColor]
+        case .color3:
+            return [UIColor(red: 222/255, green: 71/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 203/255, blue: 131/255, alpha: 1.0).cgColor]
+        case .color4:
+            return [UIColor(red: 199/255, green: 0/255, blue: 38/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 45/255, blue: 85/255, alpha: 1.0).cgColor]
+        case .color5:
+            return [UIColor(red: 208/255, green: 162/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 165/255, blue: 165/255, alpha: 1.0).cgColor]
+        case .color6:
+            return [UIColor(red: 35/255, green: 31/255, blue: 244/255, alpha: 1.0).cgColor, UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0).cgColor]
+        case .color7:
+            return [UIColor(red: 0/255, green: 145/255, blue: 211/255, alpha: 1.0).cgColor, UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0).cgColor]
+        case .color8:
+            return [UIColor(red: 159/255, green: 37/255, blue: 30/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0).cgColor]
+        case .color9:
+            return [UIColor(red: 0/255, green: 195/255, blue: 33/255, alpha: 1.0).cgColor, UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1.0).cgColor]
+        case .color10:
+            return [UIColor(red: 0/255, green: 180/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 54/255, green: 216/255, blue: 207/255, alpha: 1.0).cgColor]
+        }
+    }
+}
+
+// MARK: - Device Model Recognizer
+extension UIDevice {
+    static let modelName: String = {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+        
+        func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
+            #if os(iOS)
+            switch identifier {
+            case "iPhone5,1", "iPhone5,2":                  return "iPhone SE"
+            case "iPhone5,3", "iPhone5,4":                  return "iPhone SE"
+            case "iPhone6,1", "iPhone6,2":                  return "iPhone SE"
+            case "iPhone7,2":                               return "iPhone 8"
+            case "iPhone7,1":                               return "iPhone 8 Plus"
+            case "iPhone8,1":                               return "iPhone 8"
+            case "iPhone8,2":                               return "iPhone 8 Plus"
+            case "iPhone9,1", "iPhone9,3":                  return "iPhone 8"
+            case "iPhone9,2", "iPhone9,4":                  return "iPhone 8 Plus"
+            case "iPhone8,4":                               return "iPhone SE"
+            case "iPhone10,1", "iPhone10,4":                return "iPhone 8"
+            case "iPhone10,2", "iPhone10,5":                return "iPhone 8 Plus"
+            case "iPhone10,3", "iPhone10,6":                return "iPhone X"
+            case "i386", "x86_64":                          return "\(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
+            default:                                        return identifier
+            }
+            #endif
+        }
+        return mapToDevice(identifier: identifier)
+    }()
 }

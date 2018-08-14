@@ -1,6 +1,6 @@
 //
 //  AuthRegisterController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 7/21/18.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -17,6 +17,7 @@ class AuthMailRegController: UIViewController {
     
     @IBOutlet weak var emailTextField: FormTextField!
     @IBOutlet weak var passwordTextField: FormTextField!
+    @IBOutlet weak var mailRegButton: RoundedButton!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,7 +31,7 @@ class AuthMailRegController: UIViewController {
     
     // MARK: - Button actions
     @IBAction func checkMailAvailability(_ sender: Any) {
-        viewModel?.mailAvailable(email: emailTextField.text, completion: { (result) in
+        viewModel?.mailAvailable(email: emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines), completion: { (result) in
             if result {
                 self.credientials = self.emailTextField.text
                 self.performSegue(withIdentifier: "goToMailPassword", sender: nil)
@@ -41,7 +42,7 @@ class AuthMailRegController: UIViewController {
     @IBAction func checkPassword(_ sender: Any) {
         viewModel?.isValidPassword(password: passwordTextField.text, completion: { (result) in
             if result {
-                self.viewModel?.mailRegister(email: self.credientials!, password: self.passwordTextField.text!)
+                self.viewModel?.mailRegister(email: self.credientials!.trimmingCharacters(in: .whitespacesAndNewlines), password: self.passwordTextField.text!)
                 self.performSegue(withIdentifier: "goToVerify", sender: nil)
             }
         })

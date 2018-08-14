@@ -1,6 +1,6 @@
 //
 //  CirclesViewModel.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Alperen Özdemir on 19.07.2018.
 //  Copyright © 2018 Alperen Özdemir. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  ProfileController.swift
-//  Location Tracker
+//  Locco
 //
 //  Created by Bartu Atabek on 10.07.2018.
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
@@ -8,15 +8,62 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class ProfileController: UITableViewController {
     
     var viewModel: ProfileViewModeling?
+    let storage = Storage.storage()
+    
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var profilePic: UIImageView!
+    
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var aboutTextField: UITextField!
+    
+    @IBOutlet weak var usernameRemainingCharCount: UILabel!
+    @IBOutlet weak var aboutRemainingCharCount: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = ProfileViewModel()
         self.viewModel!.controller = self
+        navigationController!.view.backgroundColor = UIColor.white
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        downloadImageUserFromFirebase()
+        
+        if self.restorationIdentifier! == "Profile" {
+            usernameLabel.text = Firebase.Auth.auth().currentUser?.displayName
+        } else if self.restorationIdentifier! == "ProfileDetail" {
+            
+        }
+    }
+    
+    func downloadImageUserFromFirebase() {
+        // Get a reference to the storage service using the default Firebase App
+        let storage = Storage.storage()
+
+        // Create a storage reference from our storage service
+        let storageRef = storage.reference()
+        let imageRef = storageRef.child("/profilePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "").jpeg")
+        
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        imageRef.getData(maxSize: 1 * 5120 * 5120) { data, error in
+            if let error = error {
+                print("Error: ", error)
+            } else {
+                let image = UIImage(data: data!)
+                self.profilePic.image = image
+                
+                let radius = self.profilePic.frame.size.width / 2
+                self.profilePic.layer.cornerRadius = radius
+                self.profilePic.layer.masksToBounds = true
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -24,8 +71,8 @@ class ProfileController: UITableViewController {
             do {
                 try Firebase.Auth.auth().signOut()
                 print("Sign out successful")
-                performSegue(withIdentifier: "goToAuth", sender: nil)
                 navigationController?.popToRootViewController(animated: true)
+                performSegue(withIdentifier: "goToAuth", sender: nil)
             } catch {
                 print("Sign out failed: ", error)
             }
@@ -51,6 +98,18 @@ class ProfileController: UITableViewController {
             
             self.present(alert, animated: true, completion: nil)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
+extension ProfileController: UITextFieldDelegate {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField == usernameTextField {
+            usernameRemainingCharCount.text = String(25 - (usernameTextField.text?.count)!)
+        }
+        else if textField == aboutTextField {
+            aboutRemainingCharCount.text = String(80 - (aboutTextField.text?.count)!)
+        }
+        return true
+    }
+}
