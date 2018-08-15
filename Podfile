@@ -6,6 +6,7 @@ inhibit_all_warnings!
 target 'Locco' do
     pod 'Firebase/Auth'
     pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
     pod 'FirebaseStorage'
     pod 'GoogleSignIn'
     pod 'FBSDKLoginKit'

@@ -132,6 +132,58 @@ extension CGFloat {
 
 // MARK: - UIImage Extensions
 extension UIImage {
+    func maskRoundedImage() -> UIImage {
+        let imageView: UIImageView = UIImageView(image: self)
+        let layer = imageView.layer
+        layer.masksToBounds = true
+        layer.cornerRadius = self.size.height / 2
+        UIGraphicsBeginImageContext(imageView.bounds.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return roundedImage!
+    }
+    
+    func overlayWith(image: UIImage, posX: CGFloat, posY: CGFloat) -> UIImage {
+        let newWidth = size.width < posX + image.size.width ? posX + image.size.width : size.width
+        let newHeight = size.height < posY + image.size.height ? posY + image.size.height : size.height
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        draw(in: CGRect(origin: CGPoint.zero, size: size))
+        image.draw(in: CGRect(origin: CGPoint(x: posX, y: posY), size: image.size))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    func resizeImageWith(newSize: CGSize) -> UIImage {
+        let horizontalRatio = newSize.width / self.size.width
+        let verticalRatio = newSize.height / self.size.height
+        
+        let ratio = max(horizontalRatio, verticalRatio)
+        let newSize = CGSize(width: self.size.width * ratio, height: self.size.height * ratio)
+        var newImage: UIImage
+        
+        if #available(iOS 10.0, *) {
+            let renderFormat = UIGraphicsImageRendererFormat.default()
+            renderFormat.opaque = false
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: newSize.width, height: newSize.height), format: renderFormat)
+            newImage = renderer.image {
+                (context) in
+                self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: newSize.width, height: newSize.height), false, 0)
+            self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+            newImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+        }
+        
+        return newImage
+    }
+    
     func colorized(color : UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)

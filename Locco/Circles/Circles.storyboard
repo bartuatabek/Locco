@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ntZ-L7-vLT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ntZ-L7-vLT">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,23 +17,7 @@
                     <view key="view" contentMode="scaleToFill" id="2i4-AE-w3a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="o4y-Jw-a1p">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="641"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="16"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </mapView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="KmX-3w-7Ws" firstAttribute="bottom" secondItem="o4y-Jw-a1p" secondAttribute="bottom" id="4Wv-UV-FXu"/>
-                            <constraint firstItem="o4y-Jw-a1p" firstAttribute="top" secondItem="KmX-3w-7Ws" secondAttribute="top" id="Ypf-bR-2Lq"/>
-                            <constraint firstItem="o4y-Jw-a1p" firstAttribute="leading" secondItem="KmX-3w-7Ws" secondAttribute="leading" id="bDk-yU-8JK"/>
-                            <constraint firstItem="o4y-Jw-a1p" firstAttribute="trailing" secondItem="KmX-3w-7Ws" secondAttribute="trailing" id="nyG-Je-Sbp"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="KmX-3w-7Ws"/>
                     </view>
                     <navigationItem key="navigationItem" title="Circle Name" id="cSP-xR-Wwk"/>

@@ -68,7 +68,7 @@ class GeoPlacesController: UIViewController {
         if gestureRecognizer.state == .began {
             let touchPoint = gestureRecognizer.location(in: mapView)
             let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-            let geotification = GeoPlace(name: "My Place", placeDetail: "", identifier: "", pinColor: PinColors.color1, radius: 100.0, coordinate: coordinate, onEntry: true, onExit: false)
+            let geotification = GeoPlace(name: "My Place", placeDetail: "", identifier: "", pinColor: PinColors.color2, radius: 100.0, coordinate: coordinate, onEntry: true, onExit: false)
             
             mapView.addAnnotation(geotification)
             addRadiusOverlay(forGeotification: geotification)
@@ -120,9 +120,9 @@ class GeoPlacesController: UIViewController {
         viewModel!.updateAllGeotifications(completion: { (result) in
             if result {
                 self.pullUpController?.refreshTableView()
-                //                for place in self.viewModel!.geoPlaces {
-                //                    self.mapView.addAnnotation(place)
-                //                }
+                for place in self.viewModel!.geoPlaces {
+                    self.mapView.addAnnotation(place)
+                }
             }
         })
     }
@@ -192,8 +192,9 @@ extension GeoPlacesController: MKMapViewDelegate {
         let identifier = "GeoPlaces"
         if annotation is MKUserLocation {
             let userPin = mapView.view(for: annotation) ?? MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
+            let userPinImage = UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: PinColors.color2.colors).overlayWith(image: UIImage(named: "bartu")!.resizeImageWith(newSize: CGSize(width: 36, height: 36)).maskRoundedImage(), posX: 3, posY: 3)
             userPin.isEnabled = false
-            userPin.image = UIImage(named: "user_location_pin")
+            userPin.image = userPinImage
             return userPin
         }
         else if annotation is GeoPlace {
@@ -202,11 +203,6 @@ extension GeoPlacesController: MKMapViewDelegate {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.image = UIImage(named: "Pin")!
                     .tintedWithLinearGradientColors(colorsArr: PinColors.color2.colors)
-                annotationView?.canShowCallout = true
-                let removeButton = UIButton(type: .custom)
-                removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
-                removeButton.setImage(UIImage(named: "cancel")!, for: .normal)
-                annotationView?.leftCalloutAccessoryView = removeButton
             } else {
                 annotationView?.annotation = annotation
             }

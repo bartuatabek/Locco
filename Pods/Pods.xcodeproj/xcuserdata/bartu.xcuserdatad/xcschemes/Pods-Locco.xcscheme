@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "88D6433B2331822CE14C82012C6B7711"
+               BlueprintIdentifier = "54228A349C5320AD97698BB6C30E84B9"
                BuildableName = "Pods_Locco.framework"
                BlueprintName = "Pods-Locco"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "88D6433B2331822CE14C82012C6B7711"
+            BlueprintIdentifier = "54228A349C5320AD97698BB6C30E84B9"
             BuildableName = "Pods_Locco.framework"
             BlueprintName = "Pods-Locco"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -60,15 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "88D6433B2331822CE14C82012C6B7711"
-            BuildableName = "Pods_Locco.framework"
-            BlueprintName = "Pods-Locco"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

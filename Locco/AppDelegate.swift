@@ -34,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             // Enable or disable features based on authorization.
             if granted {
+                DispatchQueue.main.async(execute: {
+                    UIApplication.shared.registerForRemoteNotifications()
+                })
                 center.removeAllPendingNotificationRequests()
                 center.removeAllDeliveredNotifications()
             }

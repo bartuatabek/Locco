@@ -19,6 +19,9 @@ PODS:
     - FirebaseAnalytics (= 5.1.0)
   - Firebase/CoreOnly (5.5.0):
     - FirebaseCore (= 5.1.0)
+  - Firebase/Messaging (5.5.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (= 3.1.0)
   - FirebaseAnalytics (5.1.0):
     - FirebaseCore (~> 5.1)
     - FirebaseInstanceID (~> 3.2)
@@ -39,6 +42,11 @@ PODS:
   - FirebaseInstanceID (3.2.0):
     - FirebaseCore (~> 5.1)
     - GoogleUtilities/Environment (~> 5.2)
+  - FirebaseMessaging (3.1.0):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - GoogleUtilities/Reachability (~> 5.2)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -91,6 +99,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - Protobuf (3.6.1)
   - PullUpController (0.3.0)
   - ReactiveCocoa (8.0.0):
     - ReactiveSwift (~> 4.0)
@@ -106,6 +115,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - Firebase/Auth
   - Firebase/Core
+  - Firebase/Messaging
   - FirebaseStorage
   - GoogleSignIn
   - IQKeyboardManagerSwift
@@ -129,6 +139,7 @@ SPEC REPOS:
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseInstanceID
+    - FirebaseMessaging
     - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleSignIn
@@ -140,6 +151,7 @@ SPEC REPOS:
     - KeychainAccess
     - MapKitGoogleStyler
     - nanopb
+    - Protobuf
     - PullUpController
     - ReactiveCocoa
     - ReactiveSwift
@@ -168,6 +180,7 @@ SPEC CHECKSUMS:
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: ee4b35cf8c8e781da296cc7c15125e4608bb954d
   FirebaseInstanceID: 8cd2c6cfe7b9ab65ce7e248f6da7f26f6775b9be
+  FirebaseMessaging: f67b3719f520ee200da0e20ce577fe2bce0c01d0
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   GoogleAppMeasurement: e785bdb86d3d280abc778156cec323a975f11d1d
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
@@ -179,6 +192,7 @@ SPEC CHECKSUMS:
   KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
   MapKitGoogleStyler: 8efdceb664fc1748a62a9e3b50a34b67a34247bc
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   PullUpController: 2f9e3852538a1fc1b3af79ee2ad29ec5c1a44efd
   ReactiveCocoa: 87cb64d78424d749a0bbfd9b07e4825e8d834066
   ReactiveSwift: a2bb9ace428a109e9c0209615645d9d286c8c433
@@ -186,6 +200,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   SwipeCellKit: cee9906e6d3a36e22ad1a852fba7f8fa0839d113
 
-PODFILE CHECKSUM: 9de65cfab6294934ae829329aadf92808fc4054a
+PODFILE CHECKSUM: 56d4bb13e5dc01acc6e25a176ceaeea898c20b6e
 
 COCOAPODS: 1.5.3

@@ -50,7 +50,7 @@ class PlacesDrawerController: PullUpController {
     
     // MARK: - PullUpController
     override var pullUpControllerPreferredSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 700)
+        return CGSize(width: UIScreen.main.bounds.width, height: 750)
     }
     
     override var pullUpControllerPreviewOffset: CGFloat {
