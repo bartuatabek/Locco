@@ -21,9 +21,10 @@
 		8D1B01252104C94600A78DE0 /* PlacesDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1B01242104C94600A78DE0 /* PlacesDrawerController.swift */; };
 		8D1C4CAD21012AAF00455D89 /* GeoPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CAC21012AAF00455D89 /* GeoPlace.swift */; };
 		8D1C4CAF21012C8600455D89 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CAE21012C8600455D89 /* Utilities.swift */; };
-		8D1C4CB321012E1E00455D89 /* AddGeoPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */; };
+		8D1C4CB321012E1E00455D89 /* AddGeoPlaceDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CB221012E1E00455D89 /* AddGeoPlaceDrawerController.swift */; };
 		8D205F032103892B000A0781 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D205F022103892B000A0781 /* FormTextField.swift */; };
 		8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */; };
+		BF2713C421241477007DAAF2 /* PlaceDetailDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2713C321241477007DAAF2 /* PlaceDetailDrawerController.swift */; };
 		BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF271DC42110964000ED09FB /* GoogleService-Info.plist */; };
 		BF3F43BF20FF295600DF3E69 /* Circles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43BE20FF295500DF3E69 /* Circles.storyboard */; };
 		BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */; };
@@ -67,9 +68,10 @@
 		8D1B01242104C94600A78DE0 /* PlacesDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesDrawerController.swift; sourceTree = "<group>"; };
 		8D1C4CAC21012AAF00455D89 /* GeoPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPlace.swift; sourceTree = "<group>"; };
 		8D1C4CAE21012C8600455D89 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeoPlaceController.swift; sourceTree = "<group>"; };
+		8D1C4CB221012E1E00455D89 /* AddGeoPlaceDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeoPlaceDrawerController.swift; sourceTree = "<group>"; };
 		8D205F022103892B000A0781 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMailRegController.swift; sourceTree = "<group>"; };
+		BF2713C321241477007DAAF2 /* PlaceDetailDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailDrawerController.swift; sourceTree = "<group>"; };
 		BF271DC42110964000ED09FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF3F43BE20FF295500DF3E69 /* Circles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Circles.storyboard; sourceTree = "<group>"; };
 		BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesViewModel.swift; sourceTree = "<group>"; };
@@ -212,7 +214,8 @@
 				BF3F43C420FF29C700DF3E69 /* GeoPlacesViewModel.swift */,
 				BF3F43C620FF29D000DF3E69 /* GeoPlacesController.swift */,
 				8D1B01242104C94600A78DE0 /* PlacesDrawerController.swift */,
-				8D1C4CB221012E1E00455D89 /* AddGeoPlaceController.swift */,
+				BF2713C321241477007DAAF2 /* PlaceDetailDrawerController.swift */,
+				8D1C4CB221012E1E00455D89 /* AddGeoPlaceDrawerController.swift */,
 				BF3F43C820FF29DA00DF3E69 /* Places.storyboard */,
 			);
 			path = Places;
@@ -388,6 +391,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -409,6 +413,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +475,7 @@
 				BF3F43D120FF2A9C00DF3E69 /* ActivityViewModel.swift in Sources */,
 				8D05E0CC2103B324004D2433 /* AuthLoginController.swift in Sources */,
 				8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */,
+				BF2713C421241477007DAAF2 /* PlaceDetailDrawerController.swift in Sources */,
 				BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */,
 				BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */,
 				8D1C4CAD21012AAF00455D89 /* GeoPlace.swift in Sources */,
@@ -479,7 +485,7 @@
 				8D1C4CAF21012C8600455D89 /* Utilities.swift in Sources */,
 				8D1B01252104C94600A78DE0 /* PlacesDrawerController.swift in Sources */,
 				84F1597E20F3A0D5006B3892 /* AuthHomeController.swift in Sources */,
-				8D1C4CB321012E1E00455D89 /* AddGeoPlaceController.swift in Sources */,
+				8D1C4CB321012E1E00455D89 /* AddGeoPlaceDrawerController.swift in Sources */,
 				BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */,
 				BF3F43C320FF29A800DF3E69 /* CirclesController.swift in Sources */,
 				84F1597A20F3A081006B3892 /* Auth.swift in Sources */,

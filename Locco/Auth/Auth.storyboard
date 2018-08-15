@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loccoAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="hlz-kl-Vku">
-                                <rect key="frame" x="127.66666666666669" y="178" width="120" height="180"/>
+                                <rect key="frame" x="127.66666666666669" y="113" width="120" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hlz-kl-Vku" secondAttribute="height" multiplier="2:3" id="3OA-RS-FZ8"/>
                                     <constraint firstAttribute="width" constant="120" id="CYN-jO-sfm"/>
@@ -27,7 +27,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3Q-9r-OnM">
-                                <rect key="frame" x="64.666666666666686" y="430" width="246" height="53"/>
+                                <rect key="frame" x="64.666666666666686" y="329" width="246" height="53"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="246" id="YR1-2K-JIB"/>
                                     <constraint firstAttribute="width" secondItem="D3Q-9r-OnM" secondAttribute="height" multiplier="246:53" id="jsK-gq-yMy"/>
@@ -38,10 +38,54 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wQg-oc-ciD" userLabel="Bottom Container">
-                                <rect key="frame" x="67.666666666666686" y="597" width="240" height="145"/>
+                                <rect key="frame" x="67.666666666666686" y="490" width="240" height="253"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBD-lc-j6A" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zh8-6D-Osr" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Facebook">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
+                                                <real key="value" value="22"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
+                                                <color key="value" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
+                                                <color key="value" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleFBLogin:" destination="iko-f5-2p9" eventType="touchUpInside" id="u2t-GL-VPF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YfK-eB-W9Q" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
+                                        <rect key="frame" x="-2.8421709430404007e-14" y="54" width="240" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Google">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
+                                                <real key="value" value="22"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
+                                                <color key="value" red="0.78039215689999997" green="0.0" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
+                                                <color key="value" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleGoogleLogin:" destination="iko-f5-2p9" eventType="touchUpInside" id="MwU-8S-oSY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBD-lc-j6A" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
+                                        <rect key="frame" x="-2.8421709430404007e-14" y="108" width="240" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -58,7 +102,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0nc-Eg-QZY" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="54" width="240" height="44"/>
+                                        <rect key="frame" x="-2.8421709430404007e-14" y="162" width="240" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -74,8 +118,15 @@
                                             <action selector="handlePhoneReg:" destination="iko-f5-2p9" eventType="touchUpInside" id="Zhm-NN-p2k"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Facebook lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK3-zm-1lc">
+                                        <rect key="frame" x="65.333333333333343" y="210" width="109" height="12"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="soe-G7-RQb" userLabel="Login Container">
-                                        <rect key="frame" x="30.289163790804082" y="125" width="179" height="20.000000000000057"/>
+                                        <rect key="frame" x="30.289163790804054" y="233" width="179" height="20.000000000000057"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Already registered?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VjB-e9-dAe">
@@ -98,31 +149,24 @@
                                             </button>
                                         </subviews>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Facebook lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK3-zm-1lc">
-                                        <rect key="frame" x="65.470367941541099" y="102" width="109" height="12"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="wQg-oc-ciD" secondAttribute="height" multiplier="48:29" id="1l4-SD-0w8"/>
+                                    <constraint firstAttribute="width" secondItem="wQg-oc-ciD" secondAttribute="height" multiplier="48:29" constant="-178.75862068965517" id="1l4-SD-0w8"/>
                                     <constraint firstAttribute="width" constant="240" id="2xr-EZ-88P"/>
-                                    <constraint firstAttribute="height" constant="145" id="yI9-74-mjQ"/>
+                                    <constraint firstAttribute="height" constant="253" id="yI9-74-mjQ"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="D3Q-9r-OnM" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="7pV-r5-bFM"/>
-                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" secondItem="hlz-kl-Vku" secondAttribute="bottom" priority="750" constant="72" id="Crx-DQ-BhY"/>
-                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" secondItem="apU-AL-HcS" secondAttribute="top" priority="750" constant="134" id="DFU-nj-WGq"/>
-                            <constraint firstItem="apU-AL-HcS" firstAttribute="bottom" secondItem="wQg-oc-ciD" secondAttribute="bottom" constant="36" id="HXd-DB-H4r"/>
+                            <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" secondItem="hlz-kl-Vku" secondAttribute="bottom" priority="750" constant="36" id="Crx-DQ-BhY"/>
+                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" secondItem="apU-AL-HcS" secondAttribute="top" priority="750" constant="69" id="DFU-nj-WGq"/>
+                            <constraint firstItem="apU-AL-HcS" firstAttribute="bottom" secondItem="wQg-oc-ciD" secondAttribute="bottom" constant="35" id="HXd-DB-H4r"/>
                             <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" relation="lessThanOrEqual" secondItem="hlz-kl-Vku" secondAttribute="bottom" constant="72" id="JIN-WY-anc"/>
-                            <constraint firstItem="wQg-oc-ciD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="D3Q-9r-OnM" secondAttribute="bottom" constant="49" id="JK5-Qu-Z7E"/>
+                            <constraint firstItem="wQg-oc-ciD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="D3Q-9r-OnM" secondAttribute="bottom" constant="21" id="JK5-Qu-Z7E"/>
                             <constraint firstItem="D3Q-9r-OnM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hlz-kl-Vku" secondAttribute="bottom" constant="5" id="Ox7-Fc-0Rt"/>
                             <constraint firstItem="hlz-kl-Vku" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="aFG-7c-kCj"/>
-                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" relation="greaterThanOrEqual" secondItem="apU-AL-HcS" secondAttribute="top" priority="250" constant="134" id="blP-Dj-MdB"/>
+                            <constraint firstItem="hlz-kl-Vku" firstAttribute="top" relation="greaterThanOrEqual" secondItem="apU-AL-HcS" secondAttribute="top" priority="250" constant="69" id="blP-Dj-MdB"/>
                             <constraint firstItem="wQg-oc-ciD" firstAttribute="centerX" secondItem="YAa-dc-Sxv" secondAttribute="centerX" id="mip-Z6-KYM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="apU-AL-HcS"/>
@@ -145,7 +189,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QWX-gz-VjN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="-19.340329835082461"/>
+            <point key="canvasLocation" x="1756" y="-19.95073891625616"/>
         </scene>
         <!--Locco Register-->
         <scene sceneID="DUY-4o-h7u">
@@ -657,71 +701,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8MA-41-9ya">
-                                <rect key="frame" x="67.666666666666686" y="81" width="240" height="44"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4V-MW-xKK" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="115" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Facebook">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
-                                                <real key="value" value="22"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                                <color key="value" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                                <color key="value" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleFBLogin:" destination="s4Q-i3-qs2" eventType="touchUpInside" id="FdI-Sd-fUR"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hf-fw-6bl" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                        <rect key="frame" x="125" y="0.0" width="115" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Google">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rounded">
-                                                <real key="value" value="22"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="topGradientColor">
-                                                <color key="value" red="0.78039215689999997" green="0.0" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="bottomGradientColor">
-                                                <color key="value" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleGoogleLogin:" destination="s4Q-i3-qs2" eventType="touchUpInside" id="5EE-0w-h3C"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="8MA-41-9ya" secondAttribute="height" multiplier="60:11" id="Qtq-XD-RUg"/>
-                                    <constraint firstAttribute="height" constant="44" id="WL9-wO-LCj"/>
-                                    <constraint firstAttribute="width" constant="240" id="WOH-5t-VAa"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZYD-xf-tg8" userLabel="Top Separator">
-                                <rect key="frame" x="67.666666666666686" y="145" width="240" height="1"/>
-                                <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="XWT-6z-IIE"/>
-                                    <constraint firstAttribute="height" constant="1" id="icP-SF-MLs"/>
-                                    <constraint firstAttribute="width" secondItem="ZYD-xf-tg8" secondAttribute="height" multiplier="240:1" id="p2d-ls-zpN"/>
-                                </constraints>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Enter your mail address or phone number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="wIc-Rw-lJq">
-                                <rect key="frame" x="67.666666666666686" y="166" width="240" height="36"/>
+                                <rect key="frame" x="67.666666666666686" y="138" width="240" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35.999999999999886" id="5IO-TI-Jte"/>
                                     <constraint firstAttribute="width" secondItem="wIc-Rw-lJq" secondAttribute="height" multiplier="240:36" id="jCb-o6-ehM"/>
@@ -732,7 +713,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="mail" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NUb-dy-zML" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
-                                <rect key="frame" x="67.666666666666686" y="222" width="240" height="44"/>
+                                <rect key="frame" x="67.666666666666686" y="194" width="240" height="44"/>
                                 <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="NUb-dy-zML" secondAttribute="height" multiplier="60:11" id="GuN-IW-X7m"/>
@@ -758,7 +739,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ixq-9p-ba6" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
-                                <rect key="frame" x="67.666666666666686" y="276" width="240" height="44"/>
+                                <rect key="frame" x="67.666666666666686" y="248" width="240" height="44"/>
                                 <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="BK3-9p-j77"/>
@@ -784,7 +765,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWe-EM-JmU">
-                                <rect key="frame" x="207" y="330" width="101" height="14"/>
+                                <rect key="frame" x="207" y="302" width="101" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="vWe-EM-JmU" secondAttribute="height" multiplier="101:14" id="0ee-pN-IDV"/>
                                     <constraint firstAttribute="width" constant="101" id="Tng-Pk-Yba"/>
@@ -797,10 +778,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcO-rt-5h0" userLabel="Separator Container">
-                                <rect key="frame" x="67.666666666666686" y="354" width="240" height="14"/>
+                                <rect key="frame" x="67.666666666666686" y="326" width="240" height="14"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QE3-9c-mvD">
-                                        <rect key="frame" x="-2.2737367544323206e-13" y="6.5014094240450504" width="100" height="1.0000000000001137"/>
+                                        <rect key="frame" x="0.0" y="7" width="100" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
@@ -812,7 +793,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4NP-p8-rf5">
-                                        <rect key="frame" x="140" y="6.5" width="100" height="1"/>
+                                        <rect key="frame" x="140" y="7" width="100" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
@@ -824,7 +805,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNi-aQ-7rO" userLabel="Phone Container">
-                                <rect key="frame" x="67.666666666666686" y="388" width="240" height="44"/>
+                                <rect key="frame" x="67.666666666666686" y="360" width="240" height="44"/>
                                 <subviews>
                                     <textField opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="555 555 55 55" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HPL-3W-v5l" customClass="FormTextField" customModule="Locco" customModuleProvider="target">
                                         <rect key="frame" x="90" y="0.0" width="150" height="44"/>
@@ -872,7 +853,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DyY-RB-CFX" customClass="RoundedButton" customModule="Locco" customModuleProvider="target">
-                                <rect key="frame" x="67.666666666666686" y="472" width="240" height="44"/>
+                                <rect key="frame" x="67.666666666666686" y="444" width="240" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="JKb-tK-9jW"/>
                                     <constraint firstAttribute="width" constant="240" id="Ku3-TR-Ig7"/>
@@ -903,21 +884,17 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="NUb-dy-zML" firstAttribute="top" secondItem="wIc-Rw-lJq" secondAttribute="bottom" constant="20" id="1Pd-VS-2oc"/>
-                            <constraint firstItem="8MA-41-9ya" firstAttribute="top" secondItem="as1-Zf-QsA" secondAttribute="top" constant="81" id="3K4-he-bRv"/>
                             <constraint firstItem="ixq-9p-ba6" firstAttribute="top" secondItem="NUb-dy-zML" secondAttribute="bottom" constant="10" id="3dI-ke-paB"/>
                             <constraint firstItem="bcO-rt-5h0" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="AkA-4U-9c1"/>
                             <constraint firstItem="wIc-Rw-lJq" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="Cw2-IM-uO5"/>
                             <constraint firstItem="NUb-dy-zML" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="Dkf-d4-euE"/>
-                            <constraint firstItem="wIc-Rw-lJq" firstAttribute="top" secondItem="ZYD-xf-tg8" secondAttribute="bottom" constant="20" id="Iha-V5-F2Y"/>
-                            <constraint firstItem="ZYD-xf-tg8" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="NeH-3Z-ppb"/>
                             <constraint firstAttribute="trailing" secondItem="vWe-EM-JmU" secondAttribute="trailing" constant="67" id="P9T-Cz-MmC"/>
                             <constraint firstItem="DyY-RB-CFX" firstAttribute="top" secondItem="rNi-aQ-7rO" secondAttribute="bottom" constant="40" id="Qwz-tw-u96"/>
                             <constraint firstItem="rNi-aQ-7rO" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="SK3-3V-FSy"/>
                             <constraint firstItem="bcO-rt-5h0" firstAttribute="top" secondItem="vWe-EM-JmU" secondAttribute="bottom" constant="10" id="Tdc-FO-E2v"/>
-                            <constraint firstItem="ZYD-xf-tg8" firstAttribute="top" secondItem="8MA-41-9ya" secondAttribute="bottom" constant="20" id="ZSD-BS-PNN"/>
                             <constraint firstItem="vWe-EM-JmU" firstAttribute="top" secondItem="ixq-9p-ba6" secondAttribute="bottom" constant="10" id="bsX-TY-gg7"/>
                             <constraint firstItem="rNi-aQ-7rO" firstAttribute="top" secondItem="bcO-rt-5h0" secondAttribute="bottom" constant="20" id="eUZ-RF-naS"/>
-                            <constraint firstItem="8MA-41-9ya" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="poU-Rb-JJT"/>
+                            <constraint firstItem="wIc-Rw-lJq" firstAttribute="top" secondItem="xMW-yh-tCQ" secondAttribute="top" constant="94" id="vUk-pj-Gj4"/>
                             <constraint firstItem="DyY-RB-CFX" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="ypl-WD-NMa"/>
                             <constraint firstItem="ixq-9p-ba6" firstAttribute="centerX" secondItem="as1-Zf-QsA" secondAttribute="centerX" id="zyM-Aj-ZQJ"/>
                         </constraints>

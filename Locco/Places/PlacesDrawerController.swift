@@ -8,6 +8,9 @@
 
 import UIKit
 import MapKit
+import SwipeCellKit
+import ReactiveCocoa
+import ReactiveSwift
 import PullUpController
 
 class PlacesDrawerController: PullUpController {
@@ -42,7 +45,7 @@ class PlacesDrawerController: PullUpController {
     }
     
     func refreshTableView() {
-        tableView.reloadData()
+        tableView.reloadWithAnimation()
     }
     
     // MARK: - PullUpController
@@ -67,7 +70,7 @@ class PlacesDrawerController: PullUpController {
     }
 }
 
-// MARK: - UISearchBarDelegate
+// MARK: - UISearchBar Delegate
 extension PlacesDrawerController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
@@ -107,6 +110,7 @@ extension PlacesDrawerController: UISearchBarDelegate {
     }
 }
 
+// MARK: - UITableView Delegate
 extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -127,6 +131,7 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(pinColor: (viewModel?.geoPlaces[indexPath.row].pinColor.colors)!, title: (viewModel?.geoPlaces[indexPath.row].name)!, subtitle: (viewModel?.geoPlaces[indexPath.row].placeDetail)!)
         }
         
+        cell.delegate = self as SwipeTableViewCellDelegate
         return cell
     }
     
@@ -134,14 +139,40 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], animated: true, completion: nil)
+        removePullUpController(self, animated: true)
+        viewModel?.activeGeoPlaceIndex = indexPath.row
         
+        let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
+            .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
+        placeDetailDrawerController?.viewModel = self.viewModel
+        
+        (parent as? GeoPlacesController)?.addPullUpController(placeDetailDrawerController!, animated: true)
         (parent as? GeoPlacesController)?.zoom(to: viewModel!.geoPlaces[indexPath.row].coordinate)
     }
 }
 
+// MARK: - SwipeTableViewCell Delegate
+extension PlacesDrawerController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            self.viewModel?.remove(geotification: (self.viewModel?.geoPlaces[indexPath.row])!)
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        }
+        
+        return [deleteAction]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
+}
+
 // MARK: - PlaceCell
-class PlaceCell: UITableViewCell {
+class PlaceCell: SwipeTableViewCell {
     @IBOutlet weak var pinImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -152,23 +183,3 @@ class PlaceCell: UITableViewCell {
         subtitleLabel.text = subtitle
     }
 }
-//
-//extension PlaceCell: UICollectionViewDataSource {
-//    // TODO: Get photos from firebase
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 12
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-//        cell.imageView.image = UIImage(named: "Fox")
-//        cell.imageView.layer.cornerRadius = 8.0
-//        cell.imageView.clipsToBounds = true
-//        return cell
-//    }
-//    
-//}
-//
-//class PhotoCell: UICollectionViewCell {
-//    @IBOutlet weak var imageView: UIImageView!
-//}

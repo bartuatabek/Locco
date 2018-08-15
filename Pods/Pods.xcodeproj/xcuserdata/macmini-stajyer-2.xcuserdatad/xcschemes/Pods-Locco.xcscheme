@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97BD769A9B4FC1B92834CCE3B8041F28"
+               BlueprintIdentifier = "68D7BFD667E7DA17E7CA084F900571EB"
                BuildableName = "Pods_Locco.framework"
                BlueprintName = "Pods-Locco"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97BD769A9B4FC1B92834CCE3B8041F28"
+            BlueprintIdentifier = "68D7BFD667E7DA17E7CA084F900571EB"
             BuildableName = "Pods_Locco.framework"
             BlueprintName = "Pods-Locco"
             ReferencedContainer = "container:Pods.xcodeproj">

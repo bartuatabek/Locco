@@ -17,6 +17,7 @@ target 'Locco' do
     pod 'MapKitGoogleStyler'
     pod 'IQKeyboardManagerSwift'
     pod 'ADCountryPicker', '~> 2.0.0'
+    pod 'SwipeCellKit', :git => 'https://github.com/SwipeCellKit/SwipeCellKit.git', :branch => 'swift_4.2'
 end
 
 post_install do |installer|

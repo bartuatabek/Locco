@@ -362,7 +362,6 @@ class AuthViewModel: AuthViewModeling {
     }
     
     func sendRegistrationToken() {
-        print("ghoooo")
         InstanceID.instanceID().instanceID { (result, error) in
             if let error = error {
                 print("Error fetching remote instange ID: \(error)")

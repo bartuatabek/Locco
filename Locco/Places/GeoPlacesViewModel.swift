@@ -22,19 +22,19 @@ protocol GeoPlacesViewModeling {
     var controller: UIViewController? { get set }
     var locationManager: CLLocationManager { get set }
     var geoPlaces: [GeoPlace]  { get set }
-    
-    var activeGeoPlace: MutableProperty<GeoPlace>? { get set }
+    var activeGeoPlaceIndex:Int { get set }
     
     func loadAllGeotifications()
     func saveAllGeotifications()
     func updateAllGeotifications(completion: @escaping (_ result: Bool)->())
+    func updatePlaceDetails(geotification: GeoPlace, completion: @escaping (_ result: Bool) ->())
     func add(geotification: GeoPlace)
     func remove(geotification: GeoPlace)
     func region(withGeotification geotification: GeoPlace) -> CLCircularRegion
     func startMonitoring(geotification: GeoPlace)
     func stopMonitoring(geotification: GeoPlace)
     
-//    func addPlaceImage(image: UIImage?, placeName: String?)
+    //    func addPlaceImage(image: UIImage?, placeName: String?)
 }
 
 class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
@@ -43,12 +43,12 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
     weak var controller: UIViewController?
     var locationManager: CLLocationManager
     var geoPlaces: [GeoPlace]
-    
-    var activeGeoPlace: MutableProperty<GeoPlace>?
+    var activeGeoPlaceIndex: Int
     
     // MARK: - Initialization
     override init() {
         geoPlaces = []
+        activeGeoPlaceIndex = -1
         locationManager = CLLocationManager()
         super.init()
         loadAllGeotifications()
@@ -92,7 +92,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                 .responseJSON { response in
                     if response.result.isSuccess {
                         let placeJSON: JSON = JSON(response.result.value!)
-                    
+                        
                         for (_, subJson) in placeJSON["data"] {
                             let name = subJson["name"].string!
                             let placeDetail = subJson["placeDetail"].string!
@@ -130,9 +130,44 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                             let longitude = subJson["location"]["_longitude"].double!
                             let onEntry = subJson["onEntry"].bool!
                             let onExit = subJson["onExit"].bool!
-                                                        
+                            
                             self.geoPlaces.append(GeoPlace(name: name, placeDetail: placeDetail, identifier: identifier, pinColor: pinColor, radius: radius, coordinate: CLLocationCoordinate2DMake(latitude, longitude), onEntry: onEntry, onExit: onExit))
                         }
+                        completion(true)
+                    } else {
+                        completion(false)
+                        print("Error: \(response.result.error ?? "" as! Error)")
+                    }
+            }
+        }
+    }
+    
+    func updatePlaceDetails(geotification: GeoPlace, completion: @escaping (Bool) -> ()) {
+        let currentUser = Firebase.Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+            if let error = error  {
+                print("Cannot get token: ", error )
+                return;
+            }
+            
+            let parameters: Parameters = [
+                "name": geotification.name,
+                "placeDetail": geotification.placeDetail,
+                "color": geotification.pinColor.rawValue,
+                "radius": geotification.radius,
+                "latitude": geotification.coordinate.latitude,
+                "longitude": geotification.coordinate.longitude,
+                "onEntry": geotification.onEntry,
+                "onExit": geotification.onExit
+            ]
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(idToken ?? "")"
+            ]
+            
+            Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updatePlace", method: .post, parameters: parameters, headers: headers)
+                .responseJSON { response in
+                    if response.result.isSuccess {
                         completion(true)
                     } else {
                         completion(false)
@@ -188,6 +223,26 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         if let indexInArray = geoPlaces.index(of: geotification) {
             geoPlaces.remove(at: indexInArray)
         }
+        
+        let currentUser = Firebase.Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+            if let error = error  {
+                print("Cannot get token: ", error )
+                return;
+            }
+            
+            let parameters: Parameters = [
+                "placeId": geotification.identifier,
+                ]
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(idToken ?? "")"
+            ]
+            
+            Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/deletePlace", method: .get, parameters: parameters, headers: headers)
+                .responseJSON { response in
+            }
+        }
     }
     
     // MARK: CoreLocation tracking functions
@@ -217,19 +272,19 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         }
     }
     
-//    func addPlaceImage(image: UIImage?, placeName: String?) {
-//        let storage = Storage.storage()
-//        var data = Data()
-//        if let photo = image { data = photo.pngData()! }
-//
-//        // Create a storage reference from our storage service
-//        let storageRef = storage.reference()
-//        let imageRef = storageRef.child("/placePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "")/\(placeName ?? "")/\(NSUUID().uuidString).jpeg")
-//        // Create file metadata including the content type
-//        let metadata = StorageMetadata()
-//        metadata.contentType = "image/jpeg"
-//        imageRef.putData(data, metadata: metadata)
-//    }
+    //    func addPlaceImage(image: UIImage?, placeName: String?) {
+    //        let storage = Storage.storage()
+    //        var data = Data()
+    //        if let photo = image { data = photo.pngData()! }
+    //
+    //        // Create a storage reference from our storage service
+    //        let storageRef = storage.reference()
+    //        let imageRef = storageRef.child("/placePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "")/\(placeName ?? "")/\(NSUUID().uuidString).jpeg")
+    //        // Create file metadata including the content type
+    //        let metadata = StorageMetadata()
+    //        metadata.contentType = "image/jpeg"
+    //        imageRef.putData(data, metadata: metadata)
+    //    }
 }
 
 // MARK: - Location Manager Delegate
@@ -241,19 +296,4 @@ extension GeoPlacesViewModel: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager failed with the following error: \(error)")
     }    
-}
-
-extension Reactive where Base: GeoPlace {
-    internal var geoPlace: BindingTarget<GeoPlace> {
-        return makeBindingTarget({ (place, value) in
-            place.name = value.name
-            place.placeDetail = value.placeDetail
-            place.identifier = value.identifier
-            place.pinColor = value.pinColor
-            place.radius = value.radius
-            place.coordinate = value.coordinate
-            place.onEntry = value.onEntry
-            place.onExit = value.onExit
-        })
-    }
 }

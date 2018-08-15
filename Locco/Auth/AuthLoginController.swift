@@ -14,7 +14,7 @@ import ReactiveSwift
 import ReactiveCocoa
 import ADCountryPicker
 
-class AuthLoginController: UIViewController, GIDSignInUIDelegate {
+class AuthLoginController: UIViewController {
     
     var viewModel: AuthViewModeling?
     
@@ -33,7 +33,6 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.viewModel!.controller = self
-        GIDSignIn.sharedInstance().uiDelegate = self
         bindUIElements()
     }
     
@@ -62,14 +61,6 @@ class AuthLoginController: UIViewController, GIDSignInUIDelegate {
     }
     
     // MARK: - Button actions
-    @IBAction func handleFBLogin(_ sender: UIButton) {
-        viewModel!.fbLogin()
-    }
-    
-    @IBAction func handleGoogleLogin(_ sender: UIButton) {
-        viewModel!.googleLogin()
-    }
-    
     @IBAction func selectCountryCode(_ sender: Any) {
         let picker = ADCountryPicker()
         picker.showCallingCodes = true
