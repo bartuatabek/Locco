@@ -14,6 +14,7 @@ class ProfileController: UITableViewController {
     
     var viewModel: ProfileViewModeling?
     let storage = Storage.storage()
+    let imageCache = NSCache<NSString, UIImage>()
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var aboutLabel: UILabel!
@@ -44,24 +45,25 @@ class ProfileController: UITableViewController {
     }
     
     func downloadImageUserFromFirebase() {
-        // Get a reference to the storage service using the default Firebase App
-        let storage = Storage.storage()
-
-        // Create a storage reference from our storage service
-        let storageRef = storage.reference()
-        let imageRef = storageRef.child("/profilePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "").jpeg")
-        
-        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-        imageRef.getData(maxSize: 1 * 5120 * 5120) { data, error in
-            if let error = error {
-                print("Error: ", error)
-            } else {
-                let image = UIImage(data: data!)
-                self.profilePic.image = image
-                
-                let radius = self.profilePic.frame.size.width / 2
-                self.profilePic.layer.cornerRadius = radius
-                self.profilePic.layer.masksToBounds = true
+        if let cachedImage = imageCache.object(forKey: "userPicture") {
+            self.profilePic.image = cachedImage
+        } else {
+            // Get a reference to the storage service using the default Firebase App
+            let storage = Storage.storage()
+            
+            // Create a storage reference from our storage service
+            let storageRef = storage.reference()
+            let imageRef = storageRef.child("/profilePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "").jpeg")
+            
+            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+            imageRef.getData(maxSize: 1 * 5120 * 5120) { data, error in
+                if let error = error {
+                    print("Error: ", error)
+                } else {
+                    let image = UIImage(data: data!)
+                    self.imageCache.setObject(image!, forKey: "userPicture")
+                    self.profilePic.image = image
+                }
             }
         }
     }
@@ -83,13 +85,11 @@ class ProfileController: UITableViewController {
                 Firebase.Auth.auth().currentUser?.delete(completion: { (error) in
                     if error != nil {
                         print("Account deletion failed: ", error ?? "")
+                        return
                     }
+                    self.navigationController?.popToRootViewController(animated: true)
+                    self.performSegue(withIdentifier: "goToAuth", sender: nil)
                 })
-                
-                let mainStoryboard = UIStoryboard(name: "Auth", bundle: nil)
-                let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Auth") as UIViewController
-                let navigationController = UINavigationController(rootViewController: rootViewController)
-                navigationController.isNavigationBarHidden = true
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in

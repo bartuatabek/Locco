@@ -179,20 +179,13 @@ class GeoPlacesController: UIViewController {
     }
 }
 
-// MARK: - TableView Delegate
-extension GeoPlacesController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
 // MARK: - MapView Delegate
 extension GeoPlacesController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "GeoPlaces"
         if annotation is MKUserLocation {
             let userPin = mapView.view(for: annotation) ?? MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
-            let userPinImage = UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: PinColors.color2.colors).overlayWith(image: UIImage(named: "bartu")!.resizeImageWith(newSize: CGSize(width: 36, height: 36)).maskRoundedImage(), posX: 3, posY: 3)
+            let userPinImage = UIImage(named: "CurrentLocationPin")!.overlayWith(image: UIImage(named: "bartu")!.resizeImageWith(newSize: CGSize(width: 39, height: 39)).maskRoundedImage(), posX: 6, posY: 4)
             userPin.isEnabled = false
             userPin.image = userPinImage
             return userPin
@@ -229,17 +222,26 @@ extension GeoPlacesController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let geotification = view.annotation as! GeoPlace
         addRadiusOverlay(forGeotification: geotification)
+        view.image = view.image!.resizeImageWith(newSize: CGSize(width: 60, height: 60))
+        
+        let currentIndex = viewModel?.geoPlaces.index(of: geotification)
+        viewModel?.activeGeoPlaceIndex = currentIndex!
+        
+        let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
+            .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
+        placeDetailDrawerController?.viewModel = self.viewModel
+        addPullUpController(placeDetailDrawerController!, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         let geotification = view.annotation as! GeoPlace
         removeRadiusOverlay(forGeotification: geotification)
+        addPlacesDrawerPullUpController()
     }
     
     // animate annotation views drop
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         for annView in views {
-            
             // animate any annotation views except the user pin
             if !(annView.annotation?.isKind(of: MKUserLocation.self))! {
                 let endFrame = annView.frame

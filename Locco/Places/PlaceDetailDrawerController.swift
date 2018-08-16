@@ -22,7 +22,7 @@ class PlaceDetailDrawerController: PullUpController {
     @IBOutlet weak var placeNameLabel: UILabel!
     @IBOutlet weak var placeDetailLabel: UILabel!
     @IBOutlet weak var placeImagesCollection: UICollectionView!
-        
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         pinIcon.image = UIImage(named: "Pin")!

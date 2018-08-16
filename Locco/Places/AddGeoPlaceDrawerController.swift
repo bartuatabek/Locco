@@ -38,6 +38,7 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
             let gesture = UITapGestureRecognizer(target: self, action: #selector(checkAction))
             pinColor.addGestureRecognizer(gesture)
         }
+        imagePicker.modalPresentationStyle = .overFullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -176,26 +177,28 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
             pinColor.layer.shadowOpacity = 0.0
         }
         
-        if sender.view?.tag == 0 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color1
-        } else if sender.view?.tag == 1 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color2
-        } else if sender.view?.tag == 2 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color3
-        } else if sender.view?.tag == 3 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color4
-        } else if sender.view?.tag == 4 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color5
-        } else if sender.view?.tag == 5 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color6
-        } else if sender.view?.tag == 6 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color7
-        } else if sender.view?.tag == 7 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color8
-        } else if sender.view?.tag == 8 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color9
-        } else if sender.view?.tag == 9 {
-            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color10
+        if (viewModel?.activeGeoPlaceIndex)! >= 0 {
+            if sender.view?.tag == 0 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color1
+            } else if sender.view?.tag == 1 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color2
+            } else if sender.view?.tag == 2 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color3
+            } else if sender.view?.tag == 3 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color4
+            } else if sender.view?.tag == 4 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color5
+            } else if sender.view?.tag == 5 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color6
+            } else if sender.view?.tag == 6 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color7
+            } else if sender.view?.tag == 7 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color8
+            } else if sender.view?.tag == 8 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color9
+            } else if sender.view?.tag == 9 {
+                viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor = PinColors.color10
+            }
         }
         
         sender.view?.addShadowWithBorders()

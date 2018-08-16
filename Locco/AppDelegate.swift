@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import FBSDKCoreKit
 import GoogleSignIn
 import CoreLocation
@@ -50,10 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         
         // MARK: - User Defaults
-//        let userDefaults = UserDefaults.standard
-//        if userDefaults.value(forKey: "appFirstTimeOpend") == nil {
-//            //if app is first time opened then it will be nil
-//            userDefaults.setValue(true, forKey: "appFirstTimeOpend")
+//        if UserDefaults.standard.object(forKey: "appFirstTimeOpend") == nil {
+//            // if app is first time opened then it will be nil
+//            UserDefaults.standard.set(true, forKey: "appFirstTimeOpend")
 //            // signOut from FIRAuth
 //            do {
 //                try Firebase.Auth.auth().signOut()
@@ -63,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 //            } catch {
 //                print("Sign out failed: ", error)
 //            }
-//            // go to beginning of app
 //        } else {
             if let providerData = Firebase.Auth.auth().currentUser?.providerData {
                 for userInfo in providerData {
@@ -92,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 }
             }
 //        }
-        
+    
         return true
     }
     

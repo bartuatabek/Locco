@@ -271,20 +271,6 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
             locationManager.stopMonitoring(for: circularRegion)
         }
     }
-    
-    //    func addPlaceImage(image: UIImage?, placeName: String?) {
-    //        let storage = Storage.storage()
-    //        var data = Data()
-    //        if let photo = image { data = photo.pngData()! }
-    //
-    //        // Create a storage reference from our storage service
-    //        let storageRef = storage.reference()
-    //        let imageRef = storageRef.child("/placePictures/\(Firebase.Auth.auth().currentUser?.uid ?? "")/\(placeName ?? "")/\(NSUUID().uuidString).jpeg")
-    //        // Create file metadata including the content type
-    //        let metadata = StorageMetadata()
-    //        metadata.contentType = "image/jpeg"
-    //        imageRef.putData(data, metadata: metadata)
-    //    }
 }
 
 // MARK: - Location Manager Delegate

@@ -245,6 +245,7 @@ class AuthViewModel: AuthViewModeling {
                 print("Login failed: ", error ?? "")
             } else if (Firebase.Auth.auth().currentUser?.isEmailVerified)! {
                 print("Login Successful")
+                self.sendRegistrationToken()
                 let mainStoryboard = UIStoryboard(name: "Home", bundle: nil)
                 let rootViewController = mainStoryboard.instantiateViewController(withIdentifier: "Home") as UIViewController
                 self.controller?.present(rootViewController, animated: true, completion: nil)
