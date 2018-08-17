@@ -86,7 +86,7 @@ extension PlacesDrawerController: UISearchBarDelegate {
         } else {
             isSearching = true
             filteredData = (viewModel?.geoPlaces.filter({(place : GeoPlace) -> Bool in
-                return place.name.lowercased().contains(searchText.lowercased())
+                return place.title!.lowercased().contains(searchText.lowercased())
             }))!
             tableView.reloadData()
         }
@@ -126,9 +126,9 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
             else {return UITableViewCell()}
         
         if isSearching {
-            cell.configure(pinColor: filteredData[indexPath.row].pinColor.colors, title: filteredData[indexPath.row].name, subtitle: filteredData[indexPath.row].placeDetail)
+            cell.configure(pinColor: filteredData[indexPath.row].pinColor.colors, title: filteredData[indexPath.row].title!, subtitle: filteredData[indexPath.row].placeDetail)
         } else {
-            cell.configure(pinColor: (viewModel?.geoPlaces[indexPath.row].pinColor.colors)!, title: (viewModel?.geoPlaces[indexPath.row].name)!, subtitle: (viewModel?.geoPlaces[indexPath.row].placeDetail)!)
+            cell.configure(pinColor: (viewModel?.geoPlaces[indexPath.row].pinColor.colors)!, title: (viewModel?.geoPlaces[indexPath.row].title)!, subtitle: (viewModel?.geoPlaces[indexPath.row].placeDetail)!)
         }
         
         cell.delegate = self as SwipeTableViewCellDelegate
@@ -142,11 +142,8 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
         removePullUpController(self, animated: true)
         viewModel?.activeGeoPlaceIndex = indexPath.row
         
-        let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
-            .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
-        placeDetailDrawerController?.viewModel = self.viewModel
-        
-        (parent as? GeoPlacesController)?.addPullUpController(placeDetailDrawerController!, animated: true)
+        let currentGeoPlace = viewModel!.geoPlaces[indexPath.row] as MKAnnotation
+        (parent as? GeoPlacesController)?.mapView.selectAnnotation(((parent as? GeoPlacesController)?.mapView.annotations[((parent as? GeoPlacesController)!.mapView.annotations as NSArray).index(of: currentGeoPlace)])!, animated: true)
         (parent as? GeoPlacesController)?.zoom(to: viewModel!.geoPlaces[indexPath.row].coordinate)
     }
 }

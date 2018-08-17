@@ -27,7 +27,7 @@ class PlaceDetailDrawerController: PullUpController {
         super.viewWillAppear(animated)
         pinIcon.image = UIImage(named: "Pin")!
             .tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
-        placeNameLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].name
+        placeNameLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title
         placeDetailLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail
     }
     

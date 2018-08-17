@@ -151,7 +151,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
             }
             
             let parameters: Parameters = [
-                "name": geotification.name,
+                "title": geotification.title!,
                 "placeDetail": geotification.placeDetail,
                 "color": geotification.pinColor.rawValue,
                 "radius": geotification.radius,
@@ -187,7 +187,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
             }
             
             let parameters: Parameters = [
-                "name": geotification.name,
+                "title": geotification.title!,
                 "placeDetail": geotification.placeDetail,
                 "color": geotification.pinColor.rawValue,
                 "radius": geotification.radius,

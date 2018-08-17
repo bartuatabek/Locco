@@ -49,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance()?.delegate = self
         FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        
         // MARK: - User Defaults
 //        if UserDefaults.standard.object(forKey: "appFirstTimeOpend") == nil {
 //            // if app is first time opened then it will be nil
@@ -122,7 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedPlaces) as? [NSData]
         let geotifications = savedItems?.map { NSKeyedUnarchiver.unarchiveObject(with: $0 as Data) as? GeoPlace }
         let index = geotifications?.index { $0?.identifier == identifier }
-        return index != nil ? geotifications?[index!]?.name : nil
+        return index != nil ? geotifications?[index!]?.title : nil
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -273,7 +272,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
 
 extension AppDelegate: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
             handleEvent(forRegion: region)

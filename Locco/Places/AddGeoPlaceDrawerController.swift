@@ -17,7 +17,7 @@ import PullUpController
 class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate {
     
     var viewModel: GeoPlacesViewModeling?
-    var imagePicker = UIImagePickerController()
+    var editLocationView: UIImageView?
     
     // MARK: - IBOutlets
     @IBOutlet weak var separatorView: UIView! {
@@ -38,14 +38,13 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
             let gesture = UITapGestureRecognizer(target: self, action: #selector(checkAction))
             pinColor.addGestureRecognizer(gesture)
         }
-        imagePicker.modalPresentationStyle = .overFullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (viewModel?.activeGeoPlaceIndex)! >= 0 {
-            titleLabel.placeholder = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].name
+            titleLabel.placeholder = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title
             subtitleLabel.placeholder = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail
             radiusSlider.value = Float((viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].radius)!)
             
@@ -101,69 +100,33 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
         }
     }
     
-    @IBAction func addPhoto(_ sender: Any) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        var image = UIImage(named: "camera")
-        var action = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
-            self.openCamera()
-        })
-        
-        action.setValue(image, forKey: "image")
-        alert.addAction(action)
-        
-        image = UIImage(named: "picture")
-        action = UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
-            self.openGallery()
-        })
-        
-        action.setValue(image, forKey: "image")
-        alert.addAction(action)
-        
-        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    // MARK: - Open the camera
-    func openCamera() {
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
-            if response {
-                if UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
-                    self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
-                    self.imagePicker.allowsEditing = true
-                    self.imagePicker.delegate = self
-                    self.present(self.imagePicker, animated: true, completion: nil)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Choose image from camera roll
-    func openGallery() {
-        let photos = PHPhotoLibrary.authorizationStatus()
-        if photos == .notDetermined {
-            PHPhotoLibrary.requestAuthorization({status in
-                if status == .authorized {
-                    self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-                    self.imagePicker.allowsEditing = true
-                    self.imagePicker.delegate = self
-                    self.present(self.imagePicker, animated: true, completion: nil)
-                }
-            })
-        } else if photos == .authorized {
-            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-            self.imagePicker.allowsEditing = true
-            self.imagePicker.delegate = self
-            self.present(self.imagePicker, animated: true, completion: nil)
-        }
-    }
-    
     @IBAction func editLocation(_ sender: Any) {
-        
+        self.pullUpControllerMoveToVisiblePoint(75, animated: true) {
+            self.view.isUserInteractionEnabled = false
+
+            let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+            (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
+
+            self.editLocationView = UIImageView(image: UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: (currentGeoPlace as! GeoPlace).pinColor.colors))
+            self.editLocationView!.frame = CGRect(x: ((self.parent as? GeoPlacesController)?.view.frame.width)!/2 - 22.5, y: ((self.parent as? GeoPlacesController)?.view.frame.height)!/2 - 27, width: 45, height: 54)
+            (self.parent as? GeoPlacesController)?.view.addSubview(self.editLocationView!)
+        }
     }
-    
+
     @IBAction func sliderEditingChanged(_ sender: Any) {
         viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].radius = CLLocationDistance(radiusSlider.value)
+    }
+    
+    @objc func saveLocationChanges() {
+        editLocationView?.removeFromSuperview()
+        
+        self.pullUpControllerMoveToVisiblePoint(363, animated: true) {
+            self.view.isUserInteractionEnabled = true
+            
+            let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+            (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
+            (self.parent as? GeoPlacesController)?.mapView.addAnnotation(currentGeoPlace)
+        }
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
@@ -215,21 +178,5 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     
     override var pullUpControllerPreviewOffset: CGFloat {
         return 363
-    }
-    
-//    override var pullUpControllerMiddleStickyPoints: [CGFloat] {
-//         return [80]
-//    }
-}
-
-// MARK: - UIImagePickerControllerDelegate
-extension AddGeoPlaceDrawerController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-//            self.userPicture.image = editedImage
-//        }
-        
-        //Dismiss the UIImagePicker after selection
-        picker.dismiss(animated: true, completion: nil)
     }
 }

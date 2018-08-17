@@ -20,7 +20,7 @@ protocol AuthViewModeling {
     var controller: UIViewController? { get set }
     var errorMessage: MutableProperty<String> { get }
     var errorLabelTint: MutableProperty<UIColor> { get }
-    var verificationTimer : Timer { get set }
+    var verificationTimer : Timer? { get set }
     
     func fbLogin()
     func googleLogin()
@@ -52,7 +52,7 @@ class AuthViewModel: AuthViewModeling {
     let errorLabelTint: MutableProperty<UIColor>
     
     weak var controller: UIViewController?
-    var verificationTimer : Timer = Timer()
+    var verificationTimer : Timer?
     
     // MARK: - Initialization
     init() {
@@ -231,7 +231,9 @@ class AuthViewModel: AuthViewModeling {
                 }
                 else {
                     print("Verification link sent")
-                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                    if self.verificationTimer == nil {
+                        self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                    }
                 }
             })
         }
@@ -254,7 +256,9 @@ class AuthViewModel: AuthViewModeling {
                 let rootViewController = self.controller?.storyboard?.instantiateViewController(withIdentifier: "Verify") as! AuthMailRegController
                 rootViewController.viewModel = self
                 self.controller?.navigationController?.pushViewController(rootViewController, animated: true)
-                self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                if self.verificationTimer == nil {
+                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                }
             }
         }
     }
@@ -294,7 +298,7 @@ class AuthViewModel: AuthViewModeling {
         Firebase.Auth.auth().currentUser?.reload(completion: { (error) in
             if error == nil {
                 if  Firebase.Auth.auth().currentUser!.isEmailVerified {
-                    self.verificationTimer.invalidate()
+                    self.verificationTimer!.invalidate()
                     
                     self.sendRegistrationToken()
                     let mainStoryboard = UIStoryboard(name: "Auth", bundle: nil)

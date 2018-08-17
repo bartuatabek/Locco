@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 
 struct GeoKey {
-    static let name = "name"
+    static let title = "title"
     static let placeDetail = "placeDetail"
     static let identifier = "identifier"
     static let pinColor = "pinColor"
@@ -24,7 +24,7 @@ struct GeoKey {
 
 class GeoPlace: NSObject, NSCoding, MKAnnotation {
 
-    var name: String
+    var title: String?
     var placeDetail: String
     var identifier: String
     var pinColor: PinColors
@@ -34,7 +34,7 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
     var onExit: Bool
     
     init(name: String, placeDetail: String, identifier: String, pinColor: PinColors, radius: CLLocationDistance, coordinate: CLLocationCoordinate2D, onEntry: Bool, onExit: Bool) {
-        self.name = name
+        self.title = name
         self.placeDetail = placeDetail
         self.identifier = identifier
         self.pinColor = pinColor
@@ -46,7 +46,7 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
     
     // MARK: NSCoding
     required init?(coder decoder: NSCoder) {
-        name = decoder.decodeObject(forKey: GeoKey.name) as! String
+        title = decoder.decodeObject(forKey: GeoKey.title) as! String?
         placeDetail = decoder.decodeObject(forKey: GeoKey.placeDetail) as! String
         identifier = decoder.decodeObject(forKey: GeoKey.identifier) as! String
         pinColor = decoder.decodeObject(forKey: GeoKey.pinColor) as! PinColors
@@ -59,7 +59,7 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(name, forKey: GeoKey.name)
+        coder.encode(title, forKey: GeoKey.title)
         coder.encode(placeDetail, forKey: GeoKey.placeDetail)
         coder.encode(identifier, forKey: GeoKey.identifier)
         coder.encode(pinColor, forKey: GeoKey.pinColor)
