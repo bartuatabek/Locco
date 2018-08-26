@@ -124,6 +124,7 @@ class GeoPlacesController: UIViewController {
     
     // MARK: Functions that update the associated views with geotification changes
     func loadPlaces() {
+//        viewModel?.loadAllGeotifications()
         viewModel!.updateAllGeotifications(completion: { (result) in
             if result {
                 self.pullUpController?.refreshTableView()

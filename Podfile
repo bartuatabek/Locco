@@ -7,6 +7,7 @@ target 'Locco' do
     pod 'Alamofire'
     pod 'MessageKit'
     pod 'SwiftyJSON'
+    pod 'BouncyLayout'
     pod 'GoogleSignIn'
     pod 'ReactiveCocoa'
     pod 'FBSDKLoginKit'

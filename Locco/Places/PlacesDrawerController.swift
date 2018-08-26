@@ -37,6 +37,24 @@ class PlacesDrawerController: PullUpController {
         willMoveToStickyPoint = { point in
             self.view.endEditing(true)
         }
+        
+        let cornerRadius: CGFloat = 16
+        let sideLength = view.frame.width
+        let blur: CGFloat = cornerRadius * 0.6
+        let shouldDrawCapInsets = false
+        
+        let shadow = Shadow(offset: CGSize(width: 0, height: 0), blur: blur, color: .lightGray)
+        let image = UIImage.resizableShadowImage(withSideLength: sideLength, cornerRadius: cornerRadius, shadow: shadow, shouldDrawCapInsets: shouldDrawCapInsets)
+        let shadowView = UIImageView(image: image)
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shadowView)
+        
+        NSLayoutConstraint.activate([
+            shadowView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -8),
+            shadowView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: blur),
+            shadowView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: blur),
+            shadowView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: -blur),
+            ])
     }
     
     override func viewDidLayoutSubviews() {

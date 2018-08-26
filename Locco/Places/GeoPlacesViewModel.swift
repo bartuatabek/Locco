@@ -15,7 +15,7 @@ import ReactiveCocoa
 import FirebaseStorage
 
 struct PreferencesKeys {
-    static let savedPlaces = "savedPlaces"
+    static let savedPlaces = "\(Firebase.Auth.auth().currentUser?.uid ?? "unauthorized")-savedPlaces"
 }
 
 protocol GeoPlacesViewModeling {
@@ -33,8 +33,6 @@ protocol GeoPlacesViewModeling {
     func region(withGeotification geotification: GeoPlace) -> CLCircularRegion
     func startMonitoring(geotification: GeoPlace)
     func stopMonitoring(geotification: GeoPlace)
-    
-    //    func addPlaceImage(image: UIImage?, placeName: String?)
 }
 
 class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
@@ -133,6 +131,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                             
                             self.geoPlaces.append(GeoPlace(name: name, placeDetail: placeDetail, identifier: identifier, pinColor: pinColor, radius: radius, coordinate: CLLocationCoordinate2DMake(latitude, longitude), onEntry: onEntry, onExit: onExit))
                         }
+                        self.saveAllGeotifications()
                         completion(true)
                     } else {
                         completion(false)
