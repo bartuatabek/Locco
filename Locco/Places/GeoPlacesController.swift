@@ -54,7 +54,7 @@ class GeoPlacesController: UIViewController {
     
     func setup() {
         loadPlaces()
-//        configureTileOverlay()
+        configureTileOverlay()
         mapView.layer.cornerRadius = 16.0
         controlsContainer.layer.cornerRadius = 10.0
         controlsContainer.clipsToBounds = true
@@ -124,7 +124,6 @@ class GeoPlacesController: UIViewController {
     
     // MARK: Functions that update the associated views with geotification changes
     func loadPlaces() {
-//        viewModel?.loadAllGeotifications()
         viewModel!.updateAllGeotifications(completion: { (result) in
             if result {
                 self.pullUpController?.refreshTableView()

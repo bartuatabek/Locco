@@ -13,6 +13,9 @@ class ChatController: UIViewController {
     
     var viewModel: ChatViewModeling?
     var filteredData = [String:String]()
+    var items = [UIBarButtonItem(title: "Read All", style: .plain, target: self, action: nil),
+                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                 UIBarButtonItem(title: "Delete", style: .plain, target: self, action: nil)]
     var isSearching = false
     
     // MARK: - IBOutlets
@@ -28,7 +31,28 @@ class ChatController: UIViewController {
             navigationItem.searchController = searchController
         }
         navigationController!.view.backgroundColor = UIColor(red: 237/255, green: 236/255, blue: 242/255, alpha: 1.0)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        let backButtonWithBadge = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        backButtonWithBadge.setBadge(text: "5")
+        navigationItem.backBarButtonItem = backButtonWithBadge
+    }
+    
+    // MARK: - Button Actions
+    @IBAction func edit(_ sender: Any) {
+        if tableView.isEditing {
+            tableView.allowsSelection = true
+            tableView.setEditing(false, animated: true)
+            self.navigationController?.setToolbarHidden(true, animated: true)
+            self.navigationItem.leftBarButtonItem?.style = .plain
+            self.navigationItem.leftBarButtonItem?.title = "Edit"
+        } else {
+            tableView.allowsSelection = false
+            tableView.setEditing(true, animated: true)
+            self.navigationItem.leftBarButtonItem?.title = "Cancel"
+            self.navigationItem.leftBarButtonItem?.style = .done
+            self.navigationController?.setToolbarHidden(false, animated: true)
+            self.navigationController?.toolbar.items = items
+            items[2].isEnabled = false
+        }
     }
 }
 
@@ -60,7 +84,10 @@ extension ChatController: UITableViewDataSource, UITableViewDelegate {
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        view.endEditing(true)
+        
+        if !tableView.isEditing {
+            navigationController?.pushViewController(ConversationViewController(), animated: true)
+        }
     }
 }
 

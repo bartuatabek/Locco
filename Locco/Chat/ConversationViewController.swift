@@ -7,12 +7,16 @@
 //
 
 import UIKit
-import MessageKit
 import MapKit
+import EventKit
+import Lightbox
+import EventKitUI
+import MessageKit
 
 internal class ConversationViewController: MessagesViewController {
-    
+  
     let refreshControl = UIRefreshControl()
+    let eventStore = EKEventStore()
     
     var messageList: [MockMessage] = []
     
@@ -26,7 +30,7 @@ internal class ConversationViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         self.iMessage()
         let messagesToFetch = UserDefaults.standard.mockMessagesCount()
         
@@ -185,6 +189,14 @@ internal class ConversationViewController: MessagesViewController {
     }
 }
 
+// MARK: - EKEventEditView Delegate
+extension ConversationViewController: EKEventEditViewDelegate {
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        self.view.endEditing(true)
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 // MARK: - MessagesDataSource
 
 extension ConversationViewController: MessagesDataSource {
@@ -244,7 +256,7 @@ extension ConversationViewController: MessagesDisplayDelegate {
     }
     
     func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedString.Key: Any] {
-        return MessageLabel.defaultAttributes
+        return isFromCurrentSender(message: message) ? MessageLabel.defaultAttributes: MessageLabel.customAttributes
     }
     
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
@@ -274,9 +286,26 @@ extension ConversationViewController: MessagesDisplayDelegate {
         //        return .custom(configurationClosure)
     }
     
+    // FIXME: Remove Avatars from grouped messages
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        let avatar = SampleData.shared.getAvatarFor(sender: message.sender)
-        avatarView.set(avatar: avatar)
+        if indexPath.section + 1 < messageList.count {
+            if message.sender.id == messageList[indexPath.section+1].sender.id {
+                avatarView.isHidden = true
+                if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+                    layout.textMessageSizeCalculator.outgoingAvatarSize = .zero
+                    layout.textMessageSizeCalculator.incomingAvatarSize = .zero
+                }
+            }
+        } else if isFromCurrentSender(message: message) {
+            avatarView.isHidden = true
+            if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+                layout.textMessageSizeCalculator.outgoingAvatarSize = .zero
+                layout.textMessageSizeCalculator.incomingAvatarSize = .zero
+            }
+        } else {
+            let avatar = SampleData.shared.getAvatarFor(sender: message.sender)
+            avatarView.set(avatar: avatar)
+        }
     }
     
     // MARK: - Location Messages
@@ -337,6 +366,16 @@ extension ConversationViewController: MessageCellDelegate {
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
         print("Message tapped")
+        // FIXME: Display image & video
+//        MessagesDataSource.messageForItem(at:messagesCollectionView.indexPath(for: cell), in: messagesCollectionView)
+//        switch message.kind {
+//        case .video:
+//            print("video")
+//        case .photo:
+//            print("video")
+//        default:
+//            print("fuu")
+//        }
     }
     
     func didTapCellTopLabel(in cell: MessageCollectionViewCell) {
@@ -359,18 +398,77 @@ extension ConversationViewController: MessageLabelDelegate {
     
     func didSelectAddress(_ addressComponents: [String: String]) {
         print("Address Selected: \(addressComponents)")
+        // TODO: Add new Place
     }
     
     func didSelectDate(_ date: Date) {
         print("Date Selected: \(date)")
+        
+        let alert = UIAlertController(title: "", message: MessageKitDateFormatter.shared.string(from: date), preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Create Event", style: .default , handler:{ (UIAlertAction) in
+            switch EKEventStore.authorizationStatus(for: EKEntityType.event) {
+            case EKAuthorizationStatus.notDetermined:
+                self.eventStore.requestAccess(to: .event, completion: { (isAllowed, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    if isAllowed {
+                        let eventViewController = EKEventEditViewController()
+                        eventViewController.event = EKEvent(eventStore: self.eventStore)
+                        eventViewController.eventStore = self.eventStore
+                        eventViewController.editViewDelegate = self
+                        self.present(eventViewController, animated:true, completion: nil)
+                    }
+                })
+     
+            case EKAuthorizationStatus.authorized:
+                let eventViewController = EKEventEditViewController()
+                eventViewController.event = EKEvent(eventStore: self.eventStore)
+                eventViewController.eventStore = self.eventStore
+                eventViewController.editViewDelegate = self
+                self.present(eventViewController, animated:true, completion: nil)
+          
+            case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+                self.eventStore.requestAccess(to: .event, completion: { (isAllowed, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    if isAllowed {
+                        let eventViewController = EKEventEditViewController()
+                        eventViewController.event = EKEvent(eventStore: self.eventStore)
+                        eventViewController.eventStore = self.eventStore
+                        eventViewController.editViewDelegate = self
+                        self.present(eventViewController, animated:true, completion: nil)
+                    }
+                })
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Show in Calendar", style: .default , handler:{ (UIAlertAction) in
+             guard let calendar = URL(string: "calshow://") else { return }
+             UIApplication.shared.open(calendar, options: [:], completionHandler: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Copy Event", style: .default , handler:{ (UIAlertAction) in
+            UIPasteboard.general.string = MessageKitDateFormatter.shared.string(from: date)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func didSelectPhoneNumber(_ phoneNumber: String) {
         print("Phone Number Selected: \(phoneNumber)")
+        guard let number = URL(string: "tel://" + phoneNumber) else { return }
+        UIApplication.shared.open(number, options: [:], completionHandler: nil)
     }
     
     func didSelectURL(_ url: URL) {
         print("URL Selected: \(url)")
+        UIApplication.shared.open(url)
     }
     
     func didSelectTransitInformation(_ transitInformation: [String: String]) {

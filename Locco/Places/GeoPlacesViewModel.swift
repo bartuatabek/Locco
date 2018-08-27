@@ -49,7 +49,6 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         activeGeoPlaceIndex = -1
         locationManager = CLLocationManager()
         super.init()
-        loadAllGeotifications()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
     }
@@ -60,7 +59,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         guard let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedPlaces) else { return }
         for savedItem in savedItems {
             guard let geotification = NSKeyedUnarchiver.unarchiveObject(with: savedItem as! Data) as? GeoPlace else { continue }
-            add(geotification: geotification)
+            geoPlaces.append(geotification)
         }
     }
     
@@ -90,12 +89,10 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                 .responseJSON { response in
                     if response.result.isSuccess {
                         let placeJSON: JSON = JSON(response.result.value!)
-                        
                         for (_, subJson) in placeJSON["data"] {
-                            let name = subJson["name"].string!
+                            let name = subJson["title"].string!
                             let placeDetail = subJson["placeDetail"].string!
                             let identifier = subJson["id"].string!
-                            
                             let color = subJson["color"]
                             var pinColor: PinColors
                             

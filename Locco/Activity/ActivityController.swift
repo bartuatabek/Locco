@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ActivityController: UIViewController {
+class ActivityController: UITableViewController {
     
     var viewModel: ActivityViewModeling?
     

@@ -23,7 +23,6 @@
 		8D1C4CAF21012C8600455D89 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CAE21012C8600455D89 /* Utilities.swift */; };
 		8D1C4CB321012E1E00455D89 /* AddGeoPlaceDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C4CB221012E1E00455D89 /* AddGeoPlaceDrawerController.swift */; };
 		8D205F032103892B000A0781 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D205F022103892B000A0781 /* FormTextField.swift */; };
-		8D67FFA721276BEF0099B419 /* RoundedShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D67FFA621276BEF0099B419 /* RoundedShadowView.swift */; };
 		8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */; };
 		8DFA4572212CA49900ED9A8F /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA4571212CA49900ED9A8F /* ConversationViewController.swift */; };
 		8DFA4574212CA4C100ED9A8F /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA4573212CA4C100ED9A8F /* SampleData.swift */; };
@@ -73,7 +72,6 @@
 		8D1C4CAE21012C8600455D89 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		8D1C4CB221012E1E00455D89 /* AddGeoPlaceDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeoPlaceDrawerController.swift; sourceTree = "<group>"; };
 		8D205F022103892B000A0781 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
-		8D67FFA621276BEF0099B419 /* RoundedShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowView.swift; sourceTree = "<group>"; };
 		8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMailRegController.swift; sourceTree = "<group>"; };
 		8DFA4571212CA49900ED9A8F /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		8DFA4573212CA4C100ED9A8F /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 				BFF7063021061E3000245438 /* RoundedButton.swift */,
 				BFC0A3D3211C84FF00032435 /* RoundedImage.swift */,
 				BFB51A85210B2A17000A5F2C /* GradientView.swift */,
-				8D67FFA621276BEF0099B419 /* RoundedShadowView.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -389,13 +386,18 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/BouncyLayout/BouncyLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
+				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MapKitGoogleStyler/MapKitGoogleStyler.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -418,13 +420,18 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BouncyLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapKitGoogleStyler.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -512,7 +519,6 @@
 				BF3F43CF20FF2A7E00DF3E69 /* ChatController.swift in Sources */,
 				8D1C4CAF21012C8600455D89 /* Utilities.swift in Sources */,
 				8D1B01252104C94600A78DE0 /* PlacesDrawerController.swift in Sources */,
-				8D67FFA721276BEF0099B419 /* RoundedShadowView.swift in Sources */,
 				84F1597E20F3A0D5006B3892 /* AuthHomeController.swift in Sources */,
 				8D1C4CB321012E1E00455D89 /* AddGeoPlaceDrawerController.swift in Sources */,
 				BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */,

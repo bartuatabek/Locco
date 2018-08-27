@@ -49,20 +49,45 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
         title = decoder.decodeObject(forKey: GeoKey.title) as! String?
         placeDetail = decoder.decodeObject(forKey: GeoKey.placeDetail) as! String
         identifier = decoder.decodeObject(forKey: GeoKey.identifier) as! String
-        pinColor = decoder.decodeObject(forKey: GeoKey.pinColor) as! PinColors
+        let color = decoder.decodeObject(forKey: GeoKey.pinColor) as! String
+        
+        if color == PinColors.color1.rawValue {
+            pinColor = PinColors.color1
+        } else if color == PinColors.color2.rawValue {
+            pinColor = PinColors.color2
+        } else if color == PinColors.color3.rawValue {
+            pinColor = PinColors.color3
+        } else if color == PinColors.color4.rawValue {
+            pinColor = PinColors.color4
+        } else if color == PinColors.color5.rawValue {
+            pinColor = PinColors.color5
+        } else if color == PinColors.color6.rawValue {
+            pinColor = PinColors.color6
+        } else if color == PinColors.color7.rawValue {
+            pinColor = PinColors.color7
+        } else if color == PinColors.color8.rawValue {
+            pinColor = PinColors.color8
+        } else if color == PinColors.color9.rawValue {
+            pinColor = PinColors.color9
+        } else if color == PinColors.color10.rawValue {
+            pinColor = PinColors.color10
+        } else {
+            pinColor = PinColors.color2
+        }
+        
         radius = decoder.decodeDouble(forKey: GeoKey.radius)
         let latitude = decoder.decodeDouble(forKey: GeoKey.latitude)
         let longitude = decoder.decodeDouble(forKey: GeoKey.longitude)
         coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        onEntry = decoder.decodeObject(forKey: GeoKey.onEntry) as! Bool
-        onExit = decoder.decodeObject(forKey: GeoKey.onExit) as! Bool
+        onEntry = decoder.decodeBool(forKey: GeoKey.onEntry)
+        onExit = decoder.decodeBool(forKey: GeoKey.onExit)
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(title, forKey: GeoKey.title)
         coder.encode(placeDetail, forKey: GeoKey.placeDetail)
         coder.encode(identifier, forKey: GeoKey.identifier)
-        coder.encode(pinColor, forKey: GeoKey.pinColor)
+        coder.encode(pinColor.rawValue, forKey: GeoKey.pinColor)
         coder.encode(radius, forKey: GeoKey.radius)
         coder.encode(coordinate.latitude, forKey: GeoKey.latitude)
         coder.encode(coordinate.longitude, forKey: GeoKey.longitude)

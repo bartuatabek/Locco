@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,7 +13,7 @@
         <scene sceneID="nn0-tA-K3D">
             <objects>
                 <tableViewController storyboardIdentifier="Chat" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mnj-V2-Uqe" customClass="ChatController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="84" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ECD-45-ich">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="84" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ECD-45-ich">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -178,10 +177,6 @@
                                     <outlet property="subtitleLabel" destination="M7D-aM-08S" id="BRp-fI-ASb"/>
                                     <outlet property="titleLabel" destination="YCS-IS-oao" id="udT-xO-cjy"/>
                                     <outlet property="unreadMessageCount" destination="Bvm-07-GoC" id="ajM-kd-M7e"/>
-                                    <segue destination="h39-Ut-fTm" kind="show" identifier="goToChatDetail" id="I3i-Tz-lem">
-                                        <segue key="commit" inheritsFrom="parent" id="ztU-is-zAt"/>
-                                        <segue key="preview" inheritsFrom="commit" id="UJQ-4o-KQe"/>
-                                    </segue>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -193,7 +188,11 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="" image="chat" selectedImage="messagesPressed" id="i1U-9C-vUQ"/>
                     <navigationItem key="navigationItem" title="Messages" id="E8i-kc-eW7">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="pQC-fZ-zjh"/>
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="pQC-fZ-zjh">
+                            <connections>
+                                <action selector="edit:" destination="mnj-V2-Uqe" id="d0B-5e-etT"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="BTg-FT-naF"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -204,23 +203,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KMV-z4-YLK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1741.5999999999999" y="62.807881773399018"/>
-        </scene>
-        <!--Circle Name-->
-        <scene sceneID="9wy-9k-Fkb">
-            <objects>
-                <viewController storyboardIdentifier="ChatDetail" title="Circle Name" useStoryboardIdentifierAsRestorationIdentifier="YES" id="h39-Ut-fTm" customClass="ConversationViewController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="UcJ-wp-AGr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="QHJ-uK-mFZ"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Circle Name" largeTitleDisplayMode="never" id="qZL-cl-YPk"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3jJ-cp-rpx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2742" y="63"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TXp-Fm-2yT">
@@ -244,7 +226,4 @@
         <image name="chat" width="25" height="25"/>
         <image name="messagesPressed" width="25" height="25"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="I3i-Tz-lem"/>
-    </inferredMetricsTieBreakers>
 </document>
