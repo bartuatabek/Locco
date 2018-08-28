@@ -17,7 +17,6 @@ import PullUpController
 class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate {
     
     var viewModel: GeoPlacesViewModeling?
-    var editLocationView: UIImageView?
     
     // MARK: - IBOutlets
     @IBOutlet weak var separatorView: UIView! {
@@ -104,29 +103,30 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
         self.pullUpControllerMoveToVisiblePoint(75, animated: true) {
             self.view.isUserInteractionEnabled = false
 
-            let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
-            (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
-
-            self.editLocationView = UIImageView(image: UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: (currentGeoPlace as! GeoPlace).pinColor.colors))
-            self.editLocationView!.frame = CGRect(x: ((self.parent as? GeoPlacesController)?.view.frame.width)!/2 - 22.5, y: ((self.parent as? GeoPlacesController)?.view.frame.height)!/2 - 27, width: 45, height: 54)
-            (self.parent as? GeoPlacesController)?.view.addSubview(self.editLocationView!)
+            if (self.viewModel?.activeGeoPlaceIndex)! >= 0 {
+                let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+                let annotationView = (self.parent as? GeoPlacesController)?.mapView.view(for: currentGeoPlace)
+                (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
+                (self.parent as? GeoPlacesController)?.removeRadiusOverlay(forGeotification: currentGeoPlace as! GeoPlace)
+                self.viewModel?.isEditing = true
+                annotationView?.isDraggable = true
+            }
+            
+//            self.editLocationView = UIImageView(image: UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: (currentGeoPlace as! GeoPlace).pinColor.colors))
+//            self.editLocationView!.frame = CGRect(x: ((self.parent as? GeoPlacesController)?.view.frame.width)!/2 - 22.5, y: ((self.parent as? GeoPlacesController)?.view.frame.height)!/2 - 27, width: 45, height: 54)
+//            (self.parent as? GeoPlacesController)?.view.addSubview(self.editLocationView!)
         }
     }
 
     @IBAction func sliderEditingChanged(_ sender: Any) {
-        viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].radius = CLLocationDistance(radiusSlider.value)
-    }
-    
-    @objc func saveLocationChanges() {
-        editLocationView?.removeFromSuperview()
+        guard let overlays = (self.parent as? GeoPlacesController)?.mapView?.overlays else { return }
+        (self.parent as? GeoPlacesController)?.mapView?.removeOverlays(overlays)
+        (self.parent as? GeoPlacesController)?.mapView?.addOverlay(MKCircle(center: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!, radius: Double(radiusSlider.value)))
+
+        let region = MKCoordinateRegion.init(center: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!, latitudinalMeters: CLLocationDistance(radiusSlider.value * 2.23), longitudinalMeters: CLLocationDistance(radiusSlider.value * 2.23))
+        (self.parent as? GeoPlacesController)?.mapView?.setRegion(region, animated: true)
         
-        self.pullUpControllerMoveToVisiblePoint(363, animated: true) {
-            self.view.isUserInteractionEnabled = true
-            
-            let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
-            (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
-            (self.parent as? GeoPlacesController)?.mapView.addAnnotation(currentGeoPlace)
-        }
+        viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].radius = CLLocationDistance(radiusSlider.value)
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
@@ -165,6 +165,13 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
         }
         
         sender.view?.addShadowWithBorders()
+        
+        if (viewModel?.activeGeoPlaceIndex)! >= 0 {
+            let currentGeoPlace = viewModel!.geoPlaces[(viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+            let annotationView = (self.parent as? GeoPlacesController)?.mapView.view(for: currentGeoPlace)
+            annotationView?.image = UIImage(named: "Pin")!
+                .tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
+        }
     }
     
     @IBAction func deletePlace(_ sender: Any) {

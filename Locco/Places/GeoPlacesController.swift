@@ -83,6 +83,14 @@ class GeoPlacesController: UIViewController {
     @objc func addPlacesDrawerPullUpController() {
         pullUpController = UIStoryboard(name: "Places", bundle: nil)
             .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
+        
+        if (viewModel?.activeGeoPlaceIndex)! >= 0 {
+            let currentGeoPlace = viewModel!.geoPlaces[(viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+            let annotationView = (self.parent as? GeoPlacesController)?.mapView.view(for: currentGeoPlace)
+            mapView.deselectAnnotation((mapView.annotations[(mapView.annotations as NSArray).index(of: currentGeoPlace)]), animated: true)
+            viewModel?.isEditing = false
+            annotationView?.isDraggable = false
+        }
         viewModel?.activeGeoPlaceIndex = -1
         pullUpController?.viewModel = self.viewModel
         
@@ -175,7 +183,7 @@ class GeoPlacesController: UIViewController {
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
-        let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 250, longitudinalMeters: 250)
+        let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 50, longitudinalMeters: 50)
         mapView.setRegion(region, animated: true)
     }
 }
@@ -187,6 +195,8 @@ extension GeoPlacesController: MKMapViewDelegate {
         if annotation is MKUserLocation {
             let userPin = mapView.view(for: annotation) ?? MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
             let userPinImage = UIImage(named: "CurrentLocationPin")!.overlayWith(image: UIImage(named: "bartu")!.resizeImageWith(newSize: CGSize(width: 39, height: 39)).maskRoundedImage(), posX: 6, posY: 4)
+            userPin.layer.zPosition = CGFloat(Int.max)
+            userPin.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             userPin.isEnabled = false
             userPin.image = userPinImage
             return userPin
@@ -211,9 +221,9 @@ extension GeoPlacesController: MKMapViewDelegate {
         if overlay is MKCircle {
             let overlayColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)
             let circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.lineWidth = 1.0
+            circleRenderer.lineWidth = 4.0
             circleRenderer.strokeColor = overlayColor
-            circleRenderer.fillColor = overlayColor.withAlphaComponent(0.4)
+            circleRenderer.fillColor = overlayColor.withAlphaComponent(0.2)
             return circleRenderer
         }
         if let tileOverlay = overlay as? MKTileOverlay {
@@ -223,31 +233,35 @@ extension GeoPlacesController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        let geotification = view.annotation as! GeoPlace
-        UIView.animate(withDuration: 0.25, animations: {
-            view.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        })
-        addRadiusOverlay(forGeotification: geotification)
-        
-        let currentIndex = viewModel?.geoPlaces.index(of: geotification)
-        viewModel?.activeGeoPlaceIndex = currentIndex!
-        
-        let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
-            .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
-        placeDetailDrawerController?.viewModel = self.viewModel
-        
-        removePullUpController(pullUpController!, animated: true)
-        pullUpController = nil
-        addPullUpController(placeDetailDrawerController!, animated: true)
+        if !(viewModel?.isEditing)! {
+            let geotification = view.annotation as! GeoPlace
+            UIView.animate(withDuration: 0.25, animations: {
+                view.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            })
+            addRadiusOverlay(forGeotification: geotification)
+            
+            let currentIndex = viewModel?.geoPlaces.index(of: geotification)
+            viewModel?.activeGeoPlaceIndex = currentIndex!
+            
+            let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
+                .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
+            placeDetailDrawerController?.viewModel = self.viewModel
+            
+            removePullUpController(pullUpController!, animated: true)
+            pullUpController = nil
+            addPullUpController(placeDetailDrawerController!, animated: true)
+        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        let geotification = view.annotation as! GeoPlace
-        UIView.animate(withDuration: 0.25, animations: {
-            view.transform = CGAffineTransform(scaleX: 1, y: 1)
-        })
-        removeRadiusOverlay(forGeotification: geotification)
-        addPlacesDrawerPullUpController()
+        if !(viewModel?.isEditing)! {
+            let geotification = view.annotation as! GeoPlace
+            UIView.animate(withDuration: 0.25, animations: {
+                view.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
+            removeRadiusOverlay(forGeotification: geotification)
+            addPlacesDrawerPullUpController()
+        }
     }
     
     // animate annotation views drop
@@ -261,6 +275,19 @@ extension GeoPlacesController: MKMapViewDelegate {
                     annView.frame = endFrame
                 })
             }
+        }
+    }
+    
+    // drag annotation
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        switch newState {
+        case .starting:
+            view.dragState = .dragging
+            mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+        case .ending, .canceling:
+            view.dragState = .none
+            viewModel!.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate = (view.annotation?.coordinate)!
+        default: break
         }
     }
 }

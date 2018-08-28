@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import PullUpController
 
 class PlaceDetailDrawerController: PullUpController {
@@ -45,6 +46,11 @@ class PlaceDetailDrawerController: PullUpController {
     
     @IBAction func editPlace(_ sender: Any) {
         (parent as? GeoPlacesController)?.editPlaceDrawerPullUpController()
+        
+        let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+        var centerCoordinate = currentGeoPlace.coordinate
+        centerCoordinate.latitude -= ((self.parent as? GeoPlacesController)?.mapView.region.span.latitudeDelta)! * 0.35
+        (self.parent as? GeoPlacesController)?.mapView.setCenter(centerCoordinate, animated: true)
     }
     
     // MARK: - PullUpController

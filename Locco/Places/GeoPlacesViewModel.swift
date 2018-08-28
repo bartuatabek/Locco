@@ -22,7 +22,8 @@ protocol GeoPlacesViewModeling {
     var controller: UIViewController? { get set }
     var locationManager: CLLocationManager { get set }
     var geoPlaces: [GeoPlace]  { get set }
-    var activeGeoPlaceIndex:Int { get set }
+    var activeGeoPlaceIndex: Int { get set }
+    var isEditing: Bool { get set }
     
     func loadAllGeotifications()
     func saveAllGeotifications()
@@ -42,10 +43,12 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
     var locationManager: CLLocationManager
     var geoPlaces: [GeoPlace]
     var activeGeoPlaceIndex: Int
+    var isEditing: Bool
     
     // MARK: - Initialization
     override init() {
         geoPlaces = []
+        isEditing = false
         activeGeoPlaceIndex = -1
         locationManager = CLLocationManager()
         super.init()

@@ -346,7 +346,7 @@
                                                     <color key="maximumTrackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="thumbTintColor" red="0.1764705882" green="0.20392156859999999" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <connections>
-                                                        <action selector="sliderEditingChanged:" destination="q7h-j2-nkh" eventType="editingChanged" id="9zw-QY-2Pm"/>
+                                                        <action selector="sliderEditingChanged:" destination="q7h-j2-nkh" eventType="valueChanged" id="EKf-wb-CEH"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
