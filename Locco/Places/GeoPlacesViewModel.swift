@@ -150,6 +150,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
             }
             
             let parameters: Parameters = [
+                "placeId": geotification.identifier,
                 "title": geotification.title!,
                 "placeDetail": geotification.placeDetail,
                 "color": geotification.pinColor.rawValue,

@@ -37,6 +37,7 @@ class PlacesDrawerController: PullUpController {
         willMoveToStickyPoint = { point in
             self.view.endEditing(true)
         }
+        reloadTableData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -53,6 +54,11 @@ class PlacesDrawerController: PullUpController {
     
     func refreshTableView() {
         tableView.reloadWithAnimation()
+    }
+    
+    func reloadTableData() {
+        let indexPath = IndexPath(item: (viewModel?.activeGeoPlaceIndex)!, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - PullUpController

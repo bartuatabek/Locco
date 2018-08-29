@@ -26,6 +26,8 @@ class ChatController: UIViewController {
         self.viewModel = ChatViewModel()
         self.viewModel!.controller = self
         
+        self.viewModel?.getChatPreview()
+        
         if #available(iOS 11.0, *) {
             let searchController = UISearchController(searchResultsController: nil)
             navigationItem.searchController = searchController

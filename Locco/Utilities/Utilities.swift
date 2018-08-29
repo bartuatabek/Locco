@@ -22,6 +22,16 @@ extension UIView {
         }, completion: completion)
     }
     
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
+    }
+    
     func addShadowWithBorders() {
         // add the shadow to the base view
         self.backgroundColor = UIColor.clear

@@ -17,6 +17,7 @@ class GeoPlacesController: UIViewController {
     
     var viewModel: GeoPlacesViewModeling?
     var pullUpController: PlacesDrawerController?
+    let leftBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(revertChanges))
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var controlsContainer: UIVisualEffectView!
@@ -99,16 +100,41 @@ class GeoPlacesController: UIViewController {
         self.navigationItem.rightBarButtonItem?.image = UIImage(named: "createNewPlace")
         self.navigationItem.rightBarButtonItem?.action = #selector(editPlaceDrawerPullUpController)
         
-        for children in self.children {
-            if let pullUpChildren = children as? AddGeoPlaceDrawerController {
-                removePullUpController(pullUpChildren, animated: true)
-            }
-            if let pullUpChildren = children as? PlaceDetailDrawerController {
-                removePullUpController(pullUpChildren, animated: true)
+        for view in self.view.subviews {
+            if view.findViewController() is PlaceDetailDrawerController {
+                removePullUpController(view.findViewController() as! PullUpController, animated: true)
             }
         }
         
         addPullUpController(pullUpController!, animated: true)
+    }
+    
+    @objc func addPlaceDetailDrawerPullUpController() {
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem?.title = ""
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
+        self.navigationItem.rightBarButtonItem?.image = UIImage(named: "createNewPlace")
+        self.navigationItem.rightBarButtonItem?.action = #selector(editPlaceDrawerPullUpController)
+        
+        for view in self.view.subviews {
+            if view.findViewController() is AddGeoPlaceDrawerController {
+                removePullUpController(view.findViewController() as! PullUpController, animated: true)
+            } else if view.findViewController() is PlaceDetailDrawerController {
+                (view.findViewController() as! PlaceDetailDrawerController).refreshData()
+                (view.findViewController() as! PlaceDetailDrawerController).pullUpControllerMoveToVisiblePoint(150, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    @objc func updatePlace() {
+        viewModel?.updatePlaceDetails(geotification: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!])!, completion: { (result) in })
+        self.addPlaceDetailDrawerPullUpController()
+    }
+    
+    @objc func revertChanges() {
+        print("hi")
+        addPlacesDrawerPullUpController()
+        loadPlaces()
     }
     
     @objc func editPlaceDrawerPullUpController() {
@@ -116,14 +142,18 @@ class GeoPlacesController: UIViewController {
             .instantiateViewController(withIdentifier: "AddPlace") as? AddGeoPlaceDrawerController
         addGeoPlacePullUpController?.viewModel = self.viewModel
         
+        self.navigationItem.leftBarButtonItem = leftBarButton
+        self.navigationItem.leftBarButtonItem?.action = #selector(revertChanges)
+        
         self.navigationItem.rightBarButtonItem?.title = "Done"
+        self.navigationItem.rightBarButtonItem?.style = .done
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)
         self.navigationItem.rightBarButtonItem?.image = nil
-        self.navigationItem.rightBarButtonItem?.action = #selector(addPlacesDrawerPullUpController)
+        self.navigationItem.rightBarButtonItem?.action = #selector(updatePlace)
         
         for view in self.view.subviews {
-            if view != mapView && view != controlsContainer {
-                view.removeFromSuperview()
+            if view.findViewController() is PlaceDetailDrawerController {
+                (view.findViewController() as! PlaceDetailDrawerController).pullUpControllerMoveToVisiblePoint(0, animated: true, completion: nil)
             }
         }
         
@@ -183,7 +213,7 @@ class GeoPlacesController: UIViewController {
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
-        let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 50, longitudinalMeters: 50)
+        let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 100, longitudinalMeters: 100)
         mapView.setRegion(region, animated: true)
     }
 }

@@ -26,10 +26,7 @@ class PlaceDetailDrawerController: PullUpController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        pinIcon.image = UIImage(named: "Pin")!
-            .tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
-        placeNameLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title
-        placeDetailLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail
+        refreshData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -51,6 +48,13 @@ class PlaceDetailDrawerController: PullUpController {
         var centerCoordinate = currentGeoPlace.coordinate
         centerCoordinate.latitude -= ((self.parent as? GeoPlacesController)?.mapView.region.span.latitudeDelta)! * 0.35
         (self.parent as? GeoPlacesController)?.mapView.setCenter(centerCoordinate, animated: true)
+    }
+    
+    func refreshData() {
+        pinIcon.image = UIImage(named: "Pin")!
+            .tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
+        placeNameLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title
+        placeDetailLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail
     }
     
     // MARK: - PullUpController

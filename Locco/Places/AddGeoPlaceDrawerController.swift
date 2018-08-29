@@ -32,6 +32,7 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel?.isEditing = true
         
         for pinColor in pinColors {
             let gesture = UITapGestureRecognizer(target: self, action: #selector(checkAction))
@@ -99,6 +100,18 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
         }
     }
     
+    @IBAction func updatePlaceName(_ sender: Any) {
+        if !(titleLabel.text?.isEmpty)! {
+            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title = titleLabel.text
+        }
+    }
+    
+    @IBAction func updatePlaceDetail(_ sender: Any) {
+        if !(subtitleLabel.text?.isEmpty)! {
+            viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail = subtitleLabel.text!
+        }
+    }
+    
     @IBAction func editLocation(_ sender: Any) {
         self.pullUpControllerMoveToVisiblePoint(75, animated: true) {
             self.view.isUserInteractionEnabled = false
@@ -108,7 +121,6 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
                 let annotationView = (self.parent as? GeoPlacesController)?.mapView.view(for: currentGeoPlace)
                 (self.parent as? GeoPlacesController)?.mapView.setCenter(currentGeoPlace.coordinate, animated: true)
                 (self.parent as? GeoPlacesController)?.removeRadiusOverlay(forGeotification: currentGeoPlace as! GeoPlace)
-                self.viewModel?.isEditing = true
                 annotationView?.isDraggable = true
             }
             
@@ -120,10 +132,15 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
 
     @IBAction func sliderEditingChanged(_ sender: Any) {
         guard let overlays = (self.parent as? GeoPlacesController)?.mapView?.overlays else { return }
-        (self.parent as? GeoPlacesController)?.mapView?.removeOverlays(overlays)
+        for overlay in overlays {
+            guard let circleOverlay = overlay as? MKCircle else { continue }
+            (self.parent as? GeoPlacesController)?.mapView.removeOverlay(circleOverlay)
+        }
         (self.parent as? GeoPlacesController)?.mapView?.addOverlay(MKCircle(center: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!, radius: Double(radiusSlider.value)))
 
-        let region = MKCoordinateRegion.init(center: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!, latitudinalMeters: CLLocationDistance(radiusSlider.value * 2.23), longitudinalMeters: CLLocationDistance(radiusSlider.value * 2.23))
+        var centerCoordinate = (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!
+        centerCoordinate.latitude -= ((self.parent as? GeoPlacesController)?.mapView.region.span.latitudeDelta)! * 0.55
+        let region = MKCoordinateRegion.init(center: centerCoordinate, latitudinalMeters: CLLocationDistance(radiusSlider.value*4), longitudinalMeters: CLLocationDistance(radiusSlider.value))
         (self.parent as? GeoPlacesController)?.mapView?.setRegion(region, animated: true)
         
         viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].radius = CLLocationDistance(radiusSlider.value)
@@ -185,5 +202,19 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     
     override var pullUpControllerPreviewOffset: CGFloat {
         return 363
+    }
+}
+
+extension AddGeoPlaceDrawerController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            // Not found, so remove keyboard.
+            textField.resignFirstResponder()
+        }
+        // Do not add a line break
+        return false
     }
 }
