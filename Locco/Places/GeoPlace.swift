@@ -22,7 +22,7 @@ struct GeoKey {
     static let onExit = "onExit"
 }
 
-class GeoPlace: NSObject, NSCoding, MKAnnotation {
+class GeoPlace: NSObject, NSCoding, NSCopying, MKAnnotation {
 
     var title: String?
     var placeDetail: String
@@ -33,8 +33,8 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
     var onEntry: Bool
     var onExit: Bool
     
-    init(name: String, placeDetail: String, identifier: String, pinColor: PinColors, radius: CLLocationDistance, coordinate: CLLocationCoordinate2D, onEntry: Bool, onExit: Bool) {
-        self.title = name
+    init(title: String, placeDetail: String, identifier: String, pinColor: PinColors, radius: CLLocationDistance, coordinate: CLLocationCoordinate2D, onEntry: Bool, onExit: Bool) {
+        self.title = title
         self.placeDetail = placeDetail
         self.identifier = identifier
         self.pinColor = pinColor
@@ -72,7 +72,7 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
         } else if color == PinColors.color10.rawValue {
             pinColor = PinColors.color10
         } else {
-            pinColor = PinColors.color2
+            pinColor = PinColors.color3
         }
         
         radius = decoder.decodeDouble(forKey: GeoKey.radius)
@@ -95,10 +95,9 @@ class GeoPlace: NSObject, NSCoding, MKAnnotation {
         coder.encode(onExit, forKey: GeoKey.onExit)
     }
     
-    // TODO: JSON Decoding
-    //    static func decode(data: Data) -> GeoPlace {
-    //        //json a cevir.
-    //        return GeoPlace(coordinate: json["coordinate"].stringValue, radius: <#T##CLLocationDistance#>, identifier: <#T##String#>, name: <#T##String#>, eventType: <#T##EventType#>)
-    //    }
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = GeoPlace(title: title!, placeDetail: placeDetail, identifier: identifier, pinColor: pinColor, radius: radius, coordinate: coordinate, onEntry: onEntry, onExit: onExit)
+        return copy
+    }
 }
 

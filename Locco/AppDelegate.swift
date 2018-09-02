@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(ConversationController.self)
         
         // MARK: - Notifications
         locationManager.delegate = self

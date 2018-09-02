@@ -241,30 +241,40 @@ extension UIImage {
 
 // MARK: - Gradient Pin Colors
 internal enum PinColors: String {
-    case color1, color2, color3, color4, color5, color6, color7, color8, color9, color10
+    case color1, color2, color3, color4, color5, color6, color7, color8, color9, color10, color11, color12, color13, color14, color15
     
     var colors: [CGColor] {
         switch self {
         case .color1:
-            return [UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor, UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 0/255, green: 61/255, blue: 128/255, alpha: 1.0).cgColor]
         case .color2:
-            return [UIColor(red: 45/255, green: 52/255, blue: 64/255, alpha: 1.0).cgColor, UIColor(red: 41/255, green: 77/255, blue: 121/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 0/255, green: 181/255, blue: 196/255, alpha: 1.0).cgColor, UIColor(red: 0/255, green: 91/255, blue: 98/255, alpha: 1.0).cgColor]
         case .color3:
-            return [UIColor(red: 222/255, green: 71/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 203/255, blue: 131/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 45/255, green: 52/255, blue: 64/255, alpha: 1.0).cgColor, UIColor(red: 41/255, green: 77/255, blue: 121/255, alpha: 1.0).cgColor]
         case .color4:
-            return [UIColor(red: 199/255, green: 0/255, blue: 38/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 45/255, blue: 85/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 222/255, green: 71/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 203/255, blue: 131/255, alpha: 1.0).cgColor]
         case .color5:
-            return [UIColor(red: 208/255, green: 162/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 165/255, blue: 165/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 199/255, green: 0/255, blue: 38/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 45/255, blue: 85/255, alpha: 1.0).cgColor]
         case .color6:
-            return [UIColor(red: 35/255, green: 31/255, blue: 244/255, alpha: 1.0).cgColor, UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 222/255, green: 88/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1.0).cgColor]
         case .color7:
-            return [UIColor(red: 0/255, green: 145/255, blue: 211/255, alpha: 1.0).cgColor, UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 35/255, green: 31/255, blue: 244/255, alpha: 1.0).cgColor, UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0).cgColor]
         case .color8:
-            return [UIColor(red: 159/255, green: 37/255, blue: 30/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0).cgColor]
+            return [UIColor(red: 0/255, green: 145/255, blue: 211/255, alpha: 1.0).cgColor, UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0).cgColor]
         case .color9:
             return [UIColor(red: 0/255, green: 195/255, blue: 33/255, alpha: 1.0).cgColor, UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1.0).cgColor]
         case .color10:
             return [UIColor(red: 0/255, green: 180/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 54/255, green: 216/255, blue: 207/255, alpha: 1.0).cgColor]
+        case .color11:
+            return [UIColor(red: 208/255, green: 162/255, blue: 255/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 165/255, blue: 165/255, alpha: 1.0).cgColor]
+        case .color12:
+            return [UIColor(red: 222/255, green: 4/255, blue: 155/255, alpha: 1.0).cgColor, UIColor(red: 245/255, green: 131/255, blue: 255/255, alpha: 1.0).cgColor]
+        case .color13:
+            return [UIColor(red: 222/255, green: 147/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 245/255, green: 255/255, blue: 131/255, alpha: 1.0).cgColor]
+        case .color14:
+            return [UIColor(red: 0/255, green: 170/255, blue: 137/255, alpha: 1.0).cgColor, UIColor(red: 131/255, green: 255/255, blue: 226/255, alpha: 1.0).cgColor]
+        case .color15:
+            return [UIColor(red: 138/255, green: 222/255, blue: 4/255, alpha: 1.0).cgColor, UIColor(red: 207/255, green: 255/255, blue: 131/255, alpha: 1.0).cgColor]
         }
     }
 }
@@ -285,6 +295,12 @@ extension UITableView {
             }, completion: nil)
             delayCounter += 1
         }
+    }
+    
+    func loadTableData() {
+        let range = NSMakeRange(0, self.numberOfSections)
+        let sections = NSIndexSet(indexesIn: range)
+        self.reloadSections(sections as IndexSet, with: .automatic)
     }
 }
 
@@ -451,83 +467,27 @@ extension String {
     }
 }
 
-extension CAShapeLayer {
-    func drawRoundedRect(rect: CGRect, andColor color: UIColor, filled: Bool) {
-        fillColor = filled ? color.cgColor : UIColor.white.cgColor
-        strokeColor = color.cgColor
-        path = UIBezierPath(roundedRect: rect, cornerRadius: 7).cgPath
-    }
-}
-
-private var handle: UInt8 = 0;
-
-extension UIBarButtonItem {
-    private var badgeLayer: CAShapeLayer? {
-        if let b: AnyObject = objc_getAssociatedObject(self, &handle) as AnyObject? {
-            return b as? CAShapeLayer
+// MARK: - Date Extension
+extension Date {
+    func formatRelativeString() -> String {
+        let dateFormatter = DateFormatter()
+        let calendar = Calendar(identifier: .gregorian)
+        dateFormatter.doesRelativeDateFormatting = true
+        
+        if calendar.isDateInToday(self) {
+            dateFormatter.timeStyle = .short
+            dateFormatter.dateStyle = .none
+        } else if calendar.isDateInYesterday(self) {
+            dateFormatter.timeStyle = .none
+            dateFormatter.dateStyle = .medium
+        } else if calendar.compare(Date(), to: self, toGranularity: .weekOfYear) == .orderedSame {
+            let weekday = calendar.dateComponents([.weekday], from: self).weekday ?? 0
+            return dateFormatter.weekdaySymbols[weekday-1]
         } else {
-            return nil
-        }
-    }
-    
-    func setBadge(text: String?, withOffsetFromTopRight offset: CGPoint = CGPoint.zero, andColor color:UIColor = UIColor.red, andFilled filled: Bool = true, andFontSize fontSize: CGFloat = 11) {
-        badgeLayer?.removeFromSuperlayer()
-        
-        if (text == nil || text == "") {
-            return
+            dateFormatter.timeStyle = .none
+            dateFormatter.dateStyle = .short
         }
         
-        addBadge(text: text!, withOffset: offset, andColor: color, andFilled: filled)
-    }
-    
-    private func addBadge(text: String, withOffset offset: CGPoint = CGPoint.zero, andColor color: UIColor = UIColor.red, andFilled filled: Bool = true, andFontSize fontSize: CGFloat = 11) {
-        guard let view = self.value(forKey: "view") as? UIView else { return }
-        
-        var font = UIFont.systemFont(ofSize: fontSize)
-        
-        if #available(iOS 9.0, *) {
-            font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight.regular)
-        }
-        
-        let badgeSize = text.size(withAttributes: [NSAttributedString.Key.font: font])
-        
-        // Initialize Badge
-        let badge = CAShapeLayer()
-        
-        let height = badgeSize.height;
-        var width = badgeSize.width + 2 /* padding */
-        
-        //make sure we have at least a circle
-        if (width < height) {
-            width = height
-        }
-        
-        //x position is offset from right-hand side
-        let x = view.frame.width - width + offset.x
-        
-        let badgeFrame = CGRect(origin: CGPoint(x: x, y: offset.y), size: CGSize(width: width, height: height))
-        
-        badge.drawRoundedRect(rect: badgeFrame, andColor: color, filled: filled)
-        view.layer.addSublayer(badge)
-        
-        // Initialiaze Badge's label
-        let label = CATextLayer()
-        label.string = text
-        label.alignmentMode = CATextLayerAlignmentMode.center
-        label.font = font
-        label.fontSize = font.pointSize
-        
-        label.frame = badgeFrame
-        label.foregroundColor = filled ? UIColor.white.cgColor : color.cgColor
-        label.backgroundColor = UIColor.clear.cgColor
-        label.contentsScale = UIScreen.main.scale
-        badge.addSublayer(label)
-        
-        // Save Badge as UIBarButtonItem property
-        objc_setAssociatedObject(self, &handle, badge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-    
-    private func removeBadge() {
-        badgeLayer?.removeFromSuperlayer()
+        return dateFormatter.string(from: self)
     }
 }

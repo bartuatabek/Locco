@@ -30,7 +30,7 @@ class ProfileController: UITableViewController {
         super.viewDidLoad()
         self.viewModel = ProfileViewModel()
         self.viewModel!.controller = self
-        navigationController!.view.backgroundColor = UIColor.white
+        extendedLayoutIncludesOpaqueBars = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     

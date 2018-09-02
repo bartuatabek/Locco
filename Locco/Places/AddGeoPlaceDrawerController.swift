@@ -123,10 +123,6 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
                 (self.parent as? GeoPlacesController)?.removeRadiusOverlay(forGeotification: currentGeoPlace as! GeoPlace)
                 annotationView?.isDraggable = true
             }
-            
-//            self.editLocationView = UIImageView(image: UIImage(named: "Pin")?.tintedWithLinearGradientColors(colorsArr: (currentGeoPlace as! GeoPlace).pinColor.colors))
-//            self.editLocationView!.frame = CGRect(x: ((self.parent as? GeoPlacesController)?.view.frame.width)!/2 - 22.5, y: ((self.parent as? GeoPlacesController)?.view.frame.height)!/2 - 27, width: 45, height: 54)
-//            (self.parent as? GeoPlacesController)?.view.addSubview(self.editLocationView!)
         }
     }
 

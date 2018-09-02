@@ -10,19 +10,7 @@ import Foundation
 import CoreLocation
 import MessageKit
 
-private struct MockLocationItem: LocationItem {
-    
-    var location: CLLocation
-    var size: CGSize
-    
-    init(location: CLLocation) {
-        self.location = location
-        self.size = CGSize(width: 240, height: 240)
-    }
-    
-}
-
-private struct MockMediaItem: MediaItem {
+private struct PhotoMediaItem: MediaItem {
     
     var url: URL?
     var image: UIImage?
@@ -37,12 +25,13 @@ private struct MockMediaItem: MediaItem {
     
 }
 
-internal struct MockMessage: MessageType {
+internal struct Message: MessageType {
     
     var messageId: String
     var sender: Sender
     var sentDate: Date
     var kind: MessageKind
+    var mediaItem: UIImage?
     
     private init(kind: MessageKind, sender: Sender, messageId: String, date: Date) {
         self.kind = kind
@@ -55,23 +44,10 @@ internal struct MockMessage: MessageType {
         self.init(kind: .text(text), sender: sender, messageId: messageId, date: date)
     }
     
-    init(attributedText: NSAttributedString, sender: Sender, messageId: String, date: Date) {
-        self.init(kind: .attributedText(attributedText), sender: sender, messageId: messageId, date: date)
-    }
-    
     init(image: UIImage, sender: Sender, messageId: String, date: Date) {
-        let mediaItem = MockMediaItem(image: image)
+        let mediaItem = PhotoMediaItem(image: image)
         self.init(kind: .photo(mediaItem), sender: sender, messageId: messageId, date: date)
-    }
-    
-    init(thumbnail: UIImage, sender: Sender, messageId: String, date: Date) {
-        let mediaItem = MockMediaItem(image: thumbnail)
-        self.init(kind: .video(mediaItem), sender: sender, messageId: messageId, date: date)
-    }
-    
-    init(location: CLLocation, sender: Sender, messageId: String, date: Date) {
-        let locationItem = MockLocationItem(location: location)
-        self.init(kind: .location(locationItem), sender: sender, messageId: messageId, date: date)
+        self.mediaItem = image
     }
     
     init(emoji: String, sender: Sender, messageId: String, date: Date) {

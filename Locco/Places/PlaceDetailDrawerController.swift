@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 import PullUpController
 
 class PlaceDetailDrawerController: PullUpController {
@@ -22,11 +23,12 @@ class PlaceDetailDrawerController: PullUpController {
     @IBOutlet weak var pinIcon: UIImageView!
     @IBOutlet weak var placeNameLabel: UILabel!
     @IBOutlet weak var placeDetailLabel: UILabel!
-    @IBOutlet weak var placeImagesCollection: UICollectionView!
+    @IBOutlet weak var peopleInPlaceCollection: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
+        loadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -41,20 +43,34 @@ class PlaceDetailDrawerController: PullUpController {
         }
     }
     
+    @IBAction func dismiss(_ sender: Any) {
+        let currentGeoPlace = viewModel!.geoPlaces[(viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+        (parent as? GeoPlacesController)?.mapView.deselectAnnotation(((parent as? GeoPlacesController)?.mapView.annotations[((parent as? GeoPlacesController)!.mapView.annotations as NSArray).index(of: currentGeoPlace)])!, animated: true)
+    }
+    
     @IBAction func editPlace(_ sender: Any) {
         (parent as? GeoPlacesController)?.editPlaceDrawerPullUpController()
         
         let currentGeoPlace = self.viewModel!.geoPlaces[(self.viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
+        viewModel?.unmodifiedGeoPlace = (currentGeoPlace as! GeoPlace).copy() as? GeoPlace
         var centerCoordinate = currentGeoPlace.coordinate
         centerCoordinate.latitude -= ((self.parent as? GeoPlacesController)?.mapView.region.span.latitudeDelta)! * 0.35
         (self.parent as? GeoPlacesController)?.mapView.setCenter(centerCoordinate, animated: true)
     }
     
-    func refreshData() {
-        pinIcon.image = UIImage(named: "Pin")!
-            .tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
+    func loadData() {
+        pinIcon.image = pinIcon.image!.tintedWithLinearGradientColors(colorsArr: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].pinColor.colors)!)
         placeNameLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].title
-        placeDetailLabel.text = viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail
+        
+        let myLocation = (self.parent as? GeoPlacesController)?.mapView.userLocation.location
+        let placeCoordinates = CLLocation(latitude: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate.latitude)!, longitude: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate.longitude)!)
+        let distance = myLocation!.distance(from: placeCoordinates)
+        
+        placeDetailLabel.text = "\(viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail ?? "") ∙ \((distance/1000).rounded()) km"
+        
+        DispatchQueue.main.async {
+            self.peopleInPlaceCollection.reloadData()
+        }
     }
     
     // MARK: - PullUpController
@@ -63,11 +79,11 @@ class PlaceDetailDrawerController: PullUpController {
     }
     
     override var pullUpControllerPreviewOffset: CGFloat {
-        return 150
+        return 185
     }
 }
 
-extension PlaceDetailDrawerController: UICollectionViewDataSource {
+extension PlaceDetailDrawerController: UICollectionViewDelegate, UICollectionViewDataSource {
     // TODO: Get photos from firebase
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 12
@@ -75,15 +91,20 @@ extension PlaceDetailDrawerController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-        cell.imageView.image = UIImage(named: "Fox")
-        cell.imageView.layer.cornerRadius = 8.0
-        cell.imageView.clipsToBounds = true
+        cell.imageView.image = UIImage(named: "bartu")
+        cell.usernameLabel.text = "Username"
+        cell.distanceLabel.text = "5.0 mi"
         return cell
     }
-
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let selectedCell = collectionView.cellForItem(at: indexPath) as! PhotoCell
+    }
 }
 
 class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
 }
 

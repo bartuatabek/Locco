@@ -6,8 +6,8 @@
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 
+import Firebase
 import MessageKit
-import CoreLocation
 
 final internal class SampleData {
     
@@ -44,28 +44,17 @@ final internal class SampleData {
     let jobs = Sender(id: "000001", displayName: "Steve Jobs")
     let cook = Sender(id: "656361", displayName: "Tim Cook")
     
-    lazy var senders = [dan, steven, jobs, cook]
+    lazy var senders = [dan, steven, jobs, cook, currentSender]
     
     var currentSender: Sender {
-        return steven
+        return Sender(id: (Firebase.Auth.auth().currentUser?.uid)!, displayName: (Firebase.Auth.auth().currentUser?.displayName)!)
     }
     
     let messageImages: [UIImage] = [#imageLiteral(resourceName: "Dan-Leonard"), #imageLiteral(resourceName: "Tim-Cook"), #imageLiteral(resourceName: "Steve-Jobs")]
     
     var now = Date()
     
-    let messageTypes = ["Text", "Text", "Text", "AttributedText", "Photo", "Video", "Location", "Emoji"]
-    
-    let attributes = ["Font1", "Font2", "Font3", "Font4", "Color", "Combo"]
-    
-    let locations: [CLLocation] = [
-        CLLocation(latitude: 37.3118, longitude: -122.0312),
-        CLLocation(latitude: 33.6318, longitude: -100.0386),
-        CLLocation(latitude: 29.3358, longitude: -108.8311),
-        CLLocation(latitude: 39.3218, longitude: -127.4312),
-        CLLocation(latitude: 35.3218, longitude: -127.4314),
-        CLLocation(latitude: 39.3218, longitude: -113.3317)
-    ]
+    let messageTypes = ["Text", "Text", "Text", "Photo", "Emoji"]
     
     let emojis = [
         "👍",
@@ -75,41 +64,6 @@ final internal class SampleData {
         "🎈",
         "🇧🇷"
     ]
-    
-    func attributedString(with text: String) -> NSAttributedString {
-        let nsString = NSString(string: text)
-        var mutableAttributedString = NSMutableAttributedString(string: text)
-        let randomAttribute = Int(arc4random_uniform(UInt32(attributes.count)))
-        let range = NSRange(location: 0, length: nsString.length)
-        
-        switch attributes[randomAttribute] {
-        case "Font1":
-            mutableAttributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.preferredFont(forTextStyle: .body), range: range)
-        case "Font2":
-            mutableAttributedString.addAttributes([NSAttributedString.Key.font: UIFont.monospacedDigitSystemFont(ofSize: UIFont.systemFontSize, weight: UIFont.Weight.bold)], range: range)
-        case "Font3":
-            mutableAttributedString.addAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)], range: range)
-        case "Font4":
-            mutableAttributedString.addAttributes([NSAttributedString.Key.font: UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)], range: range)
-        case "Color":
-            mutableAttributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], range: range)
-        case "Combo":
-            let msg9String = "Use .attributedText() to add bold, italic, colored text and more..."
-            let msg9Text = NSString(string: msg9String)
-            let msg9AttributedText = NSMutableAttributedString(string: String(msg9Text))
-            
-            msg9AttributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.preferredFont(forTextStyle: .body), range: NSRange(location: 0, length: msg9Text.length))
-            msg9AttributedText.addAttributes([NSAttributedString.Key.font: UIFont.monospacedDigitSystemFont(ofSize: UIFont.systemFontSize, weight: UIFont.Weight.bold)], range: msg9Text.range(of: ".attributedText()"))
-            msg9AttributedText.addAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)], range: msg9Text.range(of: "bold"))
-            msg9AttributedText.addAttributes([NSAttributedString.Key.font: UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)], range: msg9Text.range(of: "italic"))
-            msg9AttributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], range: msg9Text.range(of: "colored"))
-            mutableAttributedString = msg9AttributedText
-        default:
-            fatalError("Unrecognized attribute for mock message")
-        }
-        
-        return NSAttributedString(attributedString: mutableAttributedString)
-    }
     
     func dateAddingRandomTime() -> Date {
         let randomNumber = Int(arc4random_uniform(UInt32(10)))
@@ -125,13 +79,12 @@ final internal class SampleData {
         }
     }
     
-    func randomMessage() -> MockMessage {
+    func randomMessage() -> Message {
         
         let randomNumberSender = Int(arc4random_uniform(UInt32(senders.count)))
         let randomNumberText = Int(arc4random_uniform(UInt32(messageTextValues.count)))
         let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
         let randomMessageType = Int(arc4random_uniform(UInt32(messageTypes.count)))
-        let randomNumberLocation = Int(arc4random_uniform(UInt32(locations.count)))
         let randomNumberEmoji = Int(arc4random_uniform(UInt32(emojis.count)))
         let uniqueID = NSUUID().uuidString
         let sender = senders[randomNumberSender]
@@ -139,27 +92,19 @@ final internal class SampleData {
         
         switch messageTypes[randomMessageType] {
         case "Text":
-            return MockMessage(text: messageTextValues[randomNumberText], sender: sender, messageId: uniqueID, date: date)
-        case "AttributedText":
-            let attributedText = attributedString(with: messageTextValues[randomNumberText])
-            return MockMessage(attributedText: attributedText, sender: senders[randomNumberSender], messageId: uniqueID, date: date)
+            return Message(text: messageTextValues[randomNumberText], sender: sender, messageId: uniqueID, date: date)
         case "Photo":
             let image = messageImages[randomNumberImage]
-            return MockMessage(image: image, sender: sender, messageId: uniqueID, date: date)
-        case "Video":
-            let image = messageImages[randomNumberImage]
-            return MockMessage(thumbnail: image, sender: sender, messageId: uniqueID, date: date)
-        case "Location":
-            return MockMessage(location: locations[randomNumberLocation], sender: sender, messageId: uniqueID, date: date)
+            return Message(image: image, sender: sender, messageId: uniqueID, date: date)
         case "Emoji":
-            return MockMessage(emoji: emojis[randomNumberEmoji], sender: sender, messageId: uniqueID, date: date)
+            return Message(emoji: emojis[randomNumberEmoji], sender: sender, messageId: uniqueID, date: date)
         default:
             fatalError("Unrecognized mock message type")
         }
     }
     
-    func getMessages(count: Int, completion: ([MockMessage]) -> Void) {
-        var messages: [MockMessage] = []
+    func getMessages(count: Int, completion: ([Message]) -> Void) {
+        var messages: [Message] = []
         for _ in 0..<count {
             messages.append(randomMessage())
         }

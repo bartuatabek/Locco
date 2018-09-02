@@ -152,7 +152,7 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        removePullUpController(self, animated: true)
+        pullUpControllerMoveToVisiblePoint(185, animated: true, completion: nil)
         viewModel?.activeGeoPlaceIndex = indexPath.row
         
         let currentGeoPlace = viewModel!.geoPlaces[indexPath.row] as MKAnnotation

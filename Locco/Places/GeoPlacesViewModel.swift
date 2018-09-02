@@ -16,17 +16,21 @@ import FirebaseStorage
 
 struct PreferencesKeys {
     static let savedPlaces = "\(Firebase.Auth.auth().currentUser?.uid ?? "unauthorized")-savedPlaces"
+    static let savedChatPreviews = "\(Firebase.Auth.auth().currentUser?.uid ?? "unauthorized")-savedChatPreviews"
 }
 
 protocol GeoPlacesViewModeling {
     var controller: UIViewController? { get set }
     var locationManager: CLLocationManager { get set }
     var geoPlaces: [GeoPlace]  { get set }
+    var unmodifiedGeoPlace: GeoPlace? { get set }
     var activeGeoPlaceIndex: Int { get set }
+    var isAddedNewPlace: Bool { get set }
     var isEditing: Bool { get set }
     
     func loadAllGeotifications()
     func saveAllGeotifications()
+    func getPeopleInPlace(geotification: GeoPlace, completion: @escaping (_ result: Bool)->())
     func updateAllGeotifications(completion: @escaping (_ result: Bool)->())
     func updatePlaceDetails(geotification: GeoPlace, completion: @escaping (_ result: Bool) ->())
     func add(geotification: GeoPlace)
@@ -42,14 +46,18 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
     weak var controller: UIViewController?
     var locationManager: CLLocationManager
     var geoPlaces: [GeoPlace]
+    var unmodifiedGeoPlace: GeoPlace?
     var activeGeoPlaceIndex: Int
+    var isAddedNewPlace: Bool
     var isEditing: Bool
     
     // MARK: - Initialization
     override init() {
         geoPlaces = []
         isEditing = false
+        isAddedNewPlace = false
         activeGeoPlaceIndex = -1
+        unmodifiedGeoPlace = nil
         locationManager = CLLocationManager()
         super.init()
         locationManager.delegate = self
@@ -75,6 +83,29 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         UserDefaults.standard.set(items, forKey: PreferencesKeys.savedPlaces)
     }
     
+    func getPeopleInPlace(geotification: GeoPlace, completion: @escaping (Bool) -> ()) {
+        let currentUser = Firebase.Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+            if let error = error  {
+                print("Cannot get token: ", error )
+                return;
+            }
+            
+            let parameters: Parameters = [
+                "placeId": geotification.identifier,
+            ]
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(idToken ?? "")"
+            ]
+            
+            Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/getPeopleInPlace", method: .get, parameters: parameters, headers: headers)
+                .responseJSON { response in
+                    debugPrint(response)
+            }
+        }
+    }
+    
     func updateAllGeotifications(completion: @escaping (_ result: Bool)->()) {
         geoPlaces = []
         let currentUser = Firebase.Auth.auth().currentUser
@@ -93,7 +124,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                     if response.result.isSuccess {
                         let placeJSON: JSON = JSON(response.result.value!)
                         for (_, subJson) in placeJSON["data"] {
-                            let name = subJson["title"].string!
+                            let title = subJson["title"].string!
                             let placeDetail = subJson["placeDetail"].string!
                             let identifier = subJson["id"].string!
                             let color = subJson["color"]
@@ -129,7 +160,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                             let onEntry = subJson["onEntry"].bool!
                             let onExit = subJson["onExit"].bool!
                             
-                            self.geoPlaces.append(GeoPlace(name: name, placeDetail: placeDetail, identifier: identifier, pinColor: pinColor, radius: radius, coordinate: CLLocationCoordinate2DMake(latitude, longitude), onEntry: onEntry, onExit: onExit))
+                            self.geoPlaces.append(GeoPlace(title: title, placeDetail: placeDetail, identifier: identifier, pinColor: pinColor, radius: radius, coordinate: CLLocationCoordinate2DMake(latitude, longitude), onEntry: onEntry, onExit: onExit))
                         }
                         self.saveAllGeotifications()
                         completion(true)
