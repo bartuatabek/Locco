@@ -101,3 +101,16 @@ class GeoPlace: NSObject, NSCoding, NSCopying, MKAnnotation {
     }
 }
 
+class PeopleInPlace {
+    var username: String
+    var profilePicturePath: String
+    var profilePicture: UIImage?
+    var coordinate: CLLocationCoordinate2D
+    
+    init(username: String, profilePicturePath: String, profilePicture: UIImage?, coordinate: CLLocationCoordinate2D) {
+        self.username = username
+        self.profilePicturePath = profilePicturePath
+        self.profilePicture = profilePicture
+        self.coordinate = coordinate
+    }
+}

@@ -15,7 +15,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="Chat" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mnj-V2-Uqe" customClass="ChatController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="76" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ECD-45-ich">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -215,7 +215,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ZtQ-jB-s6R" kind="relationship" relationship="rootViewController" id="n4L-Oj-ttP"/>
+                        <segue destination="mnj-V2-Uqe" kind="relationship" relationship="rootViewController" id="JKI-5N-Tob"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ce5-1k-ehK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -231,6 +231,6 @@
         <image name="mute" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="n4L-Oj-ttP"/>
+        <segue reference="kix-QZ-SV8"/>
     </inferredMetricsTieBreakers>
 </document>

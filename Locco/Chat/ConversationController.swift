@@ -34,8 +34,8 @@ internal class ConversationController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.iMessage()
-        //        self.viewModel!.controller = self
-        //        self.navigationItem.title = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleName
+        self.viewModel!.controller = self
+        self.navigationItem.title = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleName
         
         //        reference = db.collection(<#T##collectionPath: String##String#>)
         

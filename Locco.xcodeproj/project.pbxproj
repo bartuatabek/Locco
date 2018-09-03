@@ -44,6 +44,8 @@
 		BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */; };
 		BF3F43D920FF2AD700DF3E69 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */; };
 		BF3F43DB20FF2AE200DF3E69 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */; };
+		BFA96037213D51C600841783 /* InviteDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA96036213D51C600841783 /* InviteDrawerController.swift */; };
+		BFA96039213D603100841783 /* InviteContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA96038213D603100841783 /* InviteContactsController.swift */; };
 		BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A85210B2A17000A5F2C /* GradientView.swift */; };
 		BFB51A8A210B39F2000A5F2C /* AuthPhoneRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */; };
 		BFC0A3D4211C84FF00032435 /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0A3D3211C84FF00032435 /* RoundedImage.swift */; };
@@ -93,6 +95,8 @@
 		BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		BFA96036213D51C600841783 /* InviteDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteDrawerController.swift; sourceTree = "<group>"; };
+		BFA96038213D603100841783 /* InviteContactsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteContactsController.swift; sourceTree = "<group>"; };
 		BFB51A80210B26E3000A5F2C /* Locco.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Locco.entitlements; path = ../../Locco.entitlements; sourceTree = "<group>"; };
 		BFB51A85210B2A17000A5F2C /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BFB51A89210B39F2000A5F2C /* AuthPhoneRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPhoneRegController.swift; sourceTree = "<group>"; };
@@ -205,6 +209,8 @@
 			children = (
 				BF3F43C020FF299D00DF3E69 /* CirclesViewModel.swift */,
 				BF3F43C220FF29A800DF3E69 /* CirclesController.swift */,
+				BFA96036213D51C600841783 /* InviteDrawerController.swift */,
+				BFA96038213D603100841783 /* InviteContactsController.swift */,
 				BF3F43BE20FF295500DF3E69 /* Circles.storyboard */,
 			);
 			path = Circles;
@@ -498,6 +504,7 @@
 			files = (
 				BF3F43CD20FF2A7200DF3E69 /* ChatViewModel.swift in Sources */,
 				BFB51A8A210B39F2000A5F2C /* AuthPhoneRegController.swift in Sources */,
+				BFA96037213D51C600841783 /* InviteDrawerController.swift in Sources */,
 				84F1597C20F3A0B5006B3892 /* AuthViewModel.swift in Sources */,
 				8DFA4576212CA4E900ED9A8F /* Message.swift in Sources */,
 				84F1596920F39633006B3892 /* ViewController.swift in Sources */,
@@ -524,6 +531,7 @@
 				8D1C4CB321012E1E00455D89 /* AddGeoPlaceDrawerController.swift in Sources */,
 				BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */,
 				BF3F43C320FF29A800DF3E69 /* CirclesController.swift in Sources */,
+				BFA96039213D603100841783 /* InviteContactsController.swift in Sources */,
 				84F1596720F39633006B3892 /* AppDelegate.swift in Sources */,
 				8D205F032103892B000A0781 /* FormTextField.swift in Sources */,
 			);

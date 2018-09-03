@@ -11,7 +11,6 @@ import ReactiveCocoa
 
 protocol CirclesViewModeling {
     var controller: UIViewController? { get set }
-    func getCircleName() ->String
 }
 
 class CirclesViewModel: CirclesViewModeling {
@@ -21,10 +20,4 @@ class CirclesViewModel: CirclesViewModeling {
     
     // MARK: - Initialization
     init() {}
-    
-    func getCircleName() ->String{
-        return "test"
-    }
-    
-    
 }

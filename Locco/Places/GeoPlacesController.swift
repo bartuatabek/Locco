@@ -307,6 +307,10 @@ extension GeoPlacesController: MKMapViewDelegate {
 //            userPin.image = userPinImage
 //            return userPin
 //        }
+        if let userLocation = annotation as? MKUserLocation {
+            userLocation.title = ""
+            return nil
+        }
          if annotation is GeoPlace {
             let geotification = annotation as! GeoPlace
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
@@ -348,11 +352,7 @@ extension GeoPlacesController: MKMapViewDelegate {
             
             let currentIndex = viewModel?.geoPlaces.index(of: geotification)
             viewModel?.activeGeoPlaceIndex = currentIndex!
-//            viewModel?.getPeopleInPlace(geotification: geotification, completion: { (result) in
-//                print("hi")
-//                // TODO: People in places
-//            })
-            
+    
             let placeDetailDrawerController = UIStoryboard(name: "Places", bundle: nil)
                 .instantiateViewController(withIdentifier: "PlaceDetail") as? PlaceDetailDrawerController
             placeDetailDrawerController?.viewModel = self.viewModel

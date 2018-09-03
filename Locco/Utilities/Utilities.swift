@@ -140,6 +140,15 @@ extension CGFloat {
     }
 }
 
+// MARK: - Double Extension
+extension Double {
+    /// Rounds the double to decimal places value
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
 // MARK: - UIImage Extensions
 extension UIImage {
     func maskRoundedImage() -> UIImage {

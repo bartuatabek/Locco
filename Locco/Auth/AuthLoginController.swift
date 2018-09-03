@@ -31,7 +31,7 @@ class AuthLoginController: UIViewController {
     @IBOutlet weak var verificationCodeErrorLabel: UILabel!
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewWillAppear(animated)
         self.viewModel!.controller = self
         bindUIElements()
     }

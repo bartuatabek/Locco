@@ -12,7 +12,7 @@ import CoreLocation
 import PullUpController
 
 class PlaceDetailDrawerController: PullUpController {
-
+    
     var viewModel: GeoPlacesViewModeling?
     
     @IBOutlet weak var separatorView: UIView! {
@@ -64,13 +64,35 @@ class PlaceDetailDrawerController: PullUpController {
         
         let myLocation = (self.parent as? GeoPlacesController)?.mapView.userLocation.location
         let placeCoordinates = CLLocation(latitude: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate.latitude)!, longitude: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate.longitude)!)
-        let distance = myLocation!.distance(from: placeCoordinates)
+        var distance = myLocation!.distance(from: placeCoordinates)
+        var distanceString = "\(distance.rounded(toPlaces: 1)) m"
         
-        placeDetailLabel.text = "\(viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail ?? "") ∙ \((distance/1000).rounded()) km"
-        
-        DispatchQueue.main.async {
-            self.peopleInPlaceCollection.reloadData()
+        if distance > 1000 {
+            distance = (distance/1000)
+            distanceString = "\(distance.rounded(toPlaces: 1)) km"
         }
+        
+        placeDetailLabel.text = "\(viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].placeDetail ?? "") ∙ \(distanceString)"
+        
+        viewModel?.getPeopleInPlace(geotification: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!])!, completion: { (result) in
+            self.activityIndicator.stopAnimating()
+            if result {
+                DispatchQueue.main.async {
+                    self.peopleInPlaceCollection.reloadData()
+                }
+                
+                for (index, element) in (self.viewModel?.peopleInPlace.enumerated())! {
+                    self.viewModel?.getProfilePicture(at: index, path: element.profilePicturePath, completion: {(result) in
+                        if result {
+                            DispatchQueue.main.async {
+                                let indexPath = IndexPath(row: index, section: 0)
+                                self.peopleInPlaceCollection.reloadItems(at: [indexPath])
+                            }
+                        }
+                    })
+                }
+            }
+        })
     }
     
     // MARK: - PullUpController
@@ -84,21 +106,29 @@ class PlaceDetailDrawerController: PullUpController {
 }
 
 extension PlaceDetailDrawerController: UICollectionViewDelegate, UICollectionViewDataSource {
-    // TODO: Get photos from firebase
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return (viewModel?.peopleInPlace.count)!
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-        cell.imageView.image = UIImage(named: "bartu")
-        cell.usernameLabel.text = "Username"
-        cell.distanceLabel.text = "5.0 mi"
+        
+        let myLocation = (self.parent as? GeoPlacesController)?.mapView.userLocation.location
+        let peopleCoordinate = CLLocation(latitude: (viewModel?.peopleInPlace[indexPath.row].coordinate.latitude)!, longitude: (viewModel?.peopleInPlace[indexPath.row].coordinate.longitude)!)
+        var distance = myLocation!.distance(from: peopleCoordinate)
+        var distanceString = "\(distance.rounded(toPlaces: 1)) m"
+        
+        if distance > 1000 {
+            distance = (distance/1000)
+            distanceString = "\(distance.rounded(toPlaces: 1)) km"
+        }
+        
+        cell.configure(profilePicture: (viewModel?.peopleInPlace[indexPath.row].profilePicture)!, username: (viewModel?.peopleInPlace[indexPath.row].username)!, distance: distanceString)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let selectedCell = collectionView.cellForItem(at: indexPath) as! PhotoCell
+        //        let selectedCell = collectionView.cellForItem(at: indexPath) as! PhotoCell
     }
 }
 
@@ -106,5 +136,11 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
+    
+    func configure(profilePicture: UIImage, username: String, distance: String) {
+        imageView.image = profilePicture.withRenderingMode(.alwaysOriginal)
+        usernameLabel.text = username
+        distanceLabel.text = distance
+    }
 }
 

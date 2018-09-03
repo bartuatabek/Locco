@@ -44,12 +44,12 @@ class ChatController: UIViewController {
     func setup() {
         viewModel?.loadChatPreviews()
         tableView.loadTableData()
-//        viewModel!.getChatPreview(completion: { (result) in
-//            if result {
-//                self.tabBarItem.badgeValue = self.viewModel?.hasNewMessages()
-//                self.tableView.loadTableData()
-//            }
-//        })
+        viewModel!.getChatPreview(completion: { (result) in
+            if result {
+                self.tabBarItem.badgeValue = self.viewModel?.hasNewMessages()
+                self.tableView.loadTableData()
+            }
+        })
     }
     
     @objc func readAll(_ sender: Any) {

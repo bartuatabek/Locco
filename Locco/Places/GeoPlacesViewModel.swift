@@ -23,6 +23,7 @@ protocol GeoPlacesViewModeling {
     var controller: UIViewController? { get set }
     var locationManager: CLLocationManager { get set }
     var geoPlaces: [GeoPlace]  { get set }
+    var peopleInPlace: [PeopleInPlace] { get set }
     var unmodifiedGeoPlace: GeoPlace? { get set }
     var activeGeoPlaceIndex: Int { get set }
     var isAddedNewPlace: Bool { get set }
@@ -30,6 +31,7 @@ protocol GeoPlacesViewModeling {
     
     func loadAllGeotifications()
     func saveAllGeotifications()
+    func getProfilePicture(at index: Int, path: String, completion: @escaping (_ result: Bool)->())
     func getPeopleInPlace(geotification: GeoPlace, completion: @escaping (_ result: Bool)->())
     func updateAllGeotifications(completion: @escaping (_ result: Bool)->())
     func updatePlaceDetails(geotification: GeoPlace, completion: @escaping (_ result: Bool) ->())
@@ -46,6 +48,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
     weak var controller: UIViewController?
     var locationManager: CLLocationManager
     var geoPlaces: [GeoPlace]
+    var peopleInPlace: [PeopleInPlace]
     var unmodifiedGeoPlace: GeoPlace?
     var activeGeoPlaceIndex: Int
     var isAddedNewPlace: Bool
@@ -54,6 +57,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
     // MARK: - Initialization
     override init() {
         geoPlaces = []
+        peopleInPlace = []
         isEditing = false
         isAddedNewPlace = false
         activeGeoPlaceIndex = -1
@@ -83,7 +87,25 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
         UserDefaults.standard.set(items, forKey: PreferencesKeys.savedPlaces)
     }
     
+    func getProfilePicture(at index: Int, path: String, completion: @escaping (Bool) -> ()) {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let imageRef = storageRef.child("/profilePictures/\(path).jpeg")
+        
+        imageRef.getData(maxSize: 1 * 5120 * 5120) { data, error in
+            if let error = error {
+                print("Error: ", error)
+                 completion(false)
+            } else {
+                let downloadedImage = UIImage(data: data!)!
+                self.peopleInPlace[index].profilePicture = downloadedImage
+                completion(true)
+            }
+        }
+    }
+    
     func getPeopleInPlace(geotification: GeoPlace, completion: @escaping (Bool) -> ()) {
+        peopleInPlace = []
         let currentUser = Firebase.Auth.auth().currentUser
         currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
             if let error = error  {
@@ -101,7 +123,19 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
             
             Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/getPeopleInPlace", method: .get, parameters: parameters, headers: headers)
                 .responseJSON { response in
-                    debugPrint(response)
+                    if response.result.isSuccess {
+                        let placeJSON: JSON = JSON(response.result.value!)
+                        for (_, subJson) in placeJSON["people"] {
+                            let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(subJson["latitude"].float!), longitude:  CLLocationDegrees(subJson["longitude"].float!))
+                            let userId = subJson["userId"].string!
+                            let username = subJson["username"].string!
+                            self.peopleInPlace.append(PeopleInPlace(username: username, profilePicturePath: userId, profilePicture: UIImage(named: "contact"), coordinate: coordinate))
+                        }
+                        completion(true)
+                    } else {
+                        completion(false)
+                        print("Error: \(response.result.error ?? "" as! Error)")
+                    }
             }
         }
     }

@@ -66,6 +66,7 @@ class ChatViewModel: ChatViewModeling {
             
             Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/getChats", method: .get, headers: headers)
                 .responseJSON { response in
+                    debugPrint(response)
                     if response.result.isSuccess {
                         let placeJSON: JSON = JSON(response.result.value!)
                         for (_, subJson) in placeJSON["data"] {
