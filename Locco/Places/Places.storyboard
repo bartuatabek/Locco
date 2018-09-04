@@ -758,6 +758,7 @@
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact" translatesAutoresizingMaskIntoConstraints="NO" id="3Sk-SU-aYO" customClass="RoundedImage" customModule="Locco" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="tintColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isRounded" value="YES"/>

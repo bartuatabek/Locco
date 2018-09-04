@@ -138,7 +138,8 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var distanceLabel: UILabel!
     
     func configure(profilePicture: UIImage, username: String, distance: String) {
-        imageView.image = profilePicture.withRenderingMode(.alwaysOriginal)
+        imageView.image = profilePicture
+        imageView.tintColor = UIColor(red: 152/255, green: 152/255, blue: 157/255, alpha: 1.0)
         usernameLabel.text = username
         distanceLabel.text = distance
     }

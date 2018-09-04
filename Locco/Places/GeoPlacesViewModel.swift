@@ -98,7 +98,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                  completion(false)
             } else {
                 let downloadedImage = UIImage(data: data!)!
-                self.peopleInPlace[index].profilePicture = downloadedImage
+                self.peopleInPlace[index].profilePicture = downloadedImage.withRenderingMode(.alwaysOriginal)
                 completion(true)
             }
         }
@@ -129,7 +129,7 @@ class GeoPlacesViewModel: NSObject, GeoPlacesViewModeling {
                             let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(subJson["latitude"].float!), longitude:  CLLocationDegrees(subJson["longitude"].float!))
                             let userId = subJson["userId"].string!
                             let username = subJson["username"].string!
-                            self.peopleInPlace.append(PeopleInPlace(username: username, profilePicturePath: userId, profilePicture: UIImage(named: "contact"), coordinate: coordinate))
+                            self.peopleInPlace.append(PeopleInPlace(username: username, profilePicturePath: userId, profilePicture: UIImage(named: "contact")?.withRenderingMode(.alwaysTemplate), coordinate: coordinate))
                         }
                         completion(true)
                     } else {

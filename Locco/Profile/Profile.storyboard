@@ -30,7 +30,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="contact" translatesAutoresizingMaskIntoConstraints="NO" id="e93-JP-vs7" customClass="RoundedImage" customModule="Locco" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="17" width="48" height="48"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="0.78039215689999997" green="0.0" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isRounded" value="YES"/>
@@ -277,7 +277,7 @@
         <!--Profile-->
         <scene sceneID="cHd-d3-bcx">
             <objects>
-                <tableViewController storyboardIdentifier="ProfileDetail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xr0-Wh-dUb" customClass="ProfileController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ProfileDetail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xr0-Wh-dUb" customClass="ProfileDetailController" customModule="Locco" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="xuF-Oi-QXm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="641"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -295,6 +295,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="contact" translatesAutoresizingMaskIntoConstraints="NO" id="anW-71-v03" customClass="RoundedImage" customModule="Locco" customModuleProvider="target">
                                                     <rect key="frame" x="10" y="10" width="64" height="64"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isRounded" value="YES"/>
@@ -347,7 +348,7 @@
                                                     <connections>
                                                         <action selector="usernameChanged:" destination="Xr0-Wh-dUb" eventType="editingDidEnd" id="7ah-ng-yJm"/>
                                                         <action selector="usernameTextFieldDidChange:" destination="Xr0-Wh-dUb" eventType="editingChanged" id="hMl-Y5-0lE"/>
-                                                        <outlet property="delegate" destination="Xr0-Wh-dUb" id="W2s-Ao-lld"/>
+                                                        <outlet property="delegate" destination="Xr0-Wh-dUb" id="cbK-PR-CNj"/>
                                                     </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djh-8K-VaQ">
@@ -396,7 +397,7 @@
                                                     <connections>
                                                         <action selector="aboutChanged:" destination="Xr0-Wh-dUb" eventType="editingDidEnd" id="GiT-Xc-1AU"/>
                                                         <action selector="aboutTextFieldDidChange:" destination="Xr0-Wh-dUb" eventType="editingChanged" id="4rQ-3E-1dR"/>
-                                                        <outlet property="delegate" destination="Xr0-Wh-dUb" id="jt1-bD-tne"/>
+                                                        <outlet property="delegate" destination="Xr0-Wh-dUb" id="lEe-Nb-KeB"/>
                                                     </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4k-et-XMg">

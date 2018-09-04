@@ -38,7 +38,7 @@ class ProfileViewModel: ProfileViewModeling {
     init() {
         username = MutableProperty((Firebase.Auth.auth().currentUser?.displayName)!)
         about = MutableProperty("")
-        profilePicture = MutableProperty(UIImage(named: "contact")!)
+        profilePicture = MutableProperty(UIImage(named: "contact")!.withRenderingMode(.alwaysTemplate))
     }
     
     func getAbout() {
@@ -61,7 +61,7 @@ class ProfileViewModel: ProfileViewModeling {
     }
     
     func updateAbout(about: String) {
-        self.about.swap(about)
+        self.about.swap(about.trimmingCharacters(in: .whitespacesAndNewlines))
         
         let currentUser = Firebase.Auth.auth().currentUser
         currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
@@ -80,13 +80,23 @@ class ProfileViewModel: ProfileViewModeling {
             
             Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updateAbout", method: .post, parameters: parameters, headers: headers)
                 .responseJSON { response in
-                    debugPrint(response)
+//                    debugPrint(response)
             }
         }
     }
     
     func updateUsername(username: String) {
-        self.username.value = username
+        self.username.swap(username.trimmingCharacters(in: .whitespacesAndNewlines))
+        
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = username
+        changeRequest?.commitChanges { (error) in
+            if let error = error {
+                print("Error: ", error)
+            } else {
+                Firebase.Auth.auth().currentUser?.reload(completion: nil)
+            }
+        }
         
         let currentUser = Firebase.Auth.auth().currentUser
         currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
@@ -96,7 +106,7 @@ class ProfileViewModel: ProfileViewModeling {
             }
             
             let parameters: Parameters = [
-                "displayName": username
+                "displayName": username.trimmingCharacters(in: .whitespacesAndNewlines)
             ]
             
             let headers: HTTPHeaders = [
@@ -105,7 +115,7 @@ class ProfileViewModel: ProfileViewModeling {
             
             Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/updateDisplayName", method: .post, parameters: parameters, headers: headers)
                 .responseJSON { response in
-                    debugPrint(response)
+//                    debugPrint(response)
             }
         }
     }
@@ -139,6 +149,7 @@ class ProfileViewModel: ProfileViewModeling {
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         imageRef.putData(data, metadata: metadata)
-        self.profilePicture.value = profilePicture
+        self.profilePicture.swap(profilePicture)
+        Firebase.Auth.auth().currentUser?.reload(completion: nil)
     }
 }

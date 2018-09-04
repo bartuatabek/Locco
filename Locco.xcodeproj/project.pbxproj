@@ -44,6 +44,7 @@
 		BF3F43D720FF2ACD00DF3E69 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */; };
 		BF3F43D920FF2AD700DF3E69 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */; };
 		BF3F43DB20FF2AE200DF3E69 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */; };
+		BF730C1A213E7B5500F7985F /* ProfileDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF730C19213E7B5500F7985F /* ProfileDetailController.swift */; };
 		BFA96037213D51C600841783 /* InviteDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA96036213D51C600841783 /* InviteDrawerController.swift */; };
 		BFA96039213D603100841783 /* InviteContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA96038213D603100841783 /* InviteContactsController.swift */; };
 		BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB51A85210B2A17000A5F2C /* GradientView.swift */; };
@@ -95,6 +96,7 @@
 		BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		BF730C19213E7B5500F7985F /* ProfileDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetailController.swift; sourceTree = "<group>"; };
 		BFA96036213D51C600841783 /* InviteDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteDrawerController.swift; sourceTree = "<group>"; };
 		BFA96038213D603100841783 /* InviteContactsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteContactsController.swift; sourceTree = "<group>"; };
 		BFB51A80210B26E3000A5F2C /* Locco.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Locco.entitlements; path = ../../Locco.entitlements; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 			children = (
 				BF3F43D620FF2ACD00DF3E69 /* ProfileViewModel.swift */,
 				BF3F43D820FF2AD700DF3E69 /* ProfileController.swift */,
+				BF730C19213E7B5500F7985F /* ProfileDetailController.swift */,
 				BF3F43DA20FF2AE200DF3E69 /* Profile.storyboard */,
 			);
 			path = Profile;
@@ -521,6 +524,7 @@
 				BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */,
 				BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */,
 				8D1C4CAD21012AAF00455D89 /* GeoPlace.swift in Sources */,
+				BF730C1A213E7B5500F7985F /* ProfileDetailController.swift in Sources */,
 				BF3F43C720FF29D000DF3E69 /* GeoPlacesController.swift in Sources */,
 				BF3F43C520FF29C700DF3E69 /* GeoPlacesViewModel.swift in Sources */,
 				BF3F43CF20FF2A7E00DF3E69 /* ChatController.swift in Sources */,
