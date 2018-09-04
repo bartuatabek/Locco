@@ -29,6 +29,7 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     @IBOutlet weak var radiusSlider: UISlider!
     @IBOutlet var pinColors: [GradientView]!
     @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var deletePlaceButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +74,10 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
             }
             
             getAddress(coordinate: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!].coordinate)!)
+        }
+        
+        if !(viewModel?.isAddedNewPlace)! {
+            deletePlaceButton.isHidden = false
         }
     }
         
@@ -191,7 +196,7 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     }
     
     @IBAction func deletePlace(_ sender: Any) {
-        viewModel?.remove(geotification: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!])!)
+        (self.parent as? GeoPlacesController)?.remove(geotification: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!])!)
     }
     
     // MARK: - PullUpController

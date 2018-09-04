@@ -9,10 +9,12 @@
 import UIKit
 
 struct ChatKey {
-    static let chatIcon = "chatIcon"
+    static let circleIcon = "circleIcon"
+    static let circleIconImage = "circleIconImage"
+    static let circleId = "circleId"
     static let circleName = "circleName"
-    static let username = "username"
-    static let lastMessage = "lastMessage"
+    static let senderName = "senderName"
+    static let message = "message"
     static let timestamp = "timestamp"
     static let hasNewMessages = "hasNewMessages"
     static let hideAlerts = "hideAlerts"
@@ -20,19 +22,57 @@ struct ChatKey {
 
 class ChatPreview: NSObject, NSCoding {
     
-    var chatIcon: PinColors
+    var circleIcon: PinColors
+    var circleIconImage: UIImage
     var circleName: String
-    var username: String
-    var lastMessage: String
+    var circleId: String
+    var senderName: String
+    var message: String
     var timestamp: String
     var hasNewMessages: Bool
     var hideAlerts: Bool
     
-    init(chatIcon: PinColors, circleName: String, username: String, lastMessage: String, timestamp: String, hasNewMessages: Bool, hideAlerts: Bool) {
-        self.chatIcon = chatIcon
+    init(circleIcon: PinColors, circleName: String, circleId: String, senderName: String, message: String, timestamp: String, hasNewMessages: Bool, hideAlerts: Bool) {
+        self.circleIcon = circleIcon
+        
+        if circleIcon == PinColors.color1 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color2 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color3 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color4 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color5 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color6 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color7 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color8 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color9 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color10 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color11 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color12 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color13 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color14 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else if circleIcon == PinColors.color15 {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        } else {
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
+        }
+        
         self.circleName = circleName
-        self.username = username
-        self.lastMessage = lastMessage
+        self.circleId = circleId
+        self.senderName = senderName
+        self.message = message
         self.timestamp = timestamp
         self.hasNewMessages = hasNewMessages
         self.hideAlerts = hideAlerts
@@ -40,55 +80,74 @@ class ChatPreview: NSObject, NSCoding {
     
     // MARK: NSCoding
     required init?(coder decoder: NSCoder) {
-        let color = decoder.decodeObject(forKey: ChatKey.chatIcon) as! String
+        let color = decoder.decodeObject(forKey: ChatKey.circleIcon) as! String
         
         if color == PinColors.color1.rawValue {
-            chatIcon = PinColors.color1
+            circleIcon = PinColors.color1
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color2.rawValue {
-            chatIcon = PinColors.color2
+            circleIcon = PinColors.color2
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color3.rawValue {
-            chatIcon = PinColors.color3
+            circleIcon = PinColors.color3
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color4.rawValue {
-            chatIcon = PinColors.color4
+            circleIcon = PinColors.color4
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color5.rawValue {
-            chatIcon = PinColors.color5
+            circleIcon = PinColors.color5
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color6.rawValue {
-            chatIcon = PinColors.color6
+            circleIcon = PinColors.color6
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color7.rawValue {
-            chatIcon = PinColors.color7
+            circleIcon = PinColors.color7
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color8.rawValue {
-            chatIcon = PinColors.color8
+            circleIcon = PinColors.color8
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color9.rawValue {
-            chatIcon = PinColors.color9
+            circleIcon = PinColors.color9
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color10.rawValue {
-            chatIcon = PinColors.color10
+            circleIcon = PinColors.color10
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color11.rawValue {
-            chatIcon = PinColors.color11
+            circleIcon = PinColors.color11
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color12.rawValue {
-            chatIcon = PinColors.color12
+            circleIcon = PinColors.color12
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color13.rawValue {
-            chatIcon = PinColors.color13
+            circleIcon = PinColors.color13
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color14.rawValue {
-            chatIcon = PinColors.color14
+            circleIcon = PinColors.color14
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else if color == PinColors.color15.rawValue {
-            chatIcon = PinColors.color15
+            circleIcon = PinColors.color15
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         } else {
-            chatIcon = PinColors.color3
+            circleIcon = PinColors.color3
+            circleIconImage = UIImage(named: "addPhoto")!.withRenderingMode(.alwaysTemplate)
         }
         
         circleName = decoder.decodeObject(forKey: ChatKey.circleName) as! String
-        username = decoder.decodeObject(forKey: ChatKey.username) as! String
-        lastMessage = decoder.decodeObject(forKey: ChatKey.lastMessage) as! String
+        circleId = decoder.decodeObject(forKey: ChatKey.circleId) as! String
+        senderName = decoder.decodeObject(forKey: ChatKey.senderName) as! String
+        message = decoder.decodeObject(forKey: ChatKey.message) as! String
         timestamp = decoder.decodeObject(forKey: ChatKey.timestamp) as! String
         hasNewMessages = decoder.decodeBool(forKey: ChatKey.hasNewMessages)
         hideAlerts = decoder.decodeBool(forKey: ChatKey.hideAlerts)
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(chatIcon.rawValue, forKey: ChatKey.chatIcon)
+        coder.encode(circleIconImage, forKey: ChatKey.circleIconImage)
+        coder.encode(circleIcon.rawValue, forKey: ChatKey.circleIcon)
         coder.encode(circleName, forKey: ChatKey.circleName)
-        coder.encode(username, forKey: ChatKey.username)
-        coder.encode(lastMessage, forKey: ChatKey.lastMessage)
+        coder.encode(circleId, forKey: ChatKey.circleId)
+        coder.encode(senderName, forKey: ChatKey.senderName)
+        coder.encode(message, forKey: ChatKey.message)
         coder.encode(timestamp, forKey: ChatKey.timestamp)
         coder.encode(hasNewMessages, forKey: ChatKey.hasNewMessages)
         coder.encode(hideAlerts, forKey: ChatKey.hideAlerts)

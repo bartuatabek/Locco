@@ -66,47 +66,46 @@ class ChatViewModel: ChatViewModeling {
             
             Alamofire.request("https://us-central1-locationfinder-e0ce7.cloudfunctions.net/api/getChats", method: .get, headers: headers)
                 .responseJSON { response in
-                    debugPrint(response)
                     if response.result.isSuccess {
                         let placeJSON: JSON = JSON(response.result.value!)
                         for (_, subJson) in placeJSON["data"] {
                             let circleName = subJson["circleName"].string!
-                            let lastMessage = subJson["lastMessage"].string!
-                            let timestamp = subJson["time"].string!
-                            let username = "\(subJson["username"].string!):"
+                            let circleId = subJson["circleName"].string!
+                            let color = subJson["circleIcon"].string!
+                            var circleIcon: PinColors
+
+                            if color == PinColors.color1.rawValue {
+                                circleIcon = PinColors.color1
+                            } else if color == PinColors.color2.rawValue {
+                                circleIcon = PinColors.color2
+                            } else if color == PinColors.color3.rawValue {
+                                circleIcon = PinColors.color3
+                            } else if color == PinColors.color4.rawValue {
+                                circleIcon = PinColors.color4
+                            } else if color == PinColors.color5.rawValue {
+                                circleIcon = PinColors.color5
+                            } else if color == PinColors.color6.rawValue {
+                                circleIcon = PinColors.color6
+                            } else if color == PinColors.color7.rawValue {
+                                circleIcon = PinColors.color7
+                            } else if color == PinColors.color8.rawValue {
+                                circleIcon = PinColors.color8
+                            } else if color == PinColors.color9.rawValue {
+                                circleIcon = PinColors.color9
+                            } else if color == PinColors.color10.rawValue {
+                                circleIcon = PinColors.color10
+                            } else {
+                                circleIcon = PinColors.color1
+                            }
                             
-//                            let color = subJson["chatIcon"].string!
-//                            var chatIcon: PinColors
-//
-//                            if color == PinColors.color1.rawValue {
-//                                chatIcon = PinColors.color1
-//                            } else if color == PinColors.color2.rawValue {
-//                                chatIcon = PinColors.color2
-//                            } else if color == PinColors.color3.rawValue {
-//                                chatIcon = PinColors.color3
-//                            } else if color == PinColors.color4.rawValue {
-//                                chatIcon = PinColors.color4
-//                            } else if color == PinColors.color5.rawValue {
-//                                chatIcon = PinColors.color5
-//                            } else if color == PinColors.color6.rawValue {
-//                                chatIcon = PinColors.color6
-//                            } else if color == PinColors.color7.rawValue {
-//                                chatIcon = PinColors.color7
-//                            } else if color == PinColors.color8.rawValue {
-//                                chatIcon = PinColors.color8
-//                            } else if color == PinColors.color9.rawValue {
-//                                chatIcon = PinColors.color9
-//                            } else if color == PinColors.color10.rawValue {
-//                                chatIcon = PinColors.color10
-//                            } else {
-//                                chatIcon = PinColors.color1
-//                            }
+                            let message = subJson["lastMessage"]["message"].string!
+                            let seconds = subJson["lastMessage"]["seconds"].double!
+                            let date = NSDate(timeIntervalSince1970: seconds)
+                            let timestamp = (date as Date).formatRelativeString()
                             
-//                            let interval = Double()
-//                            let date = NSDate(timeIntervalSince1970: interval)
-//                            let timestamp = (date as Date).formatRelativeString()
+                            let senderName = "\(subJson["lastMessage"]["senderName"].string!):"
                             
-                            self.chatPreviews.append(ChatPreview(chatIcon: PinColors.color1, circleName: circleName, username: username, lastMessage: lastMessage, timestamp: timestamp, hasNewMessages: true, hideAlerts: false))
+                            self.chatPreviews.append(ChatPreview(circleIcon: circleIcon, circleName: circleName, circleId: circleId, senderName: senderName, message: message, timestamp: timestamp, hasNewMessages: true, hideAlerts: false))
                         }
                         self.saveChatPreviews()
                         completion(true)

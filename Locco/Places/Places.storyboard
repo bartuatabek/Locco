@@ -561,7 +561,7 @@
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="365" id="sFK-gJ-Gs1"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rgG-77-4Yy">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rgG-77-4Yy">
                                             <rect key="frame" x="10" y="334" width="86" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="1FA-Mm-AsS"/>
@@ -628,6 +628,7 @@
                     </view>
                     <connections>
                         <outlet property="addressLabel" destination="dJv-ym-3UC" id="8cq-wa-LeS"/>
+                        <outlet property="deletePlaceButton" destination="rgG-77-4Yy" id="3RZ-y0-hkx"/>
                         <outlet property="radiusSlider" destination="PL7-iv-4nv" id="rq6-by-Qck"/>
                         <outlet property="separatorView" destination="KLR-7m-w1m" id="ew6-RN-AFp"/>
                         <outlet property="subtitleLabel" destination="LfL-TV-MXf" id="KqH-9j-4Yu"/>

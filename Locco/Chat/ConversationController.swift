@@ -37,7 +37,8 @@ internal class ConversationController: MessagesViewController {
         self.viewModel!.controller = self
         self.navigationItem.title = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleName
         
-        //        reference = db.collection(<#T##collectionPath: String##String#>)
+        let circleId = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleId
+        reference = db.collection("circles").document(circleId!).collection("chat")
         
         let messagesToFetch = UserDefaults.standard.mockMessagesCount()
         DispatchQueue.global(qos: .userInitiated).async {
@@ -407,6 +408,14 @@ extension ConversationController: MessageInputBarDelegate {
                 } else {
                     let message = Message(text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
                     messageList.append(message)
+                    
+                    reference?.addDocument(data: message.representation) { error in
+                        if let e = error {
+                            print("Error sending message: \(e.localizedDescription)")
+                            return
+                        }
+                    }
+                    
                 }
                 messagesCollectionView.insertSections([messageList.count - 1])
             }

@@ -131,21 +131,36 @@ class GeoPlacesController: UIViewController {
     }
     
     @objc func addPlacesDrawerPullUpController() {
-        pullUpController = UIStoryboard(name: "Places", bundle: nil)
-            .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
+        if pullUpController == nil {
+            pullUpController = UIStoryboard(name: "Places", bundle: nil)
+                .instantiateViewController(withIdentifier: "PlacesDrawerController") as? PlacesDrawerController
+        }
         
-        if (viewModel?.activeGeoPlaceIndex)! >= 0 {
+        if (viewModel?.activeGeoPlaceIndex)! >= 0 && !(viewModel?.isEditing)! {
             let currentGeoPlace = viewModel!.geoPlaces[(viewModel?.activeGeoPlaceIndex)!] as MKAnnotation
             let annotationView = (self.parent as? GeoPlacesController)?.mapView.view(for: currentGeoPlace)
             mapView.deselectAnnotation((mapView.annotations[(mapView.annotations as NSArray).index(of: currentGeoPlace)]), animated: true)
-            viewModel?.isEditing = false
             annotationView?.isDraggable = false
         }
+        
+        viewModel?.isEditing = false
         viewModel?.activeGeoPlaceIndex = -1
         pullUpController?.viewModel = self.viewModel
         
+        if pullUpController != nil {
+            self.navigationItem.leftBarButtonItem?.tintColor = .white
+            self.navigationItem.leftBarButtonItem?.isEnabled = false
+
+            self.navigationItem.rightBarButtonItem?.title = ""
+            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
+            self.navigationItem.rightBarButtonItem?.image = UIImage(named: "createNewPlace")
+            self.navigationItem.rightBarButtonItem?.action = #selector(addPlaceToCurrentLocation)
+        }
+        
         for view in self.view.subviews {
             if view.findViewController() is PlaceDetailDrawerController {
+                removePullUpController(view.findViewController() as! PullUpController, animated: true)
+            } else if view.findViewController() is AddGeoPlaceDrawerController {
                 removePullUpController(view.findViewController() as! PullUpController, animated: true)
             }
         }
@@ -249,8 +264,11 @@ class GeoPlacesController: UIViewController {
     }
     
     func remove(geotification: GeoPlace) {
-        mapView.removeAnnotation(geotification)
+        viewModel?.remove(geotification: geotification)
+        mapView.removeAnnotation(geotification as MKAnnotation)
         removeRadiusOverlay(forGeotification: geotification)
+        addPlacesDrawerPullUpController()
+        pullUpController?.reloadData()
     }
     
     // MARK: Map overlay functions
@@ -370,6 +388,7 @@ extension GeoPlacesController: MKMapViewDelegate {
             for view in self.view.subviews {
                 if view.findViewController() is PlaceDetailDrawerController {
                     removePullUpController(view.findViewController() as! PullUpController, animated: true)
+                    pullUpController?.pullUpControllerMoveToVisiblePoint(185, animated: true, completion: nil)
                 }
             }
         }

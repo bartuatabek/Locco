@@ -8,7 +8,6 @@
 
 import UIKit
 import MapKit
-import SwipeCellKit
 import ReactiveCocoa
 import ReactiveSwift
 import PullUpController
@@ -54,6 +53,10 @@ class PlacesDrawerController: PullUpController {
     
     func refreshTableView() {
         tableView.reloadWithAnimation()
+    }
+    
+    func reloadData() {
+        tableView.reloadData()
     }
     
     func reloadTableData() {
@@ -144,7 +147,6 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(pinColor: (viewModel?.geoPlaces[indexPath.row].pinColor.colors)!, title: (viewModel?.geoPlaces[indexPath.row].title)!, subtitle: (viewModel?.geoPlaces[indexPath.row].placeDetail)!)
         }
         
-        cell.delegate = self as SwipeTableViewCellDelegate
         return cell
     }
     
@@ -159,30 +161,27 @@ extension PlacesDrawerController: UITableViewDataSource, UITableViewDelegate {
         (parent as? GeoPlacesController)?.mapView.selectAnnotation(((parent as? GeoPlacesController)?.mapView.annotations[((parent as? GeoPlacesController)!.mapView.annotations as NSArray).index(of: currentGeoPlace)])!, animated: true)
         (parent as? GeoPlacesController)?.zoom(to: viewModel!.geoPlaces[indexPath.row].coordinate)
     }
-}
-
-// MARK: - SwipeTableViewCell Delegate
-extension PlacesDrawerController: SwipeTableViewCellDelegate {
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
-        
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            self.viewModel?.remove(geotification: (self.viewModel?.geoPlaces[indexPath.row])!)
-            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
+            let deletedGeoPlace = (self.viewModel?.geoPlaces[indexPath.row])!
+            
+            (self.parent as? GeoPlacesController)?.mapView.removeAnnotation(deletedGeoPlace as MKAnnotation)
+            (self.parent as? GeoPlacesController)?.removeRadiusOverlay(forGeotification: deletedGeoPlace)
+            self.viewModel?.remove(geotification: deletedGeoPlace)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
-        return [deleteAction]
+        return [delete]
     }
     
-    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-        var options = SwipeOptions()
-        options.expansionStyle = .destructive
-        return options
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
 }
 
 // MARK: - PlaceCell
-class PlaceCell: SwipeTableViewCell {
+class PlaceCell: UITableViewCell {
     @IBOutlet weak var pinImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!

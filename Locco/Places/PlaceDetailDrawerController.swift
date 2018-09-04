@@ -76,6 +76,12 @@ class PlaceDetailDrawerController: PullUpController {
         
         viewModel?.getPeopleInPlace(geotification: (viewModel?.geoPlaces[(viewModel?.activeGeoPlaceIndex)!])!, completion: { (result) in
             self.activityIndicator.stopAnimating()
+            if self.viewModel?.peopleInPlace.count == 0 {
+                (self.parent as? GeoPlacesController)?.pullUpController?.pullUpControllerMoveToVisiblePoint(80, animated: false, completion: {
+                    self.pullUpControllerMoveToVisiblePoint(80, animated: true, completion: nil)
+                })
+            }
+            
             if result {
                 DispatchQueue.main.async {
                     self.peopleInPlaceCollection.reloadData()

@@ -115,7 +115,7 @@ extension ChatController: UITableViewDataSource, UITableViewDelegate {
 //            cell.configure(pinColor: (viewModel?.geoPlaces[indexPath.row].pinColor.colors)!, title: (viewModel?.geoPlaces[indexPath.row].title)!, subtitle: (viewModel?.geoPlaces[indexPath.row].placeDetail)!)
 //        }
         
-        cell.configure(cellPicture: UIImage(named: "addPhoto")!, iconGradient: (viewModel?.chatPreviews[indexPath.row].chatIcon)!, title: (viewModel?.chatPreviews[indexPath.row].circleName)!, subtitle: (viewModel?.chatPreviews[indexPath.row].username)!, preview: (viewModel?.chatPreviews[indexPath.row].lastMessage)!, time: (viewModel?.chatPreviews[indexPath.row].timestamp)!, hasNewMessages: (viewModel?.chatPreviews[indexPath.row].hasNewMessages)!, hideAlerts: (viewModel?.chatPreviews[indexPath.row].hideAlerts)!)
+        cell.configure(cellPicture: UIImage(named: "addPhoto")!, iconGradient: (viewModel?.chatPreviews[indexPath.row].circleIcon)!, title: (viewModel?.chatPreviews[indexPath.row].circleName)!, subtitle: (viewModel?.chatPreviews[indexPath.row].senderName)!, preview: (viewModel?.chatPreviews[indexPath.row].message)!, time: (viewModel?.chatPreviews[indexPath.row].timestamp)!, hasNewMessages: (viewModel?.chatPreviews[indexPath.row].hasNewMessages)!, hideAlerts: (viewModel?.chatPreviews[indexPath.row].hideAlerts)!)
         return cell
     }
     

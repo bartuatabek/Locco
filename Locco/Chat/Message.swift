@@ -6,9 +6,15 @@
 //  Copyright © 2018 Bartu Atabek. All rights reserved.
 //
 
+import Firebase
 import Foundation
-import CoreLocation
 import MessageKit
+import CoreLocation
+import FirebaseFirestore
+
+protocol DatabaseRepresentation {
+    var representation: [String: Any] { get }
+}
 
 private struct PhotoMediaItem: MediaItem {
     
@@ -31,6 +37,8 @@ internal struct Message: MessageType {
     var sender: Sender
     var sentDate: Date
     var kind: MessageKind
+    var message: String?
+    var mediaUrl: String?
     var mediaItem: UIImage?
     
     private init(kind: MessageKind, sender: Sender, messageId: String, date: Date) {
@@ -42,6 +50,7 @@ internal struct Message: MessageType {
     
     init(text: String, sender: Sender, messageId: String, date: Date) {
         self.init(kind: .text(text), sender: sender, messageId: messageId, date: date)
+        message = text
     }
     
     init(image: UIImage, sender: Sender, messageId: String, date: Date) {
@@ -52,6 +61,34 @@ internal struct Message: MessageType {
     
     init(emoji: String, sender: Sender, messageId: String, date: Date) {
         self.init(kind: .emoji(emoji), sender: sender, messageId: messageId, date: date)
+        message = emoji
+    }
+    
+}
+
+extension Message: DatabaseRepresentation {
+    var representation: [String : Any] {
+        var rep: [String : Any] = [
+            "createTime": sentDate,
+            "senderID": sender.id,
+            "senderName": sender.displayName
+        ]
+        
+        switch kind {
+        case .text:
+            rep["kind"] = "text"
+            rep["message"] = message
+        case .photo:
+            rep["kind"] = "photo"
+            rep["url"] = mediaUrl ?? ""
+        case .emoji:
+            rep["kind"] = "emoji"
+            rep["message"] = message
+        default:
+            rep["kind"] = "text"
+        }
+        
+        return rep
     }
     
 }
