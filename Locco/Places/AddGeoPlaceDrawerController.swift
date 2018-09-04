@@ -94,8 +94,11 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
         CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
             if (placemarks?.count)! > 0 {
                 let pm = placemarks?.first
-                let address = (pm?.name)! + " " + (pm?.thoroughfare)! + " " + (pm?.subLocality)! + " " + (pm?.locality)! + ", " + (pm?.administrativeArea)! + " " + (pm?.postalCode)! + " " + (pm?.country)!
-                self.addressLabel.text = address
+                let address = "\(pm?.name ?? "") \(pm?.thoroughfare ?? "") \(pm?.subLocality ?? "") \(pm?.locality ?? "") , \(pm?.administrativeArea ?? "") \(pm?.postalCode ?? "") \(pm?.country ?? "")"
+                
+                if address.count > 10 {
+                    self.addressLabel.text = address
+                }
             }
         }
     }
