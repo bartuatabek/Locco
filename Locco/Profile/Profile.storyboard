@@ -30,6 +30,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="contact" translatesAutoresizingMaskIntoConstraints="NO" id="e93-JP-vs7" customClass="RoundedImage" customModule="Locco" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="17" width="48" height="48"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.78039215689999997" green="0.0" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="tintColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isRounded" value="YES"/>

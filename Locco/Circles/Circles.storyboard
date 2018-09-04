@@ -220,7 +220,6 @@
                         <barButtonItem key="rightBarButtonItem" title="Next" id="XPE-kV-57n"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sxW-at-JeV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

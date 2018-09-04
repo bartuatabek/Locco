@@ -61,7 +61,7 @@ class ProfileViewModel: ProfileViewModeling {
     }
     
     func updateAbout(about: String) {
-        self.about.value = about
+        self.about.swap(about)
         
         let currentUser = Firebase.Auth.auth().currentUser
         currentUser?.getIDTokenForcingRefresh(true) { idToken, error in

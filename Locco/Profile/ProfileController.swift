@@ -28,6 +28,14 @@ class ProfileController: UITableViewController {
     @IBOutlet weak var usernameRemainingCharCount: UILabel!
     @IBOutlet weak var aboutRemainingCharCount: UILabel!
     
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//        super.init(nibName: , bundle: <#T##Bundle?#>)
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: coder)
+//    }
+//    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = ProfileViewModel()
@@ -52,6 +60,7 @@ class ProfileController: UITableViewController {
     }
     
     func setup() {
+        Firebase.Auth.auth().currentUser?.reload(completion: nil)
         self.viewModel!.controller = self
         self.viewModel?.getAbout()
         self.viewModel?.getProfilePicture(completion: {(result) in
