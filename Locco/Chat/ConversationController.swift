@@ -19,11 +19,14 @@ internal class ConversationController: MessagesViewController {
     private let db = Firestore.firestore()
     private var reference: CollectionReference?
     
+    var circleId: String?
     let refreshControl = UIRefreshControl()
     let eventStore = EKEventStore()
+    let storage = Storage.storage()
     
     var viewModel: ChatViewModeling?
     var messageList: [Message] = []
+    var messageListener: ListenerRegistration?
     
     lazy var formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -31,23 +34,38 @@ internal class ConversationController: MessagesViewController {
         return formatter
     }()
     
+    deinit {
+        messageListener?.remove()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.iMessage()
         self.viewModel!.controller = self
         self.navigationItem.title = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleName
         
-        let circleId = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleId
+        circleId = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleId
         reference = db.collection("circles").document(circleId!).collection("chat")
         
-        let messagesToFetch = UserDefaults.standard.mockMessagesCount()
-        DispatchQueue.global(qos: .userInitiated).async {
-            SampleData.shared.getMessages(count: messagesToFetch) { messages in
-                DispatchQueue.main.async {
-                    self.messageList = messages
-                    self.messagesCollectionView.reloadData()
-                    self.messagesCollectionView.scrollToBottom()
-                }
+//        let messagesToFetch = UserDefaults.standard.mockMessagesCount()
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            SampleData.shared.getMessages(count: messagesToFetch) { messages in
+//                DispatchQueue.main.async {
+//                    self.messageList = messages
+//                    self.messagesCollectionView.reloadData()
+//                    self.messagesCollectionView.scrollToBottom()
+//                }
+//            }
+//        }
+        
+        messageListener = reference?.addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { change in
+                self.handleDocumentChange(change)
             }
         }
         
@@ -65,14 +83,40 @@ internal class ConversationController: MessagesViewController {
     }
     
     @objc func loadMoreMessages() {
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now() + 4) {
-            SampleData.shared.getMessages(count: 10) { messages in
-                DispatchQueue.main.async {
-                    self.messageList.insert(contentsOf: messages, at: 0)
-                    self.messagesCollectionView.reloadDataAndKeepOffset()
-                    self.refreshControl.endRefreshing()
-                }
+//        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now() + 4) {
+//            SampleData.shared.getMessages(count: 10) { messages in
+//                DispatchQueue.main.async {
+//                    self.messageList.insert(contentsOf: messages, at: 0)
+//                   self.messagesCollectionView.reloadData()
+//                    self.refreshControl.endRefreshing()
+//                }
+//            }
+//        }
+    }
+    
+    func handleDocumentChange(_ change: DocumentChange) {
+        guard var message = Message(document: change.document) else {
+            return
+        }
+        
+        guard !messageList.contains(message) else {
+            return
+        }
+        
+        messageList.sort()
+        
+        switch message.kind {
+        case .photo:
+            message.downloadImage(at: message.mediaUrl!) { (image) in
+                message.mediaItem = image
             }
+        default:
+           return
+        }
+        
+        DispatchQueue.main.async {
+            self.messageList.append(message)
+            self.messagesCollectionView.reloadDataAndKeepOffset()
         }
     }
     
@@ -107,7 +151,7 @@ internal class ConversationController: MessagesViewController {
             makeButton(named: "camera").onTextViewDidChange { button, textView in
                 button.isEnabled = textView.text.isEmpty
             },
-        ]
+            ]
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
     }
     
@@ -148,7 +192,7 @@ extension ConversationController: EKEventEditViewDelegate {
 extension ConversationController: MessagesDataSource {
     
     func currentSender() -> Sender {
-        return SampleData.shared.currentSender
+        return Sender(id: (Firebase.Auth.auth().currentUser?.uid)!, displayName: (Firebase.Auth.auth().currentUser?.displayName)!)
     }
     
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
@@ -230,15 +274,9 @@ extension ConversationController: MessagesDisplayDelegate {
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        if isFromCurrentSender(message: message) {
-            avatarView.isHidden = true
-            if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
-                layout.textMessageSizeCalculator.outgoingAvatarSize = .zero
-            }
-        } else {
-            let avatar = SampleData.shared.getAvatarFor(sender: message.sender)
-            avatarView.set(avatar: avatar)
-        }
+        Message.getAvatarFor(sender: message.sender, completion: { (avatar) in
+            avatarView.set(avatar: avatar!)
+        })
     }
 }
 
@@ -398,17 +436,34 @@ extension ConversationController: MessageInputBarDelegate {
         
         for component in inputBar.inputTextView.components {
             if let image = component as? UIImage {
-                let imageMessage = Message(image: image, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+                var imageMessage = Message(image: image, sender: currentSender(), messageId: UUID().uuidString, date: Date())
                 messageList.append(imageMessage)
                 messagesCollectionView.insertSections([messageList.count - 1])
+                
+                viewModel!.uploadImage(image, to: circleId!) { [weak self] url in
+                    guard let url = url else {
+                        return
+                    }
+                                        
+                    imageMessage.mediaUrl = url
+                    self?.reference?.addDocument(data: imageMessage.representation) { error in
+                        if let e = error {
+                            print("Error sending message: \(e.localizedDescription)")
+                            return
+                        }
+                    }
+                }
             } else if let text = component as? String {
                 if text.containsOnlyEmoji && text.count < 4 {
                     let message = Message(emoji: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-                    messageList.append(message)
+                    reference?.addDocument(data: message.representation) { error in
+                        if let e = error {
+                            print("Error sending message: \(e.localizedDescription)")
+                            return
+                        }
+                    }
                 } else {
                     let message = Message(text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-                    messageList.append(message)
-                    
                     reference?.addDocument(data: message.representation) { error in
                         if let e = error {
                             print("Error sending message: \(e.localizedDescription)")
@@ -417,7 +472,6 @@ extension ConversationController: MessageInputBarDelegate {
                     }
                     
                 }
-                messagesCollectionView.insertSections([messageList.count - 1])
             }
         }
         

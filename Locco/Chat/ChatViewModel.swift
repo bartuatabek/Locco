@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 import ReactiveSwift
 import ReactiveCocoa
+import FirebaseFirestore
 
 protocol ChatViewModeling {
     var controller: UIViewController? { get set }
@@ -21,6 +22,7 @@ protocol ChatViewModeling {
     func saveChatPreviews()
     func hasNewMessages() -> String?
     func getChatPreview(completion: @escaping (_ result: Bool)->())
+    func uploadImage(_ image: UIImage, to circleId: String, completion: @escaping (URL?) -> Void) 
 }
 
 class ChatViewModel: ChatViewModeling {
@@ -29,6 +31,8 @@ class ChatViewModel: ChatViewModeling {
     weak var controller: UIViewController?
     var chatPreviews: [ChatPreview]
     var activeChatIndex: Int
+    
+    let storage = Storage.storage().reference()
     
     // MARK: - Initialization
     init() {
@@ -70,7 +74,7 @@ class ChatViewModel: ChatViewModeling {
                         let placeJSON: JSON = JSON(response.result.value!)
                         for (_, subJson) in placeJSON["data"] {
                             let circleName = subJson["circleName"].string!
-                            let circleId = subJson["circleName"].string!
+                            let circleId = subJson["circleId"].string!
                             let color = subJson["circleIcon"].string!
                             var circleIcon: PinColors
 
@@ -134,5 +138,26 @@ class ChatViewModel: ChatViewModeling {
             items.append(item)
         }
         UserDefaults.standard.set(items, forKey: PreferencesKeys.savedChatPreviews)
+    }
+    
+    func uploadImage(_ image: UIImage, to circleId: String, completion: @escaping (URL?) -> Void) {
+        guard let scaledImage = image.scaledToSafeUploadSize, let data = scaledImage.jpegData(compressionQuality: 0.4) else {
+            completion(nil)
+            return
+        }
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        let imageName = [UUID().uuidString, String(Date().timeIntervalSince1970)].joined()
+        storage.child("circlePictures").child(circleId).child(imageName).putData(data, metadata: metadata) { meta, error in
+            self.storage.child("circlePictures").child(circleId).child(imageName).downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                completion(downloadURL)
+            }
+        }
     }
 }

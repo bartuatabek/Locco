@@ -25,7 +25,6 @@
 		8D6D79CA213B222900178E53 /* ChatPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6D79C9213B222900178E53 /* ChatPreview.swift */; };
 		8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */; };
 		8DFA4572212CA49900ED9A8F /* ConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA4571212CA49900ED9A8F /* ConversationController.swift */; };
-		8DFA4574212CA4C100ED9A8F /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA4573212CA4C100ED9A8F /* SampleData.swift */; };
 		8DFA4576212CA4E900ED9A8F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA4575212CA4E900ED9A8F /* Message.swift */; };
 		BF2713C421241477007DAAF2 /* PlaceDetailDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2713C321241477007DAAF2 /* PlaceDetailDrawerController.swift */; };
 		BF271DC52110964000ED09FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF271DC42110964000ED09FB /* GoogleService-Info.plist */; };
@@ -77,7 +76,6 @@
 		8D6D79C9213B222900178E53 /* ChatPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPreview.swift; sourceTree = "<group>"; };
 		8DBB41322103CB5F00D52877 /* AuthMailRegController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMailRegController.swift; sourceTree = "<group>"; };
 		8DFA4571212CA49900ED9A8F /* ConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationController.swift; sourceTree = "<group>"; };
-		8DFA4573212CA4C100ED9A8F /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		8DFA4575212CA4E900ED9A8F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		BF2713C321241477007DAAF2 /* PlaceDetailDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailDrawerController.swift; sourceTree = "<group>"; };
 		BF271DC42110964000ED09FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -239,7 +237,6 @@
 				BF3F43CC20FF2A7200DF3E69 /* ChatViewModel.swift */,
 				BF3F43CE20FF2A7E00DF3E69 /* ChatController.swift */,
 				8DFA4575212CA4E900ED9A8F /* Message.swift */,
-				8DFA4573212CA4C100ED9A8F /* SampleData.swift */,
 				8DFA4571212CA49900ED9A8F /* ConversationController.swift */,
 				BF3F43CA20FF2A5B00DF3E69 /* Chat.storyboard */,
 			);
@@ -520,7 +517,6 @@
 				8D05E0CC2103B324004D2433 /* AuthLoginController.swift in Sources */,
 				8DBB41332103CB5F00D52877 /* AuthMailRegController.swift in Sources */,
 				BF2713C421241477007DAAF2 /* PlaceDetailDrawerController.swift in Sources */,
-				8DFA4574212CA4C100ED9A8F /* SampleData.swift in Sources */,
 				BF3F43C120FF299D00DF3E69 /* CirclesViewModel.swift in Sources */,
 				BFB51A86210B2A17000A5F2C /* GradientView.swift in Sources */,
 				8D1C4CAD21012AAF00455D89 /* GeoPlace.swift in Sources */,

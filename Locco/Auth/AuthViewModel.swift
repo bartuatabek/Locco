@@ -62,13 +62,16 @@ class AuthViewModel: AuthViewModeling {
     
     // MARK: - FBLogin
     func fbLogin() {
-        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: controller) { (result, error) in
-            if error != nil {
-                print("FB Login failed: ", error!)
-                return
+        let mypermission = FBSDKGraphRequest(graphPath: "me/permissions/", parameters: nil, httpMethod: "DELETE")
+        mypermission!.start(completionHandler: {(connection,result,error)-> Void in
+            FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self.controller) { (result, error) in
+                if error != nil {
+                    print("FB Login failed: ", error!)
+                    return
+                }
+                self.showUserData()
             }
-            self.showUserData()
-        }
+        })
     }
     
     // MARK: - GoogleLogin
