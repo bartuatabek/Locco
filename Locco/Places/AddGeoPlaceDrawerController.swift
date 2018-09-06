@@ -121,6 +121,7 @@ class AddGeoPlaceDrawerController: PullUpController, UIGestureRecognizerDelegate
     }
     
     @IBAction func editLocation(_ sender: Any) {
+        (self.parent as? GeoPlacesController)?.pullUpController?.pullUpControllerMoveToVisiblePoint(75, animated: false, completion: nil)
         self.pullUpControllerMoveToVisiblePoint(75, animated: true) {
             self.view.isUserInteractionEnabled = false
 

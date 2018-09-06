@@ -8,16 +8,19 @@
 
 import UIKit
 import MapKit
+import Photos
 import EventKit
 import Lightbox
 import Firebase
 import EventKitUI
 import MessageKit
+import AVFoundation
 
 internal class ConversationController: MessagesViewController {
     
     private let db = Firestore.firestore()
-    private var reference: CollectionReference?
+    private var lastSnapshot: QueryDocumentSnapshot?
+    private var reference: Query?
     
     var circleId: String?
     let refreshControl = UIRefreshControl()
@@ -27,6 +30,7 @@ internal class ConversationController: MessagesViewController {
     var viewModel: ChatViewModeling?
     var messageList: [Message] = []
     var messageListener: ListenerRegistration?
+    var imagePicker = UIImagePickerController()
     
     lazy var formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -46,28 +50,39 @@ internal class ConversationController: MessagesViewController {
         
         circleId = viewModel?.chatPreviews[(viewModel?.activeChatIndex)!].circleId
         reference = db.collection("circles").document(circleId!).collection("chat")
+            .order(by: "createTime", descending: true)
+            .limit(to: 25)
         
-//        let messagesToFetch = UserDefaults.standard.mockMessagesCount()
-//        DispatchQueue.global(qos: .userInitiated).async {
-//            SampleData.shared.getMessages(count: messagesToFetch) { messages in
-//                DispatchQueue.main.async {
-//                    self.messageList = messages
-//                    self.messagesCollectionView.reloadData()
-//                    self.messagesCollectionView.scrollToBottom()
-//                }
-//            }
-//        }
         
-        messageListener = reference?.addSnapshotListener { querySnapshot, error in
+        reference?.getDocuments(completion: { (querySnapshot, error) in
             guard let snapshot = querySnapshot else {
                 print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
                 return
             }
             
-            snapshot.documentChanges.forEach { change in
-                self.handleDocumentChange(change)
+            guard let lastSnapshot = snapshot.documents.last else {
+                // The collection is empty.
+                return
             }
-        }
+            
+            self.lastSnapshot = lastSnapshot
+            
+            snapshot.documents.forEach({ (querySnapshot) in
+               self.handleDocumentChange(querySnapshot)
+            })
+            
+            self.messagesCollectionView.scrollToBottom()
+            self.messageListener = self.reference!.addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
+                    return
+                }
+                
+                snapshot.documentChanges.forEach { change in
+                    self.handleNewMessages(change)
+                }
+            }
+        })
         
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -77,24 +92,42 @@ internal class ConversationController: MessagesViewController {
         
         scrollsToBottomOnKeybordBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
-        messagesCollectionView.scrollToBottom()
         messagesCollectionView.addSubview(refreshControl)
+        messagesCollectionView.scrollToBottom()
         refreshControl.addTarget(self, action: #selector(ConversationController.loadMoreMessages), for: .valueChanged)
     }
     
     @objc func loadMoreMessages() {
-//        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now() + 4) {
-//            SampleData.shared.getMessages(count: 10) { messages in
-//                DispatchQueue.main.async {
-//                    self.messageList.insert(contentsOf: messages, at: 0)
-//                   self.messagesCollectionView.reloadData()
-//                    self.refreshControl.endRefreshing()
-//                }
-//            }
-//        }
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now() + 1) {
+            DispatchQueue.main.async {
+                let next = self.db.collection("circles").document(self.circleId!).collection("chat")
+                .order(by: "createTime", descending: true)
+                .limit(to: 25)
+                .start(afterDocument: self.lastSnapshot!)
+
+                next.getDocuments(completion: { (querySnapshot, error) in
+                    guard let snapshot = querySnapshot else {
+                        print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
+                        return
+                    }
+                    
+                    guard let lastSnapshot = snapshot.documents.last else {
+                        // The collection is empty.
+                        return
+                    }
+                    
+                    self.lastSnapshot = lastSnapshot
+                    
+                    snapshot.documents.forEach({ (querySnapshot) in
+                        self.handleDocumentChange(querySnapshot)
+                    })
+                })
+                self.refreshControl.endRefreshing()
+            }
+        }
     }
     
-    func handleDocumentChange(_ change: DocumentChange) {
+    func handleNewMessages(_ change: DocumentChange) {
         guard var message = Message(document: change.document) else {
             return
         }
@@ -103,20 +136,62 @@ internal class ConversationController: MessagesViewController {
             return
         }
         
-        messageList.sort()
+        switch message.kind {
+        case .photo:
+            if let url = message.mediaUrl {
+                message.downloadImage(at: url) { (image) in
+                    message = Message(image: image!, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                    guard !self.messageList.contains(message) else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.messageList.append(message)
+                        self.messagesCollectionView.reloadDataAndKeepOffset()
+                        self.messagesCollectionView.scrollToBottom()
+                    }
+                }
+            } else {
+                return
+            }
+        default:
+            DispatchQueue.main.async {
+                self.messageList.append(message)
+                self.messagesCollectionView.reloadDataAndKeepOffset()
+                self.messagesCollectionView.scrollToBottom()
+            }
+        }
+    }
+    
+    func handleDocumentChange(_ document: QueryDocumentSnapshot) {
+        guard var message = Message(document: document) else {
+            return
+        }
+        
+        guard !messageList.contains(message) else {
+            return
+        }
         
         switch message.kind {
         case .photo:
-            message.downloadImage(at: message.mediaUrl!) { (image) in
-                message.mediaItem = image
+            if let url = message.mediaUrl {
+                message.downloadImage(at: url) { (image) in
+                    message = Message(image: image!, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                    guard !self.messageList.contains(message) else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.messageList.insert(message, at: 0)
+                        self.messagesCollectionView.reloadDataAndKeepOffset()
+                    }
+                }
+            } else {
+                return
             }
         default:
-           return
-        }
-        
-        DispatchQueue.main.async {
-            self.messageList.append(message)
-            self.messagesCollectionView.reloadDataAndKeepOffset()
+            DispatchQueue.main.async {
+                self.messageList.insert(message, at: 0)
+                self.messagesCollectionView.reloadDataAndKeepOffset()
+            }
         }
     }
     
@@ -149,9 +224,10 @@ internal class ConversationController: MessagesViewController {
         
         let items = [
             makeButton(named: "camera").onTextViewDidChange { button, textView in
-                button.isEnabled = textView.text.isEmpty
+                button.isEnabled = true
             },
             ]
+        messageInputBar.leftStackView.alignment = .center
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
     }
     
@@ -166,15 +242,94 @@ internal class ConversationController: MessagesViewController {
     // MARK: - Helpers
     
     func makeButton(named: String) -> InputBarButtonItem {
-        return InputBarButtonItem()
+        return InputBarButtonItem(type: .system)
             .configure {
                 $0.spacing = .fixed(10)
                 $0.image = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
                 $0.setSize(CGSize(width: 30, height: 30), animated: true)
                 $0.tintColor = UIColor(red: 133/255, green: 142/255, blue: 153/255, alpha: 1)
             }.onTouchUpInside { _ in
-                print("Item Tapped")
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                
+                var image = UIImage(named: "camera")
+                var action = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
+                    self.openCamera()
+                })
+                
+                action.setValue(image, forKey: "image")
+                alert.addAction(action)
+                
+                image = UIImage(named: "picture")
+                action = UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
+                    self.openGallery()
+                })
+                
+                action.setValue(image, forKey: "image")
+                alert.addAction(action)
+                
+                alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    // MARK: - Open the camera
+    func openCamera() {
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            if response {
+                if UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+                    self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
+                    self.imagePicker.allowsEditing = true
+                    self.imagePicker.delegate = self
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Choose image from camera roll
+    func openGallery() {
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                if status == .authorized {
+                    self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+                    self.imagePicker.allowsEditing = true
+                    self.imagePicker.delegate = self
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            })
+        } else if photos == .authorized {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+            self.imagePicker.allowsEditing = true
+            self.imagePicker.delegate = self
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }
+    }
+}
+
+// MARK: - UIImagePickerController Delegate
+
+extension ConversationController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            var imageMessage = Message(image: editedImage, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+            viewModel!.uploadImage(editedImage, to: circleId!) { [weak self] url in
+                guard let url = url else {
+                    return
+                }
+                
+                imageMessage.mediaUrl = url
+                self!.db.collection("circles").document(self!.circleId!).collection("chat").addDocument(data: imageMessage.representation) { error in
+                    if let e = error {
+                        print("Error sending message: \(e.localizedDescription)")
+                        return
+                    }
+                }
+            }
+        }
+        
+        //Dismiss the UIImagePicker after selection
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -216,8 +371,11 @@ extension ConversationController: MessagesDataSource {
                 return nil
             }
         }
-        let name = message.sender.displayName
-        return NSAttributedString(string: name, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)])
+        if !isFromCurrentSender(message: message) {
+            let name = message.sender.displayName
+            return NSAttributedString(string: name, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)])
+        }
+        return nil
     }
     
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
@@ -226,7 +384,7 @@ extension ConversationController: MessagesDataSource {
                 return nil
             }
         }
-        let dateString = formatter.string(from: message.sentDate)
+        let dateString = message.sentDate.formatRelativeString()
         return NSAttributedString(string: dateString, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
     }
     
@@ -437,26 +595,25 @@ extension ConversationController: MessageInputBarDelegate {
         for component in inputBar.inputTextView.components {
             if let image = component as? UIImage {
                 var imageMessage = Message(image: image, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-                messageList.append(imageMessage)
-                messagesCollectionView.insertSections([messageList.count - 1])
-                
                 viewModel!.uploadImage(image, to: circleId!) { [weak self] url in
                     guard let url = url else {
                         return
                     }
-                                        
+                    
                     imageMessage.mediaUrl = url
-                    self?.reference?.addDocument(data: imageMessage.representation) { error in
+                    self!.db.collection("circles").document(self!.circleId!).collection("chat").addDocument(data: imageMessage.representation) { error in
                         if let e = error {
                             print("Error sending message: \(e.localizedDescription)")
                             return
                         }
                     }
+                    self!.messageList.append(imageMessage)
+                    self!.messagesCollectionView.insertSections([self!.messageList.count - 1])
                 }
             } else if let text = component as? String {
                 if text.containsOnlyEmoji && text.count < 4 {
                     let message = Message(emoji: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-                    reference?.addDocument(data: message.representation) { error in
+                    self.db.collection("circles").document(self.circleId!).collection("chat").addDocument(data: message.representation) { error in
                         if let e = error {
                             print("Error sending message: \(e.localizedDescription)")
                             return
@@ -464,7 +621,7 @@ extension ConversationController: MessageInputBarDelegate {
                     }
                 } else {
                     let message = Message(text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
-                    reference?.addDocument(data: message.representation) { error in
+                    self.db.collection("circles").document(self.circleId!).collection("chat").addDocument(data: message.representation) { error in
                         if let e = error {
                             print("Error sending message: \(e.localizedDescription)")
                             return

@@ -233,10 +233,10 @@
 		BF3F43BB20FF27B300DF3E69 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				8DFA4575212CA4E900ED9A8F /* Message.swift */,
 				8D6D79C9213B222900178E53 /* ChatPreview.swift */,
 				BF3F43CC20FF2A7200DF3E69 /* ChatViewModel.swift */,
 				BF3F43CE20FF2A7E00DF3E69 /* ChatController.swift */,
-				8DFA4575212CA4E900ED9A8F /* Message.swift */,
 				8DFA4571212CA49900ED9A8F /* ConversationController.swift */,
 				BF3F43CA20FF2A5B00DF3E69 /* Chat.storyboard */,
 			);

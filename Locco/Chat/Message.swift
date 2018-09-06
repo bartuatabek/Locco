@@ -87,6 +87,9 @@ internal struct Message: MessageType {
         case "photo":
             let mediaItem = PhotoMediaItem(image: UIImage())
             self.init(kind: .photo(mediaItem), sender:  Sender(id: senderID, displayName: senderName), messageId: document.documentID, date: sentDate)
+            if let urlString = data["url"] as? String, let url = URL(string: urlString) {
+                mediaUrl = url
+            }
         case "emoji":
             self.init(kind: .emoji((data["message"] as? String)!), sender: Sender(id: senderID, displayName: senderName), messageId: document.documentID, date: sentDate)
             message = data["message"] as? String
@@ -111,7 +114,7 @@ extension Message: DatabaseRepresentation {
         case .photo:
             rep["kind"] = "photo"
             rep["url"] = mediaUrl?.absoluteString ?? ""
-            rep["message"] = message
+            rep["message"] = "Attachment: Image"
         case .emoji:
             rep["kind"] = "emoji"
             rep["message"] = message
