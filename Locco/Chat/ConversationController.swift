@@ -140,15 +140,27 @@ internal class ConversationController: MessagesViewController {
         case .photo:
             if let url = message.mediaUrl {
                 message.downloadImage(at: url) { (image) in
-                    message = Message(image: image!, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                    if let mediaItem = image {
+                        message.mediaItem = mediaItem
+                        DispatchQueue.main.async {
+                            let downloadedMessage = Message(image: mediaItem, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                            let messageIndex = self.messageList.index(of: message)
+                            self.messageList[messageIndex!] = downloadedMessage
+                            self.messagesCollectionView.reloadData()
+                        }
+                    }
+                    
                     guard !self.messageList.contains(message) else {
                         return
                     }
                     DispatchQueue.main.async {
-                        self.messageList.append(message)
                         self.messagesCollectionView.reloadDataAndKeepOffset()
-                        self.messagesCollectionView.scrollToBottom()
                     }
+                }
+                DispatchQueue.main.async {
+                    self.messageList.append(message)
+                    self.messagesCollectionView.reloadDataAndKeepOffset()
+                    self.messagesCollectionView.scrollToBottom()
                 }
             } else {
                 return
@@ -175,14 +187,23 @@ internal class ConversationController: MessagesViewController {
         case .photo:
             if let url = message.mediaUrl {
                 message.downloadImage(at: url) { (image) in
-                    message = Message(image: image!, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                    if let mediaItem = image {
+                        message.mediaItem = mediaItem
+                        DispatchQueue.main.async {
+                            let downloadedMessage = Message(image: mediaItem, sender: message.sender, messageId: message.messageId, date: message.sentDate)
+                            let messageIndex = self.messageList.index(of: message)
+                            self.messageList[messageIndex!] = downloadedMessage
+                            self.messagesCollectionView.reloadData()
+                        }
+                    }
+                    
                     guard !self.messageList.contains(message) else {
                         return
                     }
-                    DispatchQueue.main.async {
-                        self.messageList.insert(message, at: 0)
-                        self.messagesCollectionView.reloadDataAndKeepOffset()
-                    }
+                }
+                DispatchQueue.main.async {
+                    self.messageList.insert(message, at: 0)
+                    self.messagesCollectionView.reloadDataAndKeepOffset()
                 }
             } else {
                 return
@@ -474,12 +495,14 @@ extension ConversationController: MessageCellDelegate {
         
         switch message.kind {
         case .photo:
-            let images = [LightboxImage(image: message.mediaItem!)]
-            let lightbox = LightboxController(images: images)
-            lightbox.pageDelegate = self as? LightboxControllerPageDelegate
-            lightbox.dismissalDelegate = self as? LightboxControllerDismissalDelegate
-            lightbox.dynamicBackground = true
-            present(lightbox, animated: true, completion: nil)
+            if let image = message.mediaItem {
+                let images = [LightboxImage(image: image)]
+                let lightbox = LightboxController(images: images)
+                lightbox.pageDelegate = self as? LightboxControllerPageDelegate
+                lightbox.dismissalDelegate = self as? LightboxControllerDismissalDelegate
+                lightbox.dynamicBackground = true
+                present(lightbox, animated: true, completion: nil)
+            }
         default:
             print("Message tapped")
         }
