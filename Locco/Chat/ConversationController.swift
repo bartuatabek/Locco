@@ -80,6 +80,7 @@ internal class ConversationController: MessagesViewController {
                 
                 snapshot.documentChanges.forEach { change in
                     self.handleNewMessages(change)
+                    self.messagesCollectionView.scrollToBottom()
                 }
             }
         })
@@ -160,7 +161,6 @@ internal class ConversationController: MessagesViewController {
                 DispatchQueue.main.async {
                     self.messageList.append(message)
                     self.messagesCollectionView.reloadDataAndKeepOffset()
-                    self.messagesCollectionView.scrollToBottom()
                 }
             } else {
                 return
@@ -169,7 +169,6 @@ internal class ConversationController: MessagesViewController {
             DispatchQueue.main.async {
                 self.messageList.append(message)
                 self.messagesCollectionView.reloadDataAndKeepOffset()
-                self.messagesCollectionView.scrollToBottom()
             }
         }
     }
@@ -316,7 +315,7 @@ internal class ConversationController: MessagesViewController {
                     self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
                     self.imagePicker.allowsEditing = true
                     self.imagePicker.delegate = self
-                    self.present(self.imagePicker, animated: true, completion: nil)
+//                    self.present(self.imagePicker, animated: true, completion: nil)
                 }
             })
         } else if photos == .authorized {

@@ -2,8 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Locco reqiures accesss to your phone&apos;s microphone.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Locco requires access to your phone&apos;s contacts in order to invite friends.</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Locco requires access to you phone&apos;s calendar in order to create events.</string>
+	<string>Locco requires access to your phone&apos;s calendar in order to create events.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

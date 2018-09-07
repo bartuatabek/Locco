@@ -127,12 +127,16 @@ class ProfileDetailController: UITableViewController {
     @IBAction func usernameChanged(_ sender: Any) {
         if !(usernameTextField.text?.isEmpty)! {
             viewModel?.updateUsername(username: usernameTextField.text!)
+        } else {
+            usernameTextField.text = viewModel?.username.value
         }
     }
     
     @IBAction func aboutChanged(_ sender: Any) {
         if !(aboutTextField.text?.isEmpty)! {
             viewModel?.updateAbout(about: aboutTextField.text!)
+        } else {
+            aboutTextField.text = viewModel?.about.value
         }
     }
 }

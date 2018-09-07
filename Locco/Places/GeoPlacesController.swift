@@ -331,15 +331,9 @@ extension GeoPlacesController: MKMapViewDelegate {
         }
          if annotation is GeoPlace {
             let geotification = annotation as! GeoPlace
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-            
-            if annotationView == nil {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.image = UIImage(named: "Pin")!
-                    .tintedWithLinearGradientColors(colorsArr: geotification.pinColor.colors)
-            } else {
-                annotationView?.annotation = annotation
-            }
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView.image = UIImage(named: "Pin")!
+            .tintedWithLinearGradientColors(colorsArr: geotification.pinColor.colors)
             return annotationView
         }
         return nil
